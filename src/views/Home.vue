@@ -2,11 +2,6 @@
   <div
     class="c-world"
     :style="styleWorld"
-    @keydown.up="move('UP')"
-    @keydown.down="move('DOWN')"
-    @keydown.left="move('LEFT')"
-    @keydown.right="move('RIGHT')"
-    tabindex="1"
   >
     <player></player>
   </div>
@@ -23,13 +18,13 @@
       Player,
       HelloWorld
     },
-    created: () => {
-      // window.addEventListener('keypress', this.move)
+    mounted () {
+      window.addEventListener('keydown', this.onKeyDown, false)
     },
     data () {
       return {
-        xPos: 0,
-        yPos: 0
+        xPos: -551,
+        yPos: -3810
       }
     },
     computed: {
@@ -40,19 +35,23 @@
       }
     },
     methods: {
-      move (direction) {
-        console.log('move ' + direction)
-        switch (direction) {
-          case 'UP':
+      onKeyDown (e) {
+        // console.log(e)
+        switch (e.keyCode) {
+          case 38:
+            // UP
             this.yPos += 2
             break
-          case 'DOWN':
+          case 40:
+            // DOWN
             this.yPos -= 2
             break
-          case 'LEFT':
+          case 37:
+            // LEFT
             this.xPos += 2
             break
-          case 'RIGHT':
+          case 39:
+            // RIGHT
             this.xPos -= 2
             break
           default:
@@ -68,6 +67,5 @@
   .c-world {
     height: 100vh;
     background: url('../assets/world/spz3zUx.png') left center;
-    background-color: green;
   }
 </style>
