@@ -66,6 +66,6 @@
 <style>
   .c-world {
     height: 100vh;
-    background: url('../assets/world/spz3zUx.png') left center;
+    background: url('../assets/world/spz3zUx_001.png') 0 0;
   }
 </style>
