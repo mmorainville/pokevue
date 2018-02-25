@@ -23,14 +23,14 @@
     },
     data () {
       return {
-        xPos: -551,
-        yPos: -3810
+        xPos: 362,
+        yPos: -540
       }
     },
     computed: {
       styleWorld () {
         return {
-          backgroundPosition: this.xPos + 'px ' + this.yPos + 'px'
+          backgroundPosition: 'calc(50% + ' + this.xPos + 'px) calc(50% + ' + this.yPos + 'px)'
         }
       }
     },
@@ -66,6 +66,6 @@
 <style>
   .c-world {
     height: 100vh;
-    background: url('../assets/world/spz3zUx_001.png') 0 0;
+    background: url('../assets/world/spz3zUx_small_w_grid.png') 0 0;
   }
 </style>

@@ -62,14 +62,14 @@
           // LEFT
           case 37:
             this.xPos = -16
-            this.yPos = -63
+            this.yPos = -64
             this.scaleX = 1
             this.animation = 'walk-left'
             break
           // RIGHT
           case 39:
             this.xPos = -16
-            this.yPos = -63
+            this.yPos = -64
             this.scaleX = -1
             this.animation = 'walk-right'
             break
@@ -130,16 +130,16 @@
   }
 
   @keyframes walk-left {
-    0% { background-position: -16px -63px; }
-    25% { background-position: 0 -63px; }
-    50% { background-position: -16px -63px; }
-    75% { background-position: -32px -63px; }
+    0% { background-position: -16px -64px; }
+    25% { background-position: 0 -64px; }
+    50% { background-position: -16px -64px; }
+    75% { background-position: -32px -64px; }
   }
 
   @keyframes walk-right {
-    0% { background-position: -16px -63px; }
-    25% { background-position: 0 -63px; }
-    50% { background-position: -16px -63px; }
-    75% { background-position: -32px -63px; }
+    0% { background-position: -16px -64px; }
+    25% { background-position: 0 -64px; }
+    50% { background-position: -16px -64px; }
+    75% { background-position: -32px -64px; }
   }
 </style>
