@@ -4,6 +4,7 @@
     :style="styleWorld"
   >
     <player></player>
+    <!--<grid></grid>-->
   </div>
 </template>
 
@@ -11,10 +12,12 @@
   // @ is an alias to /src
   import HelloWorld from '@/components/HelloWorld.vue'
   import Player from '../components/Player'
+  import Grid from '../components/Grid'
 
   export default {
     name: 'Home',
     components: {
+      Grid,
       Player,
       HelloWorld
     },
@@ -23,8 +26,8 @@
     },
     data () {
       return {
-        xPos: 362,
-        yPos: -540
+        xPos: 360,
+        yPos: -534
       }
     },
     computed: {
@@ -40,19 +43,19 @@
         switch (e.keyCode) {
           case 38:
             // UP
-            this.yPos += 2
+            this.yPos += 1
             break
           case 40:
             // DOWN
-            this.yPos -= 2
+            this.yPos -= 1
             break
           case 37:
             // LEFT
-            this.xPos += 2
+            this.xPos += 1
             break
           case 39:
             // RIGHT
-            this.xPos -= 2
+            this.xPos -= 1
             break
           default:
             console.log('Unknown command')
@@ -67,5 +70,8 @@
   .c-world {
     height: 100vh;
     background: url('../assets/world/spz3zUx_small_w_grid.png') 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

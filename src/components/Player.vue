@@ -87,10 +87,11 @@
 
 <style scoped>
   .c-player {
-    height: 100vh;
+    /*height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;*/
+    z-index: 2;
   }
 
   .c-player__sprites {
