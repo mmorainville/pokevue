@@ -14,6 +14,8 @@
   import Player from '../components/Player'
   import Grid from '../components/Grid'
 
+  let timerWalk
+
   export default {
     name: 'Home',
     components: {
@@ -23,11 +25,15 @@
     },
     mounted () {
       window.addEventListener('keydown', this.onKeyDown, false)
+      window.addEventListener('keyup', this.onKeyUp, false)
     },
     data () {
       return {
-        xPos: 360,
-        yPos: -534
+        xPos: 360, // 1056
+        yPos: -534, // 3168
+        nonWalkableArea: [
+          [992, 3072]
+        ]
       }
     },
     computed: {
@@ -39,28 +45,38 @@
     },
     methods: {
       onKeyDown (e) {
+        let previousPosition = {
+          x: this.xPos,
+          y: this.yPos
+        }
+
         // console.log(e)
         switch (e.keyCode) {
           case 38:
             // UP
-            this.yPos += 1
+            this.yPos += 3
             break
           case 40:
             // DOWN
-            this.yPos -= 1
+            this.yPos -= 3
             break
           case 37:
             // LEFT
-            this.xPos += 1
+            if (this.xPos + 3 <= 424) {
+              this.xPos += 3
+            }
             break
           case 39:
             // RIGHT
-            this.xPos -= 1
+            this.xPos -= 3
             break
           default:
             console.log('Unknown command')
             break
         }
+      },
+      onKeyUp (e) {
+        // clearInterval(timerWalk);
       }
     }
   }
@@ -69,7 +85,7 @@
 <style>
   .c-world {
     height: 100vh;
-    background: url('../assets/world/spz3zUx_small_w_grid.png') 0 0;
+    background: url('../assets/world/spz3zUx_small.png') 0 0;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -5,6 +5,11 @@
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>
     </div>
   </div>
 </template>
@@ -28,25 +33,28 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 0, 0, 0.2);
+    /*background-color: rgba(255, 0, 0, 0.2);*/
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /*justify-content: center;
+    align-items: center;*/
+    overflow: hidden;
   }
 
   .c-grid {
     /*height: 100vh;*/
     display: grid;
-    grid-template-columns: 16px 16px;
-    grid-template-rows: 16px 16px;
-    background-color: rgba(255, 0, 0, 0.5);
+    /*grid-template-columns: 16px 16px;*/
+    grid-template-columns: repeat(178, 16px);
+    /*grid-template-rows: 16px 16px;*/
+    grid-template-rows: repeat(330, 16px);
+    /*background-color: rgba(255, 0, 0, 0.5);*/
   }
 
   .c-grid__item:nth-child(even) {
-    background: blue;
+    background: rgba(0, 255, 0, 0.5);
   }
 
   .c-grid__item:nth-child(odd) {
-    background: green;
+    background: rgba(0, 0, 255, 0.5);
   }
 </style>

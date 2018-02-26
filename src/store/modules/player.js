@@ -13,12 +13,6 @@ const mutations = {
       x: payload.x,
       y: payload.y
     }
-  },
-  [types.MOVE] (state, payload) {
-    state.currentPosition = {
-      x: payload.x,
-      y: payload.y
-    }
   }
 }
 
