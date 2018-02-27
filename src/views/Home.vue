@@ -3,7 +3,7 @@
     class="c-world"
     :style="styleWorld"
   >
-    <player></player>
+    <player :is-walking="isWalking" :direction="player.direction"></player>
     <!--<grid></grid>-->
   </div>
 </template>
@@ -21,7 +21,7 @@
   let keyPresses = keyDowns
     .merge(keyUps)
     .groupBy(e => e.keyCode)
-    .map(group => group.distinctUntilChanged(null, e => e.type))
+    // .map(group => group.distinctUntilChanged(null, e => e.type))
     .mergeAll()
 
   let timerWalk
@@ -36,15 +36,15 @@
       HelloWorld
     },
     mounted () {
-      window.addEventListener('keydown', this.onKeyDown, false)
-      window.addEventListener('keyup', this.onKeyUp, false)
-      // this.$observables.keyPresses$.subscribe((e) => {
-      //   if (e.type === 'keydown') {
-      //     this.onKeyDown(e)
-      //   } else {
-      //     this.onKeyUp(e)
-      //   }
-      // })
+      // window.addEventListener('keydown', this.onKeyDown, false)
+      // window.addEventListener('keyup', this.onKeyUp, false)
+      this.$observables.keyPresses$.subscribe((e) => {
+        if (e.type === 'keydown') {
+          this.onKeyDown(e)
+        } else {
+          this.onKeyUp(e)
+        }
+      })
     },
     data () {
       return {
@@ -59,7 +59,10 @@
           37: false,
           39: false
         },
-        isWalking: false
+        isWalking: false,
+        player: {
+          direction: 'down'
+        }
       }
     },
     subscriptions() {
@@ -85,36 +88,44 @@
           this.pressedKeys[e.keyCode] = true
         }
 
+        console.log('onKeyDown')
+
         // console.log(e)
         switch (e.keyCode) {
           case 38:
             // UP
             // this.yPos += 3
             if (!this.isWalking) {
+              console.log('onKeyDown: UP')
+
               oldYPos = this.yPos
               timerWalk = setInterval(() => {
                 this.isWalking = true
+                this.player.direction = 'up'
                 this.yPos += 1
                 if (!this.pressedKeys[e.keyCode] && (this.yPos - oldYPos) % 16 === 0) {
                   clearInterval(timerWalk)
                   this.isWalking = false
                 }
-              }, 24)
+              }, 12)
             }
             break
           case 40:
             // DOWN
             // this.yPos -= 3
             if (!this.isWalking) {
+              console.log('onKeyDown: DOWN')
+
               oldYPos = this.yPos
               timerWalk = setInterval(() => {
                 this.isWalking = true
+                this.player.direction = 'down'
                 this.yPos -= 1
                 if (!this.pressedKeys[e.keyCode] && (this.yPos - oldYPos) % 16 === 0) {
                   clearInterval(timerWalk)
                   this.isWalking = false
                 }
-              }, 24)
+              }, 12)
             }
             break
           case 37:
@@ -123,22 +134,30 @@
             //   this.xPos += 3
             // }
             if (!this.isWalking) {
+              console.log('onKeyDown: LEFT')
+
               oldXPos = this.xPos
+              this.player.direction = 'left'
               timerWalk = setInterval(() => {
                 this.isWalking = true
-                this.xPos += 1
+                if (this.xPos + 1 <= 424) {
+                  this.xPos += 1
+                }
                 if (!this.pressedKeys[e.keyCode] && (this.xPos - oldXPos) % 16 === 0) {
                   clearInterval(timerWalk)
                   this.isWalking = false
                 }
-              }, 24)
+              }, 12)
             }
             break
           case 39:
             // RIGHT
             // this.xPos -= 3
             if (!this.isWalking) {
+              console.log('onKeyDown: RIGHT')
+
               oldXPos = this.xPos
+              this.player.direction = 'right'
               timerWalk = setInterval(() => {
                 this.isWalking = true
                 this.xPos -= 1
@@ -146,7 +165,7 @@
                   clearInterval(timerWalk)
                   this.isWalking = false
                 }
-              }, 24)
+              }, 12)
             }
             break
           default:
@@ -155,7 +174,7 @@
         }
       },
       onKeyUp (e) {
-        console.log('onKeyUp')
+        // console.log('onKeyUp')
 
         if (Object.keys(this.pressedKeys).includes('' + e.keyCode)) {
           this.pressedKeys[e.keyCode] = false
