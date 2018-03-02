@@ -33,15 +33,18 @@
   //     Rx.Observable.if(() => active, keyDowns, Rx.Observable.empty())
   //   ).subscribe()
 
-  // let keyPresses = keyDowns
-  //   .merge(keyUps)
-  //   .groupBy(e => e.keyCode)
-  //   // .map(group => group.distinctUntilChanged(null, e => e.type))
-  //   .mergeAll()
+  let keyPresses = keyDowns
+    .merge(keyUps)
+    .groupBy(e => e.keyCode)
+    .map(group => group.distinctUntilChanged(null, e => e.type))
+    .mergeAll()
+    // .publishReplay(1)
+
+  // keyPresses.connect()
 
   let timerWalk
-  let oldXPos
-  let oldYPos
+  let animationRequest
+  let oldPos
 
   export default {
     name: 'Home',
@@ -72,10 +75,16 @@
       //     console.log(e)
       //   })
 
-      this.$observables.pauser$.switchMap(paused => paused ? Rx.Observable.never() : keyDowns)
+      this.$observables.pauser$.switchMap(paused => paused ? Rx.Observable.never() : keyPresses)
         .subscribe(e => {
-          this.onKeyDown(e)
           console.log(e)
+          if (e.type === 'keydown') {
+            this.pressedKeys[e.keyCode] = true
+            this.onKeyDown(e)
+          } else {
+            this.pressedKeys[e.keyCode] = false
+            this.onKeyUp(e)
+          }
         })
 
       pauser.next(false)
@@ -93,9 +102,9 @@
       //   pauser.next(false)
       // }, 5000)
 
-      this.$observables.keyUps$.subscribe((e) => {
-        this.onKeyUp(e)
-      })
+      // this.$observables.keyUps$.subscribe((e) => {
+      //   this.onKeyUp(e)
+      // })
     },
     data () {
       return {
@@ -116,7 +125,7 @@
         }
       }
     },
-    subscriptions() {
+    subscriptions () {
       return {
         // keyPresses$: keyPresses,
         keyDowns$: keyDowns,
@@ -132,97 +141,66 @@
       }
     },
     methods: {
+      move (direction, oldPosition, variable, e) {
+        this.isWalking = true
+        this.player.direction = direction
+
+        if (direction === 'up' || direction === 'left') {
+          this[variable] += 1
+        } else {
+          this[variable] -= 1
+        }
+
+        if ((this[variable] - oldPos) % 16 === 0) {
+          this.isWalking = false
+          cancelAnimationFrame(animationRequest)
+          pauser.next(false)
+        } else {
+          animationRequest = requestAnimationFrame(() => this.move(direction, oldPosition, variable, e))
+        }
+      },
       onKeyDown (e) {
         console.log('onKeyDown')
         pauser.next(true)
-
-        if (Object.keys(this.pressedKeys).includes('' + e.keyCode)) {
-          this.pressedKeys[e.keyCode] = true
-        }
-
-        console.log('onKeyDown')
 
         // console.log(e)
         switch (e.keyCode) {
           case 38:
             // UP
-            // this.yPos += 3
-            if (!this.isWalking) {
-              console.log('onKeyDown: UP')
-
-              oldYPos = this.yPos
-              timerWalk = setInterval(() => {
-                this.isWalking = true
-                this.player.direction = 'up'
-                this.yPos += 1
-                if (!this.pressedKeys[e.keyCode] && (this.yPos - oldYPos) % 16 === 0) {
-                  clearInterval(timerWalk)
-                  this.isWalking = false
-                  pauser.next(false)
-                }
-              }, 12)
-            }
+            console.log('onKeyDown: UP')
+            oldPos = this.yPos
+            animationRequest = requestAnimationFrame(() => {
+              this.move('up', oldPos, 'yPos', e)
+            })
             break
           case 40:
             // DOWN
             // this.yPos -= 3
-            if (!this.isWalking) {
-              console.log('onKeyDown: DOWN')
-
-              oldYPos = this.yPos
-              timerWalk = setInterval(() => {
-                this.isWalking = true
-                this.player.direction = 'down'
-                this.yPos -= 1
-                if (!this.pressedKeys[e.keyCode] && (this.yPos - oldYPos) % 16 === 0) {
-                  clearInterval(timerWalk)
-                  this.isWalking = false
-                  pauser.next(false)
-                }
-              }, 12)
-            }
+            console.log('onKeyDown: DOWN')
+            oldPos = this.yPos
+            animationRequest = requestAnimationFrame(() => {
+              this.move('down', oldPos, 'yPos', e)
+            })
             break
           case 37:
             // LEFT
             // if (this.xPos + 3 <= 424) {
             //   this.xPos += 3
             // }
-            if (!this.isWalking) {
-              console.log('onKeyDown: LEFT')
-
-              oldXPos = this.xPos
-              this.player.direction = 'left'
-              timerWalk = setInterval(() => {
-                this.isWalking = true
-                if (this.xPos + 1 <= 424) {
-                  this.xPos += 1
-                }
-                if (!this.pressedKeys[e.keyCode] && (this.xPos - oldXPos) % 16 === 0) {
-                  clearInterval(timerWalk)
-                  this.isWalking = false
-                  pauser.next(false)
-                }
-              }, 12)
-            }
+            console.log('onKeyDown: LEFT')
+            oldPos = this.xPos
+            animationRequest = requestAnimationFrame(() => {
+              this.move('left', oldPos, 'xPos', e)
+            })
             break
           case 39:
             // RIGHT
             // this.xPos -= 3
-            if (!this.isWalking) {
-              console.log('onKeyDown: RIGHT')
-
-              oldXPos = this.xPos
-              this.player.direction = 'right'
-              timerWalk = setInterval(() => {
-                this.isWalking = true
-                this.xPos -= 1
-                if (!this.pressedKeys[e.keyCode] && (this.xPos - oldXPos) % 16 === 0) {
-                  clearInterval(timerWalk)
-                  this.isWalking = false
-                  pauser.next(false)
-                }
-              }, 12)
-            }
+            console.log('onKeyDown: RIGHT')
+            oldPos = this.xPos
+            animationRequest = requestAnimationFrame(() => {
+              this.move('right', oldPos, 'xPos', e)
+            })
             break
           default:
             console.log('Unknown command')
@@ -231,12 +209,6 @@
       },
       onKeyUp (e) {
         console.log('onKeyUp')
-
-        if (Object.keys(this.pressedKeys).includes('' + e.keyCode)) {
-          this.pressedKeys[e.keyCode] = false
-        }
-
-        // clearInterval(timerWalk)
       }
     }
   }
