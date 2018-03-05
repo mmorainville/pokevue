@@ -142,7 +142,7 @@
         }
       },
       onKeyDown (keyCode) {
-        console.log('onKeyDown', keyCode)
+        // console.log('onKeyDown', keyCode)
 
         // console.log(e)
         switch (keyCode) {
@@ -150,18 +150,18 @@
             // UP
             console.log('onKeyDown: UP')
             oldPos = this.yPos
-            animationRequest = requestAnimationFrame(() => {
+            // animationRequest = requestAnimationFrame(() => {
               this.move('up', oldPos, 'yPos')
-            })
+            // })
             break
           case 40:
             // DOWN
             // this.yPos -= 3
             console.log('onKeyDown: DOWN')
             oldPos = this.yPos
-            animationRequest = requestAnimationFrame(() => {
+            // animationRequest = requestAnimationFrame(() => {
               this.move('down', oldPos, 'yPos')
-            })
+            // })
             break
           case 37:
             // LEFT
@@ -170,18 +170,18 @@
             // }
             console.log('onKeyDown: LEFT')
             oldPos = this.xPos
-            animationRequest = requestAnimationFrame(() => {
+            // animationRequest = requestAnimationFrame(() => {
               this.move('left', oldPos, 'xPos')
-            })
+            // })
             break
           case 39:
             // RIGHT
             // this.xPos -= 3
             console.log('onKeyDown: RIGHT')
             oldPos = this.xPos
-            animationRequest = requestAnimationFrame(() => {
+            // animationRequest = requestAnimationFrame(() => {
               this.move('right', oldPos, 'xPos')
-            })
+            // })
             break
           default:
             console.log('Unknown command')
@@ -189,7 +189,7 @@
         }
       },
       onKeyUp (keyCode) {
-        console.log('onKeyUp', keyCode)
+        // console.log('onKeyUp', keyCode)
       }
     }
   }
