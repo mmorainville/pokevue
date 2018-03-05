@@ -4,7 +4,6 @@
     :style="styleWorld"
   >
     <player :is-walking="isWalking" :direction="player.direction"></player>
-    <!--<grid></grid>-->
   </div>
 </template>
 
@@ -56,55 +55,34 @@
     mounted () {
       // window.addEventListener('keydown', this.onKeyDown, false)
       // window.addEventListener('keyup', this.onKeyUp, false)
-      // this.$observables.keyPresses$.subscribe((e) => {
-      //   if (e.type === 'keydown') {
-      //     this.onKeyDown(e)
-      //   } else {
-      //     this.onKeyUp(e)
-      //   }
-      // })
-      // this.$observables.pauser$.subscribe((e) => {
-      //   console.log('KEYDOWNS', e)
-      //   // this.onKeyDown(e)
-      // })
+      this.$observables.keyPresses$.subscribe((e) => {
+        console.log(e.type + ': ' + e.keyCode)
 
-      // pauser
-      //   .switchMap(paused => paused ? Rx.Observable.never() : keyDowns)
-      //   .subscribe(e => {
-      //     this.onKeyUp(e)
-      //     console.log(e)
-      //   })
+        if (e.type === 'keydown') {
+          this.lastPressedKeys.push(e.keyCode)
+          console.log(this.lastPressedKeys)
 
-      this.$observables.pauser$.switchMap(paused => paused ? Rx.Observable.never() : keyPresses)
-        .subscribe(e => {
-          console.log(e)
-          if (e.type === 'keydown') {
-            this.pressedKeys[e.keyCode] = true
-            this.onKeyDown(e)
-          } else {
-            this.pressedKeys[e.keyCode] = false
-            this.onKeyUp(e)
+          if (!this.isWalking) {
+            this.onKeyDown(e.keyCode)
           }
-        })
 
-      pauser.next(false)
+          // if (!this.lastPressedKeys) {
+          //   this.stackKeyPressed.push(e)
+          //   this.lastPressedKeys = e.keyCode
+          //   this.onKeyDown(e.keyCode)
+          // }
+        } else {
+          this.lastPressedKeys = this.lastPressedKeys.filter(keyCode => keyCode !== e.keyCode)
+          console.log(this.lastPressedKeys)
 
-      // pauser.next(true)
-      // setTimeout(() => {
-      //   pauser.next(false)
-      //
-      //   setTimeout(() => {
-      //     pauser.next(true)
-      //   }, 5000)
-      // }, 2000)
-
-      // setTimeout(() => {
-      //   pauser.next(false)
-      // }, 5000)
-
-      // this.$observables.keyUps$.subscribe((e) => {
-      //   this.onKeyUp(e)
-      // })
+          // if (this.lastPressedKeys === e.keyCode) {
+          //   this.lastPressedKeys = null
+          //   this.onKeyUp(e.keyCode)
+          // } else {
+          //   // this.lastPressedKeys = null
+          // }
+        }
+      })
     },
     data () {
       return {
@@ -122,7 +100,8 @@
         isWalking: false,
         player: {
           direction: 'down'
-        }
+        },
+        lastPressedKeys: []
       }
     },
     subscriptions () {
@@ -130,7 +109,8 @@
         // keyPresses$: keyPresses,
         keyDowns$: keyDowns,
         keyUps$: keyUps,
-        pauser$: pauser
+        pauser$: pauser,
+        keyPresses$: keyPresses
       }
     },
     computed: {
@@ -141,7 +121,7 @@
       }
     },
     methods: {
-      move (direction, oldPosition, variable, e) {
+      move (direction, oldPosition, variable) {
         this.isWalking = true
         this.player.direction = direction
 
@@ -151,26 +131,27 @@
           this[variable] -= 1
         }
 
-        if ((this[variable] - oldPos) % 16 === 0) {
-          this.isWalking = false
-          cancelAnimationFrame(animationRequest)
-          pauser.next(false)
+        if ((this[variable] - oldPosition) % 16 === 0) {
+          if (this.lastPressedKeys.length > 0) {
+            this.onKeyDown(this.lastPressedKeys[this.lastPressedKeys.length - 1])
+          } else {
+            this.isWalking = false
+          }
         } else {
-          animationRequest = requestAnimationFrame(() => this.move(direction, oldPosition, variable, e))
+          animationRequest = requestAnimationFrame(() => this.move(direction, oldPosition, variable))
         }
       },
-      onKeyDown (e) {
-        console.log('onKeyDown')
-        pauser.next(true)
+      onKeyDown (keyCode) {
+        console.log('onKeyDown', keyCode)
 
         // console.log(e)
-        switch (e.keyCode) {
+        switch (keyCode) {
           case 38:
             // UP
             console.log('onKeyDown: UP')
             oldPos = this.yPos
             animationRequest = requestAnimationFrame(() => {
-              this.move('up', oldPos, 'yPos', e)
+              this.move('up', oldPos, 'yPos')
             })
             break
           case 40:
@@ -179,7 +160,7 @@
             console.log('onKeyDown: DOWN')
             oldPos = this.yPos
             animationRequest = requestAnimationFrame(() => {
-              this.move('down', oldPos, 'yPos', e)
+              this.move('down', oldPos, 'yPos')
             })
             break
           case 37:
@@ -190,7 +171,7 @@
             console.log('onKeyDown: LEFT')
             oldPos = this.xPos
             animationRequest = requestAnimationFrame(() => {
-              this.move('left', oldPos, 'xPos', e)
+              this.move('left', oldPos, 'xPos')
             })
             break
           case 39:
@@ -199,7 +180,7 @@
             console.log('onKeyDown: RIGHT')
             oldPos = this.xPos
             animationRequest = requestAnimationFrame(() => {
-              this.move('right', oldPos, 'xPos', e)
+              this.move('right', oldPos, 'xPos')
             })
             break
           default:
@@ -207,8 +188,8 @@
             break
         }
       },
-      onKeyUp (e) {
-        console.log('onKeyUp')
+      onKeyUp (keyCode) {
+        console.log('onKeyUp', keyCode)
       }
     }
   }
