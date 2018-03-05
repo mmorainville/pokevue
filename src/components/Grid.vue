@@ -1,6 +1,7 @@
 <template>
   <div class="c-grid__container">
     <div class="c-grid">
+      <!--<div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
@@ -8,8 +9,9 @@
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
-      <div class="c-grid__item"></div>
-      <div class="c-grid__item"></div>
+      <div class="c-grid__item"></div>-->
+
+      <div v-for="" class="c-grid__item"></div>
     </div>
   </div>
 </template>

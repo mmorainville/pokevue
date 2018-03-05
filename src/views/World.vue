@@ -5,12 +5,14 @@
   >
     <player :is-walking="isWalking" :direction="player.direction"></player>
     <grid></grid>
+    <!--<overlay-actions></overlay-actions>-->
   </div>
 </template>
 
 <script>
   import Player from '../components/Player'
   import Grid from '../components/Grid'
+  import OverlayActions from '../components/OverlayActions'
   import Rx from 'rxjs/Rx'
 
   let keyDowns = Rx.Observable.fromEvent(window, 'keydown')
@@ -27,6 +29,7 @@
   export default {
     name: 'World',
     components: {
+      OverlayActions,
       Grid,
       Player
     },
