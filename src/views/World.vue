@@ -4,53 +4,31 @@
     :style="styleWorld"
   >
     <player :is-walking="isWalking" :direction="player.direction"></player>
+    <grid></grid>
   </div>
 </template>
 
 <script>
-  // @ is an alias to /src
-  import HelloWorld from '@/components/HelloWorld.vue'
   import Player from '../components/Player'
   import Grid from '../components/Grid'
   import Rx from 'rxjs/Rx'
 
-  const pauser = new Rx.Subject()
-
   let keyDowns = Rx.Observable.fromEvent(window, 'keydown')
-  // keyDowns.connect()
-
   let keyUps = Rx.Observable.fromEvent(window, 'keyup')
-
-  // let disposableKeyDowns = keyDowns.connect()
-
-  // pauser
-  //   .switchMap(paused => paused ? Rx.Observable.never() : keyDowns)
-  //   .subscribe(x => console.log(x))
-
-  // pauser
-  //   .switchMap(active =>
-  //     Rx.Observable.if(() => active, keyDowns, Rx.Observable.empty())
-  //   ).subscribe()
 
   let keyPresses = keyDowns
     .merge(keyUps)
     .groupBy(e => e.keyCode)
     .map(group => group.distinctUntilChanged(null, e => e.type))
     .mergeAll()
-    // .publishReplay(1)
 
-  // keyPresses.connect()
-
-  let timerWalk
-  let animationRequest
   let oldPos
 
   export default {
-    name: 'Home',
+    name: 'World',
     components: {
       Grid,
-      Player,
-      HelloWorld
+      Player
     },
     mounted () {
       // window.addEventListener('keydown', this.onKeyDown, false)
@@ -60,27 +38,14 @@
 
         if (e.type === 'keydown') {
           this.lastPressedKeys.push(e.keyCode)
-          console.log(this.lastPressedKeys)
+          // console.log(this.lastPressedKeys)
 
           if (!this.isWalking) {
             this.onKeyDown(e.keyCode)
           }
-
-          // if (!this.lastPressedKeys) {
-          //   this.stackKeyPressed.push(e)
-          //   this.lastPressedKeys = e.keyCode
-          //   this.onKeyDown(e.keyCode)
-          // }
         } else {
           this.lastPressedKeys = this.lastPressedKeys.filter(keyCode => keyCode !== e.keyCode)
-          console.log(this.lastPressedKeys)
-
-          // if (this.lastPressedKeys === e.keyCode) {
-          //   this.lastPressedKeys = null
-          //   this.onKeyUp(e.keyCode)
-          // } else {
-          //   // this.lastPressedKeys = null
-          // }
+          // console.log(this.lastPressedKeys)
         }
       })
     },
@@ -91,12 +56,6 @@
         nonWalkableArea: [
           [992, 3072]
         ],
-        pressedKeys: {
-          38: false,
-          40: false,
-          37: false,
-          39: false
-        },
         isWalking: false,
         player: {
           direction: 'down'
@@ -106,10 +65,6 @@
     },
     subscriptions () {
       return {
-        // keyPresses$: keyPresses,
-        keyDowns$: keyDowns,
-        keyUps$: keyUps,
-        pauser$: pauser,
         keyPresses$: keyPresses
       }
     },
@@ -138,50 +93,39 @@
             this.isWalking = false
           }
         } else {
-          animationRequest = requestAnimationFrame(() => this.move(direction, oldPosition, variable))
+          requestAnimationFrame(() => this.move(direction, oldPosition, variable))
         }
       },
       onKeyDown (keyCode) {
-        // console.log('onKeyDown', keyCode)
-
-        // console.log(e)
         switch (keyCode) {
           case 38:
             // UP
-            console.log('onKeyDown: UP')
+            // console.log('onKeyDown: UP')
             oldPos = this.yPos
-            // animationRequest = requestAnimationFrame(() => {
-              this.move('up', oldPos, 'yPos')
-            // })
+            this.move('up', oldPos, 'yPos')
             break
           case 40:
             // DOWN
             // this.yPos -= 3
-            console.log('onKeyDown: DOWN')
+            // console.log('onKeyDown: DOWN')
             oldPos = this.yPos
-            // animationRequest = requestAnimationFrame(() => {
-              this.move('down', oldPos, 'yPos')
-            // })
+            this.move('down', oldPos, 'yPos')
             break
           case 37:
             // LEFT
             // if (this.xPos + 3 <= 424) {
             //   this.xPos += 3
             // }
-            console.log('onKeyDown: LEFT')
+            // console.log('onKeyDown: LEFT')
             oldPos = this.xPos
-            // animationRequest = requestAnimationFrame(() => {
-              this.move('left', oldPos, 'xPos')
-            // })
+            this.move('left', oldPos, 'xPos')
             break
           case 39:
             // RIGHT
             // this.xPos -= 3
-            console.log('onKeyDown: RIGHT')
+            // console.log('onKeyDown: RIGHT')
             oldPos = this.xPos
-            // animationRequest = requestAnimationFrame(() => {
-              this.move('right', oldPos, 'xPos')
-            // })
+            this.move('right', oldPos, 'xPos')
             break
           default:
             console.log('Unknown command')

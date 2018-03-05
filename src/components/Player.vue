@@ -26,12 +26,6 @@
       }
     },
     computed: {
-      // stylePlayer () {
-      //   return {
-      //     backgroundPosition: this.xPos + 'px ' + this.yPos + 'px',
-      //     transform: 'scaleX(' + this.scaleX + ')'
-      //   }
-      // },
       classPlayer () {
         return {
           'c-player__sprites--face-up': this.direction === 'up',
@@ -47,7 +41,6 @@
     },
     methods: {
       onKeyDown (e) {
-        // console.log(e)
         switch (e.keyCode) {
           // UP
           case 38:
