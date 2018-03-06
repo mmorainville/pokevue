@@ -10,13 +10,42 @@
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>
       <div class="c-grid__item"></div>-->
-
-      <div v-for="" class="c-grid__item"></div>
     </div>
   </div>
 </template>
 
 <script>
+  let grid = [
+  ]
+
+  let obstacles = [
+    {x: 61, y: 198},
+    {x: 61, y: 199}
+  ]
+
+  // Build the grid
+  for (let j = 0; j < 330; j++) {
+    grid.push(
+      []
+    )
+    for (let i = 0; i < 178; i++) {
+      grid[j].push(
+        {
+          x: i,
+          y: j
+        }
+      )
+
+      obstacles.forEach((obstacle) => {
+        if (obstacle.x === i && obstacle.y === j) {
+          grid[j][i].type = 'obstacle'
+        }
+      })
+    }
+  }
+
+  console.log(grid)
+
   export default {
     name: 'Grid',
     data () {
