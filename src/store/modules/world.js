@@ -1,11 +1,16 @@
 import * as types from '../mutation-types'
 
-let grid = [
-]
+let grid = []
 
 let obstacles = [
   {x: 61, y: 198},
-  {x: 61, y: 199}
+  {x: 61, y: 199},
+  {x: 65, y: 201},
+  {x: 66, y: 201},
+  {x: 67, y: 201},
+  {x: 68, y: 201},
+  {x: 69, y: 201},
+  {x: 65, y: 204},
 ]
 
 // Build the grid
