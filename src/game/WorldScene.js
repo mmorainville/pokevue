@@ -18,8 +18,17 @@ export default class WorldScene extends Phaser.Scene {
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     // const belowLayer = map.createStaticLayer('Below Player', tileset, 0, 0)
-    map.createStaticLayer('World', tileset, 0, 0) // worldLayer
+    const worldLayer = map.createStaticLayer('World', tileset, 0, 0)
     // const aboveLayer = map.createStaticLayer('Above Player', tileset, 0, 0)
+
+    worldLayer.setCollisionByProperty({ collides: true })
+
+    // const debugGraphics = this.add.graphics().setAlpha(0.75)
+    // worldLayer.renderDebug(debugGraphics, {
+    //   tileColor: null, // Color of non-colliding tiles
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+    // })
 
     // Phaser supports multiple cameras, but you can access the default camera like this:
     const camera = this.cameras.main
@@ -39,7 +48,7 @@ export default class WorldScene extends Phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
     // this.map = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'map').setOrigin(0)
-    this.scale.on('resize', this.resize, this)
+    // this.scale.on('resize', this.resize, this)
     //
     // this.logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo')
   }

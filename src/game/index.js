@@ -5,7 +5,7 @@ import WorldScene from './WorldScene'
 let config = {
   type: Phaser.AUTO,
   scale: {
-    mode: Phaser.DOM.RESIZE,
+    mode: Phaser.DOM.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: 'game',
     width: '100%',
@@ -15,7 +15,8 @@ let config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 200 }
+      debug: true,
+      gravity: { y: 0 }
     }
   },
   scene: [
