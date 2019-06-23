@@ -12,6 +12,7 @@ let config = {
     height: '100%'
   },
   title: 'Pokevue',
+  pixelArt: true,
   physics: {
     default: 'arcade',
     arcade: {
