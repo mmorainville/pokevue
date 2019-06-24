@@ -55,6 +55,7 @@ export default class WorldScene extends Phaser.Scene {
     // this.logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo')
 
     this.player = this.physics.add.sprite(0, 0, 'player', 1)
+    this.player.setSize(16, 16)
     this.physics.world.bounds.width = map.widthInPixels
     this.physics.world.bounds.height = map.heightInPixels
     this.player.setCollideWorldBounds(true)
@@ -102,22 +103,16 @@ export default class WorldScene extends Phaser.Scene {
     if (this.cursors.left.isDown) {
       this.player.body.setVelocityX(-80)
       this.player.flipX = false
+      this.player.anims.play('left', true)
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(80)
       this.player.flipX = true
-    } else if (this.cursors.up.isDown) {
-      this.player.body.setVelocityY(-80)
-    } else if (this.cursors.down.isDown) {
-      this.player.body.setVelocityY(80)
-    }
-
-    if (this.cursors.left.isDown) {
-      this.player.anims.play('left', true)
-    } else if (this.cursors.right.isDown) {
       this.player.anims.play('right', true)
     } else if (this.cursors.up.isDown) {
+      this.player.body.setVelocityY(-80)
       this.player.anims.play('up', true)
     } else if (this.cursors.down.isDown) {
+      this.player.body.setVelocityY(80)
       this.player.anims.play('down', true)
     } else {
       this.player.anims.stop()
