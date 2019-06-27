@@ -101,7 +101,7 @@ export default class WorldScene extends Phaser.Scene {
     // Apply the controls to the camera each update tick of the game
     // this.controls.update(delta)
 
-    console.log(this.player.x, this.player.y)
+    // console.log(this.player.x, this.player.y)
 
     if (!this.isMoving) {
       this.player.body.setVelocity(0)
@@ -111,14 +111,16 @@ export default class WorldScene extends Phaser.Scene {
         // this.player.body.setVelocityX(-32)
         this.player.flipX = false
         this.player.anims.play('left', true)
-        this.isMoving = true
-        this.lastKey = 'left'
-        this.move(this.lastKey)
+        if (this.canMoveTo(this.player.x - 16, this.player.y)) {
+          this.isMoving = true
+          this.lastKey = 'left'
+          this.move(this.lastKey)
+        }
       } else if (this.cursors.right.isDown) {
         // this.player.body.setVelocityX(32)
+        this.player.flipX = true
+        this.player.anims.play('right', true)
         if (this.canMoveTo(this.player.x + 16, this.player.y)) {
-          this.player.flipX = true
-          this.player.anims.play('right', true)
           this.isMoving = true
           this.lastKey = 'right'
           this.move(this.lastKey)
@@ -126,15 +128,19 @@ export default class WorldScene extends Phaser.Scene {
       } else if (this.cursors.up.isDown) {
         // this.player.body.setVelocityY(-32)
         this.player.anims.play('up', true)
-        this.isMoving = true
-        this.lastKey = 'up'
-        this.move(this.lastKey)
+        if (this.canMoveTo(this.player.x, this.player.y - 16)) {
+          this.isMoving = true
+          this.lastKey = 'up'
+          this.move(this.lastKey)
+        }
       } else if (this.cursors.down.isDown) {
         // this.player.body.setVelocityY(32)
         this.player.anims.play('down', true)
-        this.isMoving = true
-        this.lastKey = 'down'
-        this.move(this.lastKey)
+        if (this.canMoveTo(this.player.x, this.player.y + 16)) {
+          this.isMoving = true
+          this.lastKey = 'down'
+          this.move(this.lastKey)
+        }
       } else {
         this.player.anims.stop()
         this.isMoving = false
@@ -169,9 +175,10 @@ export default class WorldScene extends Phaser.Scene {
   }
 
   canMoveTo (x, y) {
-    let nextTile = this.map.getTileAt(x, y)
+    console.log(x, y)
+    let nextTile = this.map.getTileAtWorldXY(x, y)
     console.log(nextTile)
-    return true
+    return !nextTile.collides
   }
 
   resize (gameSize, baseSize, displaySize, resolution) {
