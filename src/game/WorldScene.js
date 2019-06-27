@@ -91,32 +91,87 @@ export default class WorldScene extends Phaser.Scene {
     })
 
     this.physics.add.collider(this.player, worldLayer)
+    this.isMoving = false
+    this.steps = 0
+    this.lastKey = null
+    this.map = map
   }
 
   update (time, delta) {
     // Apply the controls to the camera each update tick of the game
     // this.controls.update(delta)
 
-    this.player.body.setVelocity(0)
+    console.log(this.player.x, this.player.y)
 
-    // Movements
-    if (this.cursors.left.isDown) {
-      this.player.body.setVelocityX(-80)
-      this.player.flipX = false
-      this.player.anims.play('left', true)
-    } else if (this.cursors.right.isDown) {
-      this.player.body.setVelocityX(80)
-      this.player.flipX = true
-      this.player.anims.play('right', true)
-    } else if (this.cursors.up.isDown) {
-      this.player.body.setVelocityY(-80)
-      this.player.anims.play('up', true)
-    } else if (this.cursors.down.isDown) {
-      this.player.body.setVelocityY(80)
-      this.player.anims.play('down', true)
+    if (!this.isMoving) {
+      this.player.body.setVelocity(0)
+
+      // Movements
+      if (this.cursors.left.isDown) {
+        // this.player.body.setVelocityX(-32)
+        this.player.flipX = false
+        this.player.anims.play('left', true)
+        this.isMoving = true
+        this.lastKey = 'left'
+        this.move(this.lastKey)
+      } else if (this.cursors.right.isDown) {
+        // this.player.body.setVelocityX(32)
+        if (this.canMoveTo(this.player.x + 16, this.player.y)) {
+          this.player.flipX = true
+          this.player.anims.play('right', true)
+          this.isMoving = true
+          this.lastKey = 'right'
+          this.move(this.lastKey)
+        }
+      } else if (this.cursors.up.isDown) {
+        // this.player.body.setVelocityY(-32)
+        this.player.anims.play('up', true)
+        this.isMoving = true
+        this.lastKey = 'up'
+        this.move(this.lastKey)
+      } else if (this.cursors.down.isDown) {
+        // this.player.body.setVelocityY(32)
+        this.player.anims.play('down', true)
+        this.isMoving = true
+        this.lastKey = 'down'
+        this.move(this.lastKey)
+      } else {
+        this.player.anims.stop()
+        this.isMoving = false
+        this.lastKey = null
+      }
     } else {
-      this.player.anims.stop()
+      this.steps++
+      this.move(this.lastKey)
+      if (this.steps === 15) {
+        this.isMoving = false
+        this.steps = 0
+      }
     }
+  }
+
+  move (direction) {
+    switch (direction) {
+      case 'left':
+        this.player.x -= 1
+        break
+      case 'right':
+        this.player.x += 1
+        break
+      case 'up':
+        this.player.y -= 1
+        break
+      case 'down':
+        this.player.y += 1
+        break
+      default:
+    }
+  }
+
+  canMoveTo (x, y) {
+    let nextTile = this.map.getTileAt(x, y)
+    console.log(nextTile)
+    return true
   }
 
   resize (gameSize, baseSize, displaySize, resolution) {
