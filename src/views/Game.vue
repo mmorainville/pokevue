@@ -1,12 +1,19 @@
 <template>
-  <div id="game" class="game"></div>
+  <div>
+    <div id="game" class="game"></div>
+    <Menu />
+  </div>
 </template>
 
 <script>
 import '@/game'
+import Menu from '../components/interface/menu'
 
 export default {
-  name: 'Game'
+  name: 'Game',
+  components: {
+    Menu
+  }
 }
 </script>
 
