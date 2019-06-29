@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import appBus from '../shared/app-bus'
 
 export default class WorldScene extends Phaser.Scene {
   constructor () {
@@ -96,6 +97,11 @@ export default class WorldScene extends Phaser.Scene {
 
     this.input.keyboard.on('keydown-' + 'V', (event) => {
       this.useCameraView = !this.useCameraView
+    })
+
+    this.input.keyboard.on('keydown-' + 'ESC', (event) => {
+      console.log('ESC')
+      appBus.$emit('keydown:esc')
     })
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu/>
+    <Menu v-if="showMenu"/>
   </div>
 </template>
 
@@ -9,7 +9,15 @@ import Menu from '@/components/interface/menu'
 
 export default {
   name: 'Interface',
-  components: { Menu }
+  components: { Menu },
+  data () {
+    return {
+      showMenu: false
+    }
+  },
+  created () {
+    this.$appBus.$on('keydown:esc', () => { this.showMenu = !this.showMenu })
+  }
 }
 </script>
 

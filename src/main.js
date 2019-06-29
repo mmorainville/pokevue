@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import './plugins/vuetify'
+import './shared/app-bus'
+import './shared/app-snackbar'
 
 Vue.config.productionTip = false
 
