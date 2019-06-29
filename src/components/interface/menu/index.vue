@@ -7,6 +7,7 @@
                 <v-list-tile
                     v-for="(item, index) in menuItems"
                     :key="index"
+                    @click="open(item)"
                   >
                   <v-list-tile-title>{{ item }}</v-list-tile-title>
                 </v-list-tile>
@@ -27,6 +28,11 @@ export default {
   },
   mounted () {
     console.log('Menu')
+  },
+  methods: {
+    open (item) {
+      console.log(item)
+    }
   }
 }
 </script>

@@ -49,12 +49,8 @@ export default class WorldScene extends Phaser.Scene {
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
-    // this.map = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'map').setOrigin(0)
-    // this.scale.on('resize', this.resize, this)
-    //
-    // this.logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo')
-
-    this.player = this.physics.add.sprite(0, 0, 'player', 1)
+    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point')
+    this.player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'player', 1)
     this.player.setSize(16, 16)
     this.physics.world.bounds.width = map.widthInPixels
     this.physics.world.bounds.height = map.heightInPixels
@@ -91,6 +87,7 @@ export default class WorldScene extends Phaser.Scene {
     })
 
     this.physics.add.collider(this.player, worldLayer)
+
     this.isMoving = false
     this.steps = 0
     this.lastKey = null
@@ -175,24 +172,9 @@ export default class WorldScene extends Phaser.Scene {
   }
 
   canMoveTo (x, y) {
-    console.log(x, y)
+    // console.log(x, y)
     let nextTile = this.map.getTileAtWorldXY(x, y)
-    console.log(nextTile)
+    // console.log(nextTile)
     return !nextTile.collides
-  }
-
-  resize (gameSize, baseSize, displaySize, resolution) {
-    let width = gameSize.width
-    let height = gameSize.height
-
-    console.log(this.game)
-
-    // this.game.renderer.resize(width, height)
-    this.cameras.main.setViewport(0, 0, width, height)
-
-    // this.cameras.resize(width, height)
-    //
-    // this.map.setSize(width, height)
-    // this.logo.setPosition(width / 2, height / 2)
   }
 }
