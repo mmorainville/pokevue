@@ -36,15 +36,15 @@ export default class WorldScene extends Phaser.Scene {
     const camera = this.cameras.main
 
     // Set up the arrows to control the camera
-    // const cursors = this.input.keyboard.createCursorKeys()
-    // this.controls = new Phaser.Cameras.Controls.FixedKeyControl({
-    //   camera: camera,
-    //   left: cursors.left,
-    //   right: cursors.right,
-    //   up: cursors.up,
-    //   down: cursors.down,
-    //   speed: 0.5
-    // })
+    const cursors = this.input.keyboard.createCursorKeys()
+    this.controls = new Phaser.Cameras.Controls.FixedKeyControl({
+      camera: camera,
+      left: cursors.left,
+      right: cursors.right,
+      up: cursors.up,
+      down: cursors.down,
+      speed: 1
+    })
 
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
@@ -92,80 +92,91 @@ export default class WorldScene extends Phaser.Scene {
     this.steps = 0
     this.lastKey = null
     this.map = map
+    this.useCameraView = false
+
+    this.input.keyboard.on('keydown-' + 'V', (event) => {
+      this.useCameraView = !this.useCameraView
+    })
   }
 
   update (time, delta) {
-    // Apply the controls to the camera each update tick of the game
-    // this.controls.update(delta)
+    if (this.useCameraView) {
+      console.log(this.useCameraView)
+      this.cameras.main.stopFollow()
+      // Apply the controls to the camera each update tick of the game
+      this.controls.update(delta)
+    } else {
+      // console.log(this.player.x, this.player.y)
+      this.cameras.main.startFollow(this.player)
 
-    // console.log(this.player.x, this.player.y)
+      if (!this.isMoving) {
+        this.player.body.setVelocity(0)
 
-    if (!this.isMoving) {
-      this.player.body.setVelocity(0)
-
-      // Movements
-      if (this.cursors.left.isDown) {
-        // this.player.body.setVelocityX(-32)
-        this.player.flipX = false
-        this.player.anims.play('left', true)
-        if (this.canMoveTo(this.player.x - 16, this.player.y)) {
-          this.isMoving = true
-          this.lastKey = 'left'
-          this.move(this.lastKey)
-        }
-      } else if (this.cursors.right.isDown) {
-        // this.player.body.setVelocityX(32)
-        this.player.flipX = true
-        this.player.anims.play('right', true)
-        if (this.canMoveTo(this.player.x + 16, this.player.y)) {
-          this.isMoving = true
-          this.lastKey = 'right'
-          this.move(this.lastKey)
-        }
-      } else if (this.cursors.up.isDown) {
-        // this.player.body.setVelocityY(-32)
-        this.player.anims.play('up', true)
-        if (this.canMoveTo(this.player.x, this.player.y - 16)) {
-          this.isMoving = true
-          this.lastKey = 'up'
-          this.move(this.lastKey)
-        }
-      } else if (this.cursors.down.isDown) {
-        // this.player.body.setVelocityY(32)
-        this.player.anims.play('down', true)
-        if (this.canMoveTo(this.player.x, this.player.y + 16)) {
-          this.isMoving = true
-          this.lastKey = 'down'
-          this.move(this.lastKey)
+        // Movements
+        if (this.cursors.left.isDown) {
+          // this.player.body.setVelocityX(-32)
+          this.player.flipX = false
+          this.player.anims.play('left', true)
+          if (this.canMoveTo(this.player.x - 16, this.player.y)) {
+            this.isMoving = true
+            this.lastKey = 'left'
+            this.move(this.lastKey)
+          }
+        } else if (this.cursors.right.isDown) {
+          // this.player.body.setVelocityX(32)
+          this.player.flipX = true
+          this.player.anims.play('right', true)
+          if (this.canMoveTo(this.player.x + 16, this.player.y)) {
+            this.isMoving = true
+            this.lastKey = 'right'
+            this.move(this.lastKey)
+          }
+        } else if (this.cursors.up.isDown) {
+          // this.player.body.setVelocityY(-32)
+          this.player.anims.play('up', true)
+          if (this.canMoveTo(this.player.x, this.player.y - 16)) {
+            this.isMoving = true
+            this.lastKey = 'up'
+            this.move(this.lastKey)
+          }
+        } else if (this.cursors.down.isDown) {
+          // this.player.body.setVelocityY(32)
+          this.player.anims.play('down', true)
+          if (this.canMoveTo(this.player.x, this.player.y + 16)) {
+            this.isMoving = true
+            this.lastKey = 'down'
+            this.move(this.lastKey)
+          }
+        } else {
+          this.player.anims.stop()
+          this.isMoving = false
+          this.lastKey = null
         }
       } else {
-        this.player.anims.stop()
-        this.isMoving = false
-        this.lastKey = null
-      }
-    } else {
-      this.steps++
-      this.move(this.lastKey)
-      if (this.steps === 15) {
-        this.isMoving = false
-        this.steps = 0
+        this.steps++
+        this.move(this.lastKey)
+        if (this.steps === 7) { // 15 if speed === 1
+          this.isMoving = false
+          this.steps = 0
+        }
       }
     }
   }
 
   move (direction) {
+    let speed = 2 // 1
     switch (direction) {
       case 'left':
-        this.player.x -= 1
+        this.player.x -= speed
         break
       case 'right':
-        this.player.x += 1
+        this.player.x += speed
         break
       case 'up':
-        this.player.y -= 1
+        this.player.y -= speed
         break
       case 'down':
-        this.player.y += 1
+        this.player.y += speed
         break
       default:
     }
