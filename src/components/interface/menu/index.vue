@@ -9,7 +9,7 @@
                 :key="index"
                 @click="open(item)"
             >
-              <v-list-tile-title>{{ item }}</v-list-tile-title>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-card>
@@ -23,7 +23,24 @@ export default {
   name: 'Menu',
   data () {
     return {
-      menuItems: ['Pokémon', 'Sac', 'Profile', 'Save']
+      menuItems: [
+        {
+          title: 'Pokémon',
+          route: '/pokedex'
+        },
+        {
+          title: 'Sac',
+          route: '/sac'
+        },
+        {
+          title: 'Profile',
+          route: '/profile'
+        },
+        {
+          title: 'Save',
+          route: '/save'
+        }
+      ]
     }
   },
   mounted () {
@@ -32,6 +49,7 @@ export default {
   methods: {
     open (item) {
       console.log(item)
+      this.$router.push(item.route)
     }
   }
 }
