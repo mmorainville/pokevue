@@ -1,15 +1,17 @@
 <template>
   <div>
     <Menu v-if="showMenu"/>
+    <Snackbar/>
   </div>
 </template>
 
 <script>
 import Menu from '@/components/interface/menu'
+import Snackbar from '@/components/interface/Snackbar'
 
 export default {
   name: 'Interface',
-  components: { Menu },
+  components: { Menu, Snackbar },
   data () {
     return {
       showMenu: false

@@ -1,18 +1,17 @@
-// import { Snackbar } from 'buefy/dist/components/snackbar'
 import Vue from 'vue'
+import appBus from './app-bus'
 
 class AppSnackbar {
   open (params) {
-    this.message = params.message || Vue.$i18n.t('messageError')
+    this.message = params.message || 'Une erreur est survenue.'
     this.type = params.type || 'is-danger'
     this.position = params.position || 'is-bottom-right'
 
-    // Snackbar.open({
-    //   message: this.message,
-    //   type: this.type,
-    //   position: this.position,
-    //   queue: false
-    // })
+    appBus.$emit('snackbar:open', {
+      message: this.message,
+      type: this.type,
+      position: this.position
+    })
   }
 
   success (message, position) {
@@ -31,4 +30,7 @@ class AppSnackbar {
   }
 }
 
-Vue.prototype.$appSnackbar = new AppSnackbar()
+const appSnackbar = new AppSnackbar()
+export default appSnackbar
+
+Vue.prototype.$appSnackbar = appSnackbar

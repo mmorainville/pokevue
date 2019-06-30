@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import appBus from '../shared/app-bus'
+import appSnackbar from '../shared/app-snackbar'
 
 export default class WorldScene extends Phaser.Scene {
   constructor () {
@@ -102,6 +103,11 @@ export default class WorldScene extends Phaser.Scene {
     this.input.keyboard.on('keydown-' + 'ESC', (event) => {
       console.log('ESC')
       appBus.$emit('keydown:esc')
+    })
+
+    this.input.keyboard.on('keydown-' + 'N', (event) => {
+      console.log('Test snackbar')
+      appSnackbar.success('Test snackbar')
     })
   }
 

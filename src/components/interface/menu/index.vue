@@ -2,17 +2,17 @@
   <v-container fluid grid-list-xl text-xs-center>
     <v-layout row wrap>
       <v-flex xs2 offset-xs10>
-            <v-card>
-              <v-list>
-                <v-list-tile
-                    v-for="(item, index) in menuItems"
-                    :key="index"
-                    @click="open(item)"
-                  >
-                  <v-list-tile-title>{{ item }}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-card>
+        <v-card>
+          <v-list>
+            <v-list-tile
+                v-for="(item, index) in menuItems"
+                :key="index"
+                @click="open(item)"
+            >
+              <v-list-tile-title>{{ item }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
