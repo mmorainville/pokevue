@@ -2,29 +2,30 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Game from './views/Game'
 import Interface from './views/Interface'
-import Pokedex from './components/interface/menu/pokedex'
+import Pokedex from './components/interface/menu/Pokedex'
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'game',
-      components: {
-        default: Game,
-        interface: Interface
-      }
-    },
-    {
-      path: '/pokedex',
-      name: 'pokedex',
-      component: {
-        default: Game,
-        interface: Pokedex
-      }
+      component: Game,
+      children: [
+        {
+          path: '',
+          component: Interface,
+          children: [
+            {
+              path: 'pokedex',
+              name: 'pokedex',
+              component: Pokedex
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/about',

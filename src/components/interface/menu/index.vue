@@ -26,19 +26,19 @@ export default {
       menuItems: [
         {
           title: 'Pokémon',
-          route: '/pokedex'
+          routeName: 'pokedex'
         },
         {
           title: 'Sac',
-          route: '/sac'
+          routeName: 'sac'
         },
         {
           title: 'Profile',
-          route: '/profile'
+          routeName: 'profile'
         },
         {
           title: 'Save',
-          route: '/save'
+          routeName: 'save'
         }
       ]
     }
@@ -49,14 +49,8 @@ export default {
   methods: {
     open (item) {
       console.log(item)
-      this.$router.push(item.route)
+      this.$router.push(item.routeName)
     }
   }
 }
 </script>
-
-<style>
-  .selected {
-    border-bottom: 1px #2196F3 solid;
-  }
-</style>
