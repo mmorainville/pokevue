@@ -26,5 +26,5 @@ let config = {
   ]
 }
 
+// eslint-disable-next-line no-unused-vars
 let game = new Phaser.Game(config)
-console.log(game)

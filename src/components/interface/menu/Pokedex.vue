@@ -11,7 +11,7 @@
                 </v-list-tile>
               </v-list>
             </v-flex>
-            <v-flex xs8 >
+            <v-flex xs8>
               <v-layout>
                 <v-flex xs5>
                   <v-img
