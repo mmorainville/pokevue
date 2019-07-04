@@ -99,6 +99,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.stop()
         this.isMoving = false
         this.lastKey = null
+        this.moveTimer = 7
       }
     } else {
       this.steps++
@@ -106,6 +107,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       if (this.steps === ((16 / this.speed) - 1)) { // 15 if speed === 1
         this.isMoving = false
         this.steps = 0
+        this.moveTimer = 7
       }
     }
   }
@@ -129,6 +131,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   canMoveTo (x, y) {
+    // console.log(this.moveTimer)
     // Wait for a certain amount of time before really moving
     if (this.moveTimer === 0 || this.lastKey != null) {
       this.moveTimer = 7
