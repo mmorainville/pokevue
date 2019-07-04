@@ -1,17 +1,31 @@
 <template>
   <v-container fluid grid-list-xl text-xs-center>
     <v-layout align-center justify-center row fill-height>
-      <v-flex xs6 >
-        <v-card style="height: 300px">
+      <v-flex >
+        <v-card style="" >
           <v-layout align-center justify-center row fill-height>
-            <v-flex xs4 >
-              <v-list class="list-pokemon">
-                <v-list-tile v-for="(pokemon, index) in pokemons" :key="index">
+
+            <v-navigation-drawer disable-resize-watcher="true">
+              <v-toolbar flat>
+                <v-list>
+                  <v-list-tile class="red">
+                    <v-list-tile-title class="title">
+                      Pokedex
+                    </v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-toolbar>
+              <v-divider></v-divider>
+              <v-list dense class="pt-0">
+                <v-list-tile
+                  v-for="(pokemon, index) in pokemons" :key="index"
+                >
                   <v-list-tile-title @click="selectedPokemon = pokemon">{{ pokemon.name }}</v-list-tile-title>
                 </v-list-tile>
               </v-list>
-            </v-flex>
-            <v-flex xs8>
+            </v-navigation-drawer>
+
+            <v-flex md10>
               <v-layout>
                 <v-flex xs5>
                   <v-img
