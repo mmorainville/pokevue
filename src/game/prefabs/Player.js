@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+const MOVE_TIMER = 3
+
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor (scene, x, y) {
     super(scene, x, y, 'player', 1)
@@ -16,7 +18,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastKey = null
     this.steps = 0
     this.faces = 'down'
-    this.moveTimer = 7
+    this.moveTimer = MOVE_TIMER
 
     this.cursors = this.scene.input.keyboard.createCursorKeys()
 
@@ -97,9 +99,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.faces = 'down'
       } else {
         this.anims.stop()
+        this.setFrame(this.getIdleFrame())
         this.isMoving = false
         this.lastKey = null
-        this.moveTimer = 7
+        this.moveTimer = MOVE_TIMER
       }
     } else {
       this.steps++
@@ -107,7 +110,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       if (this.steps === ((16 / this.speed) - 1)) { // 15 if speed === 1
         this.isMoving = false
         this.steps = 0
-        this.moveTimer = 7
+        this.moveTimer = MOVE_TIMER
       }
     }
   }
@@ -134,13 +137,25 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // console.log(this.moveTimer)
     // Wait for a certain amount of time before really moving
     if (this.moveTimer === 0 || this.lastKey != null) {
-      this.moveTimer = 7
+      this.moveTimer = MOVE_TIMER
       // console.log(x, y)
       let nextTile = this.scene.map.getTileAtWorldXY(x, y)
       // console.log(nextTile)
       return !nextTile.collides
     } else {
       this.moveTimer--
+    }
+  }
+
+  getIdleFrame () {
+    switch (this.faces) {
+      case 'left':
+      case 'right':
+        return 7
+      case 'up':
+        return 4
+      default:
+        return 1
     }
   }
 
