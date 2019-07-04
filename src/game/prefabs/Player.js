@@ -15,6 +15,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.speed = 2 // 1
     this.lastKey = null
     this.steps = 0
+    this.faces = 'down'
+    this.moveTimer = 7
 
     this.cursors = this.scene.input.keyboard.createCursorKeys()
 
@@ -64,6 +66,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.lastKey = 'left'
           this.move(this.lastKey)
         }
+        this.faces = 'left'
       } else if (this.cursors.right.isDown) {
         // this.body.setVelocityX(32)
         this.flipX = true
@@ -73,6 +76,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.lastKey = 'right'
           this.move(this.lastKey)
         }
+        this.faces = 'right'
       } else if (this.cursors.up.isDown) {
         // this.body.setVelocityY(-32)
         this.anims.play('up', true)
@@ -81,6 +85,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.lastKey = 'up'
           this.move(this.lastKey)
         }
+        this.faces = 'up'
       } else if (this.cursors.down.isDown) {
         // this.body.setVelocityY(32)
         this.anims.play('down', true)
@@ -89,6 +94,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.lastKey = 'down'
           this.move(this.lastKey)
         }
+        this.faces = 'down'
       } else {
         this.anims.stop()
         this.isMoving = false
@@ -123,9 +129,29 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   canMoveTo (x, y) {
-    // console.log(x, y)
-    let nextTile = this.scene.map.getTileAtWorldXY(x, y)
-    // console.log(nextTile)
-    return !nextTile.collides
+    // Wait for a certain amount of time before really moving
+    if (this.moveTimer === 0 || this.lastKey != null) {
+      this.moveTimer = 7
+      // console.log(x, y)
+      let nextTile = this.scene.map.getTileAtWorldXY(x, y)
+      // console.log(nextTile)
+      return !nextTile.collides
+    } else {
+      this.moveTimer--
+    }
+  }
+
+  getNextTile () {
+    switch (this.faces) {
+      case 'left':
+        return this.scene.map.getTileAtWorldXY(this.x - 16, this.y)
+      case 'right':
+        return this.scene.map.getTileAtWorldXY(this.x + 16, this.y)
+      case 'up':
+        return this.scene.map.getTileAtWorldXY(this.x, this.y - 16)
+      case 'down':
+        return this.scene.map.getTileAtWorldXY(this.x, this.y + 16)
+      default:
+    }
   }
 }

@@ -14,6 +14,10 @@ class AppSnackbar {
     })
   }
 
+  close () {
+    appBus.$emit('snackbar:close')
+  }
+
   success (message, position) {
     let type = 'is-success'
     this.open({ message, type, position })

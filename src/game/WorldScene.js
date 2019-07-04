@@ -71,11 +71,6 @@ export default class WorldScene extends Phaser.Scene {
       console.log('ESC')
       appBus.$emit('keydown:esc')
     })
-
-    this.input.keyboard.on('keydown-' + 'N', (event) => {
-      console.log('Test snackbar')
-      appSnackbar.success('Test snackbar')
-    })
   }
 
   update (time, delta) {
@@ -86,6 +81,16 @@ export default class WorldScene extends Phaser.Scene {
       this.controls.update(delta)
     } else {
       this.player.update(time, delta)
+      let nextTile = this.player.getNextTile()
+      // console.log(nextTile)
+
+      if (nextTile.collides) {
+        if (this.player.faces === 'down' || this.player.faces === 'up') {
+          appSnackbar.success('Bourg Palette')
+        }
+      } else {
+        appSnackbar.close()
+      }
     }
   }
 }

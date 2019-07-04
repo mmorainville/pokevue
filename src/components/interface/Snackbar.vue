@@ -1,6 +1,6 @@
 <template>
   <v-snackbar v-model="isVisible">
-    {{message}}
+    {{ message }}
     <v-btn flat color="accent" @click.native="isVisible = false">Close</v-btn>
   </v-snackbar>
 </template>
@@ -16,12 +16,17 @@ export default {
   },
   created () {
     this.$appBus.$on('snackbar:open', this.open)
+    this.$appBus.$on('snackbar:close', this.close)
   },
   methods: {
     open (params) {
       console.log('Open snackbar')
       this.isVisible = true
       this.message = params.message
+    },
+
+    close () {
+      this.isVisible = false
     }
   }
 }
