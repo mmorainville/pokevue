@@ -12,7 +12,7 @@ export default class WorldScene extends Phaser.Scene {
     this.load.image('tiles', require('../assets/map/spz3zUx_small.png'))
     this.load.tilemapTiledJSON('map', require('../assets/tiled/spz3zUx_small.json'))
 
-    this.load.spritesheet('player', require('../assets/sprites/player_16x20.png'), { frameWidth: 16, frameHeight: 20 })
+    this.load.spritesheet('player', require('../assets/sprites/player_18x22.png'), { frameWidth: 18, frameHeight: 22 })
   }
 
   create () {
