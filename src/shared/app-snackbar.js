@@ -2,10 +2,15 @@ import Vue from 'vue'
 import appBus from './app-bus'
 
 class AppSnackbar {
+  constructor () {
+    this.isVisible = false
+  }
+
   open (params) {
     this.message = params.message || 'Une erreur est survenue.'
     this.type = params.type || 'is-danger'
     this.position = params.position || 'is-bottom-right'
+    this.isVisible = true
 
     appBus.$emit('snackbar:open', {
       message: this.message,
@@ -15,6 +20,7 @@ class AppSnackbar {
   }
 
   close () {
+    this.isVisible = false
     appBus.$emit('snackbar:close')
   }
 

@@ -86,7 +86,9 @@ export default class WorldScene extends Phaser.Scene {
 
       if (nextTile.collides) {
         if (this.player.faces === 'down' || this.player.faces === 'up') {
-          appSnackbar.success(`<strong>Bourg Palette</strong><br>Un monde de couleurs s'ouvre à vous !`)
+          if (!appSnackbar.isVisible) {
+            appSnackbar.success(`<strong>Bourg Palette</strong><br>Un monde de couleurs s'ouvre à vous !`)
+          }
         }
       } else {
         appSnackbar.close()
