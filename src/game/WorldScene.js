@@ -12,7 +12,9 @@ export default class WorldScene extends Phaser.Scene {
     this.load.image('tiles', require('../assets/map/spz3zUx_small.png'))
     this.load.tilemapTiledJSON('map', require('../assets/tiled/spz3zUx_small.json'))
 
-    this.load.spritesheet('player', require('../assets/sprites/player_18x22.png'), { frameWidth: 18, frameHeight: 22 })
+    let isGirl = Math.floor(Math.random() * 2) === 1
+    this.load.spritesheet('player', require('../assets/sprites/player_18x22' + (isGirl ? '_girl' : '') + '.png'), { frameWidth: 18, frameHeight: 22 })
+    // this.load.spritesheet('player', require('../assets/sprites/prof_chen_18x22.png'), { frameWidth: 18, frameHeight: 22 })
   }
 
   create () {
