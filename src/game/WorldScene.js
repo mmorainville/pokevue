@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import Player from './prefabs/Player'
 import appBus from '../shared/app-bus'
 import appSnackbar from '../shared/app-snackbar'
+import MovableCharacter from './prefabs/MovableCharacter'
 
 export default class WorldScene extends Phaser.Scene {
   constructor () {
@@ -14,7 +15,7 @@ export default class WorldScene extends Phaser.Scene {
 
     let isGirl = Math.floor(Math.random() * 2) === 1
     this.load.spritesheet('player', require('../assets/sprites/player_18x22' + (isGirl ? '_girl' : '') + '.png'), { frameWidth: 18, frameHeight: 22 })
-    // this.load.spritesheet('player', require('../assets/sprites/prof_chen_18x22.png'), { frameWidth: 18, frameHeight: 22 })
+    this.load.spritesheet('prof_chen', require('../assets/sprites/prof_chen_18x22.png'), { frameWidth: 18, frameHeight: 22 })
   }
 
   create () {
@@ -56,6 +57,10 @@ export default class WorldScene extends Phaser.Scene {
     this.player = new Player(this, spawnPoint.x, spawnPoint.y)
     this.physics.world.bounds.width = map.widthInPixels
     this.physics.world.bounds.height = map.heightInPixels
+
+    // Spawn PNJs
+    const profChenSpawnPoint = map.findObject('Objects', obj => obj.name === 'Prof. Chen')
+    this.profChen = new MovableCharacter(this, profChenSpawnPoint.x, profChenSpawnPoint.y, 'prof_chen')
 
     camera.startFollow(this.player)
     camera.roundPixels = true
