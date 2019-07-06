@@ -78,6 +78,12 @@ export default class WorldScene extends Phaser.Scene {
       console.log('ESC')
       appBus.$emit('keydown:esc')
     })
+
+    // this.map.setTileLocationCallback(73, 200, 1, 1, () => {
+    //   console.log('Leaving Pallet Town!')
+    // })
+
+    console.log(map.objects)
   }
 
   update (time, delta) {
@@ -94,6 +100,7 @@ export default class WorldScene extends Phaser.Scene {
       if (nextTile.collides) {
         if (this.player.faces === 'down' || this.player.faces === 'up') {
           if (!appSnackbar.isVisible) {
+            console.log(nextTile)
             appSnackbar.success(`<strong>Bourg Palette</strong><br>Un monde de couleurs s'ouvre à vous !`)
           }
         }
