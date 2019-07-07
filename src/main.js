@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import './plugins/vuetify'
+import './plugins/axios'
 import './shared/app-bus'
 import './shared/app-snackbar'
 
