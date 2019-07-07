@@ -140,7 +140,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
       // console.log(x, y)
       let nextTile = this.scene.map.getTileAtWorldXY(x, y)
       // console.log(nextTile)
-      return !nextTile.collides
+      return nextTile && !nextTile.collides
     } else {
       this.moveTimer--
     }
@@ -156,5 +156,9 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
       default:
         return 1
     }
+  }
+
+  isFullyOnTile () {
+    return ((this.x - 8) % 16 === 0) && ((this.y - 8) % 16 === 0)
   }
 }

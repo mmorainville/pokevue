@@ -83,8 +83,30 @@ export default class WorldScene extends Phaser.Scene {
     //   console.log('Leaving Pallet Town!')
     // })
 
+    // ===== Handle zones =====
     let zonesAsTiledObject = this.map.getObjectLayer('Zones').objects
-    console.log(zonesAsTiledObject)
+    // console.log(zonesAsTiledObject)
+    this.zones = []
+    zonesAsTiledObject.forEach(zone => {
+      this.zones.push({
+        object: zone,
+        bounds: new Phaser.Geom.Rectangle(zone.x, zone.y, zone.width, zone.height)
+      })
+    })
+
+    this.previousZone = null
+    this.currentZone = null
+
+    this.zones.forEach(zone => {
+      if (Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), zone.bounds)) {
+        this.currentZone = zone.object.name
+      }
+    })
+    // ===== Handle zones =====
+
+    // For debug purposes
+    // this.graphics = this.add.graphics()
+    // this.graphics.fillStyle(0x222255, 0.5)
   }
 
   update (time, delta) {
@@ -97,16 +119,33 @@ export default class WorldScene extends Phaser.Scene {
       this.player.update(time, delta)
       let nextTile = this.player.getNextTile()
 
-      if (nextTile.collides) {
+      if (nextTile && nextTile.collides) {
         let pointOfInterestOnTile = this.map.findObject('Points of interest', (object) => (object.x === nextTile.pixelX) && (object.y === nextTile.pixelY))
         if (pointOfInterestOnTile && pointOfInterestOnTile.properties[this.player.faces]) {
           if (!appSnackbar.isVisible) {
             console.log(nextTile)
-            appSnackbar.success(`${pointOfInterestOnTile.properties.text}`)
+            appSnackbar.success(`${pointOfInterestOnTile.properties.text}`, 'is-bottom-right')
           }
         }
       } else {
-        appSnackbar.close()
+        if (appSnackbar.position === 'is-bottom-right') {
+          appSnackbar.close()
+        }
+      }
+
+      if (this.player.isFullyOnTile()) {
+        let playerBodyBounds = new Phaser.Geom.Rectangle(this.player.x - 8, this.player.y - 8, 16, 16)
+        // this.graphics.fillRectShape(playerBodyBounds)
+        this.zones.forEach(zone => {
+          if (Phaser.Geom.Rectangle.Overlaps(playerBodyBounds, zone.bounds)) {
+            if (this.currentZone !== zone.object.name) {
+              this.previousZone = this.currentZone
+              this.currentZone = zone.object.name
+              // appSnackbar.close()
+              appSnackbar.warning(`${zone.object.name}`, 'is-top-left')
+            }
+          }
+        })
       }
     }
   }
