@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import Player from './prefabs/Player'
 import appBus from '../shared/app-bus'
 import appSnackbar from '../shared/app-snackbar'
+import MovableCharacter from './prefabs/MovableCharacter'
 
 export default class WorldScene extends Phaser.Scene {
   constructor () {
@@ -12,7 +13,9 @@ export default class WorldScene extends Phaser.Scene {
     this.load.image('tiles', require('../assets/map/spz3zUx_small.png'))
     this.load.tilemapTiledJSON('map', require('../assets/tiled/spz3zUx_small.json'))
 
-    this.load.spritesheet('player', require('../assets/sprites/player_18x22.png'), { frameWidth: 18, frameHeight: 22 })
+    let isGirl = Math.floor(Math.random() * 2) === 1
+    this.load.spritesheet('player', require('../assets/sprites/player_18x22' + (isGirl ? '_girl' : '') + '.png'), { frameWidth: 18, frameHeight: 22 })
+    this.load.spritesheet('prof_chen', require('../assets/sprites/prof_chen_18x22.png'), { frameWidth: 18, frameHeight: 22 })
   }
 
   create () {
@@ -55,6 +58,10 @@ export default class WorldScene extends Phaser.Scene {
     this.physics.world.bounds.width = map.widthInPixels
     this.physics.world.bounds.height = map.heightInPixels
 
+    // Spawn PNJs
+    const profChenSpawnPoint = map.findObject('Objects', obj => obj.name === 'Prof. Chen')
+    this.profChen = new MovableCharacter(this, profChenSpawnPoint.x, profChenSpawnPoint.y, 'prof_chen')
+
     camera.startFollow(this.player)
     camera.roundPixels = true
 
@@ -71,6 +78,37 @@ export default class WorldScene extends Phaser.Scene {
       console.log('ESC')
       appBus.$emit('keydown:esc')
     })
+
+    // this.map.setTileLocationCallback(73, 200, 1, 1, () => {
+    //   console.log('Leaving Pallet Town!')
+    // })
+
+    // ===== Handle zones =====
+    let zonesAsTiledObject = this.map.getObjectLayer('Zones').objects
+    // console.log(zonesAsTiledObject)
+    this.zones = []
+    zonesAsTiledObject.forEach(zone => {
+      this.zones.push({
+        object: zone,
+        bounds: new Phaser.Geom.Rectangle(zone.x, zone.y, zone.width, zone.height)
+      })
+    })
+
+    this.previousZone = null
+    this.currentZone = null
+
+    this.zones.forEach(zone => {
+      if (Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), zone.bounds)) {
+        this.currentZone = zone.object.name
+      }
+    })
+    // ===== Handle zones =====
+
+    // For debug purposes
+    // this.graphics = this.add.graphics()
+    // this.graphics.fillStyle(0x222255, 0.5)
+
+    this.isSigncardSnackbarOpen = false
   }
 
   update (time, delta) {
@@ -82,14 +120,35 @@ export default class WorldScene extends Phaser.Scene {
     } else {
       this.player.update(time, delta)
       let nextTile = this.player.getNextTile()
-      // console.log(nextTile)
 
-      if (nextTile.collides) {
-        if (this.player.faces === 'down' || this.player.faces === 'up') {
-          appSnackbar.success(`<strong>Bourg Palette</strong><br>Un monde de couleurs s'ouvre à vous !`)
+      if (nextTile && nextTile.collides) {
+        let pointOfInterestOnTile = this.map.findObject('Points of interest', (object) => (object.x === nextTile.pixelX) && (object.y === nextTile.pixelY))
+        if (pointOfInterestOnTile && pointOfInterestOnTile.properties[this.player.faces]) {
+          if (!this.isSigncardSnackbarOpen) {
+            appSnackbar.success(`${pointOfInterestOnTile.properties.text}`)
+            this.isSigncardSnackbarOpen = true
+          }
         }
       } else {
-        appSnackbar.close()
+        if (this.isSigncardSnackbarOpen) {
+          appSnackbar.close()
+          this.isSigncardSnackbarOpen = false
+        }
+      }
+
+      if (this.player.isFullyOnTile()) {
+        let playerBodyBounds = new Phaser.Geom.Rectangle(this.player.x - 8, this.player.y - 8, 16, 16)
+        // this.graphics.fillRectShape(playerBodyBounds)
+        this.zones.forEach(zone => {
+          if (Phaser.Geom.Rectangle.Overlaps(playerBodyBounds, zone.bounds)) {
+            if (this.currentZone !== zone.object.name) {
+              this.previousZone = this.currentZone
+              this.currentZone = zone.object.name
+              // appSnackbar.close()
+              appSnackbar.warning(`${zone.object.name}`, 'is-top-left')
+            }
+          }
+        })
       }
     }
   }
