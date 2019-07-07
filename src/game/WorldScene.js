@@ -82,6 +82,9 @@ export default class WorldScene extends Phaser.Scene {
     // this.map.setTileLocationCallback(73, 200, 1, 1, () => {
     //   console.log('Leaving Pallet Town!')
     // })
+
+    let zonesAsTiledObject = this.map.getObjectLayer('Zones').objects
+    console.log(zonesAsTiledObject)
   }
 
   update (time, delta) {

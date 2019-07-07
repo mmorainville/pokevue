@@ -1,7 +1,7 @@
 <template>
-  <v-snackbar v-model="isVisible">
+  <v-snackbar v-model="isVisible" :multi-line="message.includes('<br>')">
     <span v-html="message"></span>
-    <v-btn flat color="accent" @click.native="isVisible = false">Fermer</v-btn>
+    <!--<v-btn flat color="accent" @click.native="isVisible = false">Fermer</v-btn>-->
   </v-snackbar>
 </template>
 
