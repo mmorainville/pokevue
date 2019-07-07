@@ -4,7 +4,6 @@ import appBus from './app-bus'
 class AppSnackbar {
   constructor () {
     this.isVisible = false
-    this.timeout = null
   }
 
   open (params) {
@@ -18,17 +17,11 @@ class AppSnackbar {
       type: this.type,
       position: this.position
     })
-
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-    } else {
-      this.timeout = setTimeout(this.close, 6000) // Default timeout value of the Vuetify Snackbar
-    }
   }
 
   close () {
     this.isVisible = false
-    console.log('Close snackbar')
+    console.log('Close snackbar', this.isVisible)
     appBus.$emit('snackbar:close')
   }
 

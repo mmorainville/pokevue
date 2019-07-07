@@ -33,10 +33,6 @@ export default {
   methods: {
     open (params) {
       console.log('Open snackbar', params.message)
-      // Close any already open snackbar
-      if (this.isVisible === true) {
-        this.isVisible = false
-      }
       this.isVisible = true
       this.message = params.message
 

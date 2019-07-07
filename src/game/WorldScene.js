@@ -107,6 +107,8 @@ export default class WorldScene extends Phaser.Scene {
     // For debug purposes
     // this.graphics = this.add.graphics()
     // this.graphics.fillStyle(0x222255, 0.5)
+
+    this.isSigncardSnackbarOpen = false
   }
 
   update (time, delta) {
@@ -122,14 +124,16 @@ export default class WorldScene extends Phaser.Scene {
       if (nextTile && nextTile.collides) {
         let pointOfInterestOnTile = this.map.findObject('Points of interest', (object) => (object.x === nextTile.pixelX) && (object.y === nextTile.pixelY))
         if (pointOfInterestOnTile && pointOfInterestOnTile.properties[this.player.faces]) {
-          if (!appSnackbar.isVisible) {
-            console.log(nextTile)
-            appSnackbar.success(`${pointOfInterestOnTile.properties.text}`, 'is-bottom-right')
+          console.log(appSnackbar.isVisible)
+          if (!this.isSigncardSnackbarOpen) {
+            appSnackbar.success(`${pointOfInterestOnTile.properties.text}`)
+            this.isSigncardSnackbarOpen = true
           }
         }
       } else {
-        if (appSnackbar.position === 'is-bottom-right') {
+        if (this.isSigncardSnackbarOpen) {
           appSnackbar.close()
+          this.isSigncardSnackbarOpen = false
         }
       }
 
