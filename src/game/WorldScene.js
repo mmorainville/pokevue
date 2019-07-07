@@ -124,7 +124,6 @@ export default class WorldScene extends Phaser.Scene {
       if (nextTile && nextTile.collides) {
         let pointOfInterestOnTile = this.map.findObject('Points of interest', (object) => (object.x === nextTile.pixelX) && (object.y === nextTile.pixelY))
         if (pointOfInterestOnTile && pointOfInterestOnTile.properties[this.player.faces]) {
-          console.log(appSnackbar.isVisible)
           if (!this.isSigncardSnackbarOpen) {
             appSnackbar.success(`${pointOfInterestOnTile.properties.text}`)
             this.isSigncardSnackbarOpen = true
