@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import EasyStar from 'easystarjs'
 import Player from './prefabs/Player'
 import appBus from '../shared/app-bus'
 import appSnackbar from '../shared/app-snackbar'
@@ -109,9 +110,62 @@ export default class WorldScene extends Phaser.Scene {
     // this.graphics.fillStyle(0x222255, 0.5)
 
     this.isSigncardSnackbarOpen = false
+
+    // Marker that will follow the mouse
+    this.marker = this.add.graphics()
+    this.marker.lineStyle(1, 0xffffff, 1)
+    this.marker.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight)
+
+    // eslint-disable-next-line new-cap
+    this.finder = new EasyStar.js()
+
+    let grid = []
+    for (let y = 0; y < this.map.height; y++) {
+      let columns = []
+      for (let x = 0; x < this.map.width; x++) {
+        // In each cell we store the ID of the tile, which corresponds
+        // to its index in the tileset of the map ("ID" field in Tiled)
+        columns.push(this.map.getTileAt(x, y).index)
+      }
+      grid.push(columns)
+    }
+    this.finder.setGrid(grid)
+
+    let firstTileset = this.map.tilesets[0]
+    let properties = firstTileset.tileProperties
+    let acceptableTiles = []
+
+    for (let i = firstTileset.firstgid - 1; i < tileset.total; i++) { // firstgid and total are fields from Tiled that indicate the range of IDs that the tiles can take in that tileset
+      if (!properties.hasOwnProperty(i)) {
+        // If there is no property indicated at all, it means it's a walkable tile
+        acceptableTiles.push(i + 1)
+        continue
+      }
+      if (!properties[i].collides) acceptableTiles.push(i + 1)
+    }
+    this.finder.setAcceptableTiles(acceptableTiles)
+
+    this.input.on('pointerup', this.handleClick)
+    this.input.on('pointerup', (pointer) => {
+      let touchX = pointer.x
+      let touchY = pointer.y
+      console.log(touchX, touchY)
+    })
+    this.profChen.setInteractive()
+    this.profChen.on('pointerup', (pointer) => { this.handleClick(pointer) })
   }
 
   update (time, delta) {
+    let worldPoint = this.input.activePointer.positionToCamera(this.cameras.main)
+
+    // Rounds down to nearest tile
+    let pointerTileX = this.map.worldToTileX(worldPoint.x)
+    let pointerTileY = this.map.worldToTileY(worldPoint.y)
+    this.marker.x = this.map.tileToWorldX(pointerTileX)
+    this.marker.y = this.map.tileToWorldY(pointerTileY)
+    this.marker.setVisible(!this.map.getTileAt(pointerTileX, pointerTileY).collides)
+
+    // Handle movement
     if (this.useCameraView) {
       console.log(this.useCameraView)
       this.cameras.main.stopFollow()
@@ -151,5 +205,43 @@ export default class WorldScene extends Phaser.Scene {
         })
       }
     }
+  }
+
+  handleClick (pointer) {
+    let x = this.cameras.main.scrollX + pointer.x
+    let y = this.cameras.main.scrollY + pointer.y
+    let toX = Math.floor(x / 16)
+    let toY = Math.floor(y / 16)
+    let fromX = Math.floor(this.player.x / 16)
+    let fromY = Math.floor(this.player.y / 16)
+    console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
+
+    this.finder.findPath(fromX, fromY, toX, toY, (path) => {
+      if (path === null) {
+        console.warn('Path was not found.')
+      } else {
+        console.log(path)
+        this.moveCharacter(path)
+      }
+    })
+    this.finder.calculate() // don't forget, otherwise nothing happens
+  }
+
+  moveCharacter (path) {
+    // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
+    let tweens = []
+    for (let i = 0; i < path.length - 1; i++) {
+      let ex = path[i + 1].x
+      let ey = path[i + 1].y
+      tweens.push({
+        targets: this.player,
+        x: { value: ex * this.map.tileWidth, duration: 200 },
+        y: { value: ey * this.map.tileHeight, duration: 200 }
+      })
+    }
+
+    this.tweens.timeline({
+      tweens
+    })
   }
 }
