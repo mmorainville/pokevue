@@ -235,8 +235,8 @@ export default class WorldScene extends Phaser.Scene {
       let ey = path[i + 1].y
       tweens.push({
         targets: this.player,
-        x: { value: ex * this.map.tileWidth, duration: 200 },
-        y: { value: ey * this.map.tileHeight, duration: 200 }
+        x: { value: ex * this.map.tileWidth + 8, duration: 200 },
+        y: { value: ey * this.map.tileHeight + 8, duration: 200 }
       })
     }
 
