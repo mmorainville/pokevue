@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-xl text-xs-center>
-    <v-layout align-center justify-center row fill-height>
-      <v-flex>
+    <v-layout align-center row fill-height>
+      <v-flex xs0 md6 offset-xs0 offset-md3>
         <v-card style>
           <v-layout align-center justify-center row fill-height>
             <v-container v-bind="{ [`grid-list-10`]: true }" fluid id="scroll-target" style="max-height: 500px"
@@ -12,6 +12,7 @@
                     <v-img
                       :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`"
                       height="150px"
+                      contain
                     ></v-img>
                     <div>{{pokemon.name}}</div>
                   </v-card>
