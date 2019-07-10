@@ -113,8 +113,8 @@ export default class WorldScene extends Phaser.Scene {
 
     // Marker that will follow the mouse
     this.marker = this.add.graphics()
-    this.marker.lineStyle(1, 0xffffff, 1)
-    this.marker.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight)
+    this.marker.fillStyle(0xffffff, 0.5)
+    this.marker.fillRect(0, 0, this.map.tileWidth, this.map.tileHeight)
 
     // eslint-disable-next-line new-cap
     this.finder = new EasyStar.js()
@@ -145,14 +145,7 @@ export default class WorldScene extends Phaser.Scene {
     }
     this.finder.setAcceptableTiles(acceptableTiles)
 
-    this.input.on('pointerup', this.handleClick)
-    this.input.on('pointerup', (pointer) => {
-      let touchX = pointer.x
-      let touchY = pointer.y
-      console.log(touchX, touchY)
-    })
-    this.profChen.setInteractive()
-    this.profChen.on('pointerup', (pointer) => { this.handleClick(pointer) })
+    this.input.on('pointerup', this.handleClick.bind(this))
   }
 
   update (time, delta) {

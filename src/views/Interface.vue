@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="interface">
     <div v-if="showInterface">
-      <Menu/>
+      <Menu class="menu"/>
       <router-view/>
     </div>
 
@@ -39,6 +39,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .interface {
+    background-color: transparent !important;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 </style>
