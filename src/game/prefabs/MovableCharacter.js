@@ -161,4 +161,52 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
   isFullyOnTile () {
     return ((this.x - 8) % 16 === 0) && ((this.y - 8) % 16 === 0)
   }
+
+  moveAlongPath (path) {
+    console.log(path)
+    // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
+    let tweens = []
+    for (let i = 0; i < path.length - 1; i++) {
+      let currentX = path[i].x
+      let currentY = path[i].y
+      let nextX = path[i + 1].x
+      let nextY = path[i + 1].y
+      tweens.push({
+        targets: this,
+        x: { value: nextX * this.scene.map.tileWidth + 8, duration: 200 },
+        y: { value: nextY * this.scene.map.tileHeight + 8, duration: 200 },
+        onStart: () => {
+          this.isMoving = true
+          if (nextX < currentX && nextY === currentY) {
+            // Left
+            this.flipX = false
+            this.anims.play('left', true)
+            this.faces = 'left'
+          } else if (nextX > currentX && nextY === currentY) {
+            // Right
+            this.flipX = true
+            this.anims.play('right', true)
+            this.faces = 'right'
+          } else if (nextY < currentY && nextX === currentX) {
+            // Up
+            this.anims.play('up', true)
+            this.faces = 'up'
+          } else if (nextY > currentY && nextX === currentX) {
+            // Bas
+            this.anims.play('down', true)
+            this.faces = 'down'
+          }
+        },
+        onComplete: () => {
+          this.isMoving = false
+          this.anims.stop()
+          this.setFrame(this.getIdleFrame())
+        }
+      })
+    }
+
+    this.scene.tweens.timeline({
+      tweens
+    })
+  }
 }

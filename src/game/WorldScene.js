@@ -213,28 +213,9 @@ export default class WorldScene extends Phaser.Scene {
       if (path === null) {
         console.warn('Path was not found.')
       } else {
-        console.log(path)
-        this.moveCharacter(path)
+        this.player.moveAlongPath(path)
       }
     })
     this.finder.calculate() // don't forget, otherwise nothing happens
-  }
-
-  moveCharacter (path) {
-    // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
-    let tweens = []
-    for (let i = 0; i < path.length - 1; i++) {
-      let ex = path[i + 1].x
-      let ey = path[i + 1].y
-      tweens.push({
-        targets: this.player,
-        x: { value: ex * this.map.tileWidth + 8, duration: 200 },
-        y: { value: ey * this.map.tileHeight + 8, duration: 200 }
-      })
-    }
-
-    this.tweens.timeline({
-      tweens
-    })
   }
 }
