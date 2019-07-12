@@ -55,62 +55,85 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     // console.log(this.x, this.y)
 
     if (!this.isMoving) {
-      this.body.setVelocity(0)
+      // this.body.setVelocity(0)
 
       // Movements
       if (this.cursors.left.isDown) {
         // this.body.setVelocityX(-32)
-        this.flipX = false
-        this.anims.play('left', true)
-        if (this.canMoveTo(this.x - 16, this.y)) {
-          this.isMoving = true
-          this.lastKey = 'left'
-          this.move(this.lastKey)
-        }
-        this.faces = 'left'
+        this.moveTo('left')
       } else if (this.cursors.right.isDown) {
         // this.body.setVelocityX(32)
-        this.flipX = true
-        this.anims.play('right', true)
-        if (this.canMoveTo(this.x + 16, this.y)) {
-          this.isMoving = true
-          this.lastKey = 'right'
-          this.move(this.lastKey)
-        }
-        this.faces = 'right'
+        this.moveTo('right')
       } else if (this.cursors.up.isDown) {
         // this.body.setVelocityY(-32)
-        this.anims.play('up', true)
-        if (this.canMoveTo(this.x, this.y - 16)) {
-          this.isMoving = true
-          this.lastKey = 'up'
-          this.move(this.lastKey)
-        }
-        this.faces = 'up'
+        this.moveTo('up')
       } else if (this.cursors.down.isDown) {
         // this.body.setVelocityY(32)
-        this.anims.play('down', true)
-        if (this.canMoveTo(this.x, this.y + 16)) {
-          this.isMoving = true
-          this.lastKey = 'down'
-          this.move(this.lastKey)
-        }
-        this.faces = 'down'
+        this.moveTo('down')
       } else {
-        this.anims.stop()
-        this.setFrame(this.getIdleFrame())
-        this.isMoving = false
-        this.lastKey = null
-        this.moveTimer = MOVE_TIMER
+        this.stopMoving()
       }
     } else {
-      this.steps++
+      this.continueMoving()
+    }
+  }
+
+  moveTo (direction) {
+    this.flipX = direction === 'right'
+    this.anims.play(direction, true)
+    if (this.canMoveTo(this.getNextPosition(direction).x, this.getNextPosition(direction).y)) {
+      this.isMoving = true
+      this.lastKey = direction
       this.move(this.lastKey)
-      if (this.steps === ((16 / this.speed) - 1)) { // 15 if speed === 1
-        this.isMoving = false
-        this.steps = 0
-        this.moveTimer = MOVE_TIMER
-      }
+    }
+    this.faces = direction
+  }
+
+  stopMoving () {
+    this.anims.stop()
+    this.setFrame(this.getIdleFrame())
+    this.isMoving = false
+    this.lastKey = null
+    this.moveTimer = MOVE_TIMER
+  }
+
+  continueMoving () {
+    this.steps++
+    this.move(this.lastKey)
+    if (this.steps === ((16 / this.speed) - 1)) { // 15 if speed === 1
+      this.isMoving = false
+      this.steps = 0
+      this.moveTimer = MOVE_TIMER
+    }
+  }
+
+  getNextPosition (direction) {
+    switch (direction) {
+      case 'left':
+        return {
+          x: this.x - 16,
+          y: this.y
+        }
+      case 'right':
+        return {
+          x: this.x + 16,
+          y: this.y
+        }
+      case 'up':
+        return {
+          x: this.x,
+          y: this.y - 16
+        }
+      case 'down':
+        return {
+          x: this.x,
+          y: this.y + 16
+        }
+      default:
+        return {
+          x: this.x,
+          y: this.y
+        }
     }
   }
 
