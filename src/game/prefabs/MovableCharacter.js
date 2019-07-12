@@ -14,6 +14,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true)
 
     this.isMoving = false
+    this.isMovingAutomatically = false
     this.speed = 2 // 1
     this.lastKey = null
     this.steps = 0
@@ -54,27 +55,29 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
   update (args) {
     // console.log(this.x, this.y)
 
-    if (!this.isMoving) {
-      // this.body.setVelocity(0)
+    if (!this.isMovingAutomatically) {
+      if (!this.isMoving) {
+        // this.body.setVelocity(0)
 
-      // Movements
-      if (this.cursors.left.isDown) {
-        // this.body.setVelocityX(-32)
-        this.moveTo('left')
-      } else if (this.cursors.right.isDown) {
-        // this.body.setVelocityX(32)
-        this.moveTo('right')
-      } else if (this.cursors.up.isDown) {
-        // this.body.setVelocityY(-32)
-        this.moveTo('up')
-      } else if (this.cursors.down.isDown) {
-        // this.body.setVelocityY(32)
-        this.moveTo('down')
+        // Movements
+        if (this.cursors.left.isDown) {
+          // this.body.setVelocityX(-32)
+          this.moveTo('left')
+        } else if (this.cursors.right.isDown) {
+          // this.body.setVelocityX(32)
+          this.moveTo('right')
+        } else if (this.cursors.up.isDown) {
+          // this.body.setVelocityY(-32)
+          this.moveTo('up')
+        } else if (this.cursors.down.isDown) {
+          // this.body.setVelocityY(32)
+          this.moveTo('down')
+        } else {
+          this.stopMoving()
+        }
       } else {
-        this.stopMoving()
+        this.continueMoving()
       }
-    } else {
-      this.continueMoving()
     }
   }
 
@@ -196,10 +199,10 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
       let nextY = path[i + 1].y
       tweens.push({
         targets: this,
-        x: { value: nextX * this.scene.map.tileWidth + 8, duration: 200 },
-        y: { value: nextY * this.scene.map.tileHeight + 8, duration: 200 },
+        x: { value: nextX * this.scene.map.tileWidth + 8, duration: 300 / this.speed },
+        y: { value: nextY * this.scene.map.tileHeight + 8, duration: 300 / this.speed },
         onStart: () => {
-          this.isMoving = true
+          this.isMovingAutomatically = true
           if (nextX < currentX && nextY === currentY) {
             // Left
             this.flipX = false
@@ -221,9 +224,12 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
           }
         },
         onComplete: () => {
-          this.isMoving = false
-          this.anims.stop()
-          this.setFrame(this.getIdleFrame())
+          // console.log(i, path.length)
+          if (i === path.length - 2) {
+            this.isMovingAutomatically = false
+            this.anims.stop()
+            this.setFrame(this.getIdleFrame())
+          }
         }
       })
     }
