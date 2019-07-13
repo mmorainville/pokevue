@@ -80,6 +80,11 @@ export default class WorldScene extends Phaser.Scene {
       appBus.$emit('keydown:esc')
     })
 
+    this.input.keyboard.on('keydown-' + 'SPACE', (event) => {
+      console.log('SPACE')
+      this.player.handleAction()
+    })
+
     // this.map.setTileLocationCallback(73, 200, 1, 1, () => {
     //   console.log('Leaving Pallet Town!')
     // })
@@ -198,6 +203,8 @@ export default class WorldScene extends Phaser.Scene {
         })
       }
     }
+
+    this.profChen.updateCaseOccupation()
   }
 
   handleClick (pointer) {

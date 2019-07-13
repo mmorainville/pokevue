@@ -5,6 +5,7 @@
       <router-view/>
     </div>
 
+    <DialogBox/>
     <Snackbar/>
   </div>
 </template>
@@ -12,10 +13,11 @@
 <script>
 import Menu from '@/components/interface/menu'
 import Snackbar from '@/components/interface/Snackbar'
+import DialogBox from '@/components/interface/DialogBox'
 
 export default {
   name: 'Interface',
-  components: { Menu, Snackbar },
+  components: { Menu, DialogBox, Snackbar },
   data () {
     return {
       showInterface: false

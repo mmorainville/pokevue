@@ -166,7 +166,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
       // console.log(x, y)
       let nextTile = this.scene.map.getTileAtWorldXY(x, y)
       // console.log(nextTile)
-      return nextTile && !nextTile.collides
+      return nextTile && !nextTile.collides && !nextTile.isOccupied
     } else {
       this.moveTimer--
     }
@@ -237,5 +237,18 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     this.scene.tweens.timeline({
       tweens
     })
+  }
+
+  updateCaseOccupation () {
+    this.scene.map.getTileAtWorldXY(this.x, this.y).isOccupied = true
+    this.scene.map.getTileAtWorldXY(this.x, this.y).isOccupiedBy = this
+    this.scene.map.getTileAtWorldXY(this.x - 16, this.y).isOccupied = false
+    delete this.scene.map.getTileAtWorldXY(this.x - 16, this.y).isOccupiedBy
+    this.scene.map.getTileAtWorldXY(this.x + 16, this.y).isOccupied = false
+    delete this.scene.map.getTileAtWorldXY(this.x + 16, this.y).isOccupiedBy
+    this.scene.map.getTileAtWorldXY(this.x, this.y - 16).isOccupied = false
+    delete this.scene.map.getTileAtWorldXY(this.x, this.y - 16).isOccupiedBy
+    this.scene.map.getTileAtWorldXY(this.x, this.y + 16).isOccupied = false
+    delete this.scene.map.getTileAtWorldXY(this.x, this.y + 16).isOccupiedBy
   }
 }

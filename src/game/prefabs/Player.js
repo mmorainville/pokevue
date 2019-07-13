@@ -1,4 +1,5 @@
 import MovableCharacter from './MovableCharacter'
+import appBus from '../../shared/app-bus'
 
 export default class Player extends MovableCharacter {
   constructor (scene, x, y) {
@@ -22,6 +23,14 @@ export default class Player extends MovableCharacter {
       case 'down':
         return this.scene.map.getTileAtWorldXY(this.x, this.y + 16)
       default:
+    }
+  }
+
+  handleAction () {
+    let nextTile = this.getNextTile()
+    if (nextTile.isOccupied) {
+      console.log('Start dialog')
+      appBus.$emit('dialog:open')
     }
   }
 }
