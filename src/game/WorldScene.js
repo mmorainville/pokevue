@@ -205,6 +205,11 @@ export default class WorldScene extends Phaser.Scene {
     }
 
     this.profChen.updateCaseOccupation()
+
+    let nextTile = this.player.getNextTile()
+    if (!nextTile.isOccupied) {
+      appBus.$emit('dialog:close')
+    }
   }
 
   handleClick (pointer) {
@@ -216,13 +221,24 @@ export default class WorldScene extends Phaser.Scene {
     let fromY = Math.floor(this.player.y / 16)
     console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
 
-    this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-      if (path === null) {
-        console.warn('Path was not found.')
-      } else {
-        this.player.moveAlongPath(path)
-      }
-    })
-    this.finder.calculate() // don't forget, otherwise nothing happens
+    let nextTile = this.map.getTileAt(toX, toY)
+    let currentTile = this.map.getTileAtWorldXY(this.player.x, this.player.y)
+
+    if (nextTile.index === currentTile.index) {
+      console.log('Clicked on player')
+      appBus.$emit('keydown:esc')
+    } else if (nextTile.index === this.player.getNextTile().index && nextTile.isOccupied) {
+      console.log('Handle action')
+      this.player.handleAction()
+    } else {
+      this.finder.findPath(fromX, fromY, toX, toY, (path) => {
+        if (path === null) {
+          console.warn('Path was not found.')
+        } else {
+          this.player.moveAlongPath(path)
+        }
+      })
+      this.finder.calculate() // don't forget, otherwise nothing happens
+    }
   }
 }

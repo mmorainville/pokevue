@@ -39,6 +39,9 @@ export default {
         {
           title: 'Save',
           routeName: 'save'
+        },
+        {
+          title: 'Fermer'
         }
       ]
     }
@@ -49,7 +52,11 @@ export default {
   methods: {
     open (item) {
       console.log(item)
-      this.$router.push(item.routeName)
+      if (item.routeName) {
+        this.$router.push(item.routeName)
+      } else {
+        this.$appBus.$emit('keydown:esc')
+      }
     }
   }
 }
