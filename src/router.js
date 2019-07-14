@@ -21,6 +21,7 @@ export default new Router({
             {
               path: 'pokedex',
               name: 'pokedex',
+              component: Pokedex
             },
             {
               path: 'profile',

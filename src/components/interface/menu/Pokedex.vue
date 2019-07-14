@@ -5,8 +5,8 @@
         <v-card style>
           <v-layout align-center justify-center row fill-height>
             <v-container v-bind="{ [`grid-list-10`]: true }" fluid id="scroll-target" style="max-height: 500px"
-      class="scroll-y">
-              <v-layout row wrap  style="height: 100%">
+                         class="scroll-y">
+              <v-layout row wrap style="height: 100%">
                 <v-flex v-for="(pokemon, index) in pokemons" :key="index" xs4>
                   <v-card flat tile>
                     <v-img
@@ -28,33 +28,33 @@
 
 <script>
 export default {
-  name: "Pokedex",
-  data() {
+  name: 'Pokedex',
+  data () {
     return {
       pokemons: [],
       selectedPokemon: {}
-    };
+    }
   },
-  mounted() {
-    this.getPokedex();
+  mounted () {
+    this.getPokedex()
   },
   methods: {
     getPokedex () {
       this.$http.get('https://pokeapi.co/api/v2/pokemon?limit=151')
         .then(res => {
-            this.pokemons = res.data.results
+          this.pokemons = res.data.results
         })
     },
     goTo (index) {
       this.$router.push('pokemondetail/' + index)
     }
   }
-};
+}
 </script>
 
 <style>
-.list-pokemon {
-  height: 300px;
-  overflow-y: auto;
-}
+  .list-pokemon {
+    height: 300px;
+    overflow-y: auto;
+  }
 </style>
