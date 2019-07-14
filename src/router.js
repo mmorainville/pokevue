@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Game from './views/Game'
 import Interface from './views/Interface'
 import Pokedex from './components/interface/menu/Pokedex'
-
+import Profile from './components/interface/menu/Profile'
 Vue.use(Router)
 
 export default new Router({
@@ -21,7 +21,11 @@ export default new Router({
             {
               path: 'pokedex',
               name: 'pokedex',
-              component: Pokedex
+            },
+            {
+              path: 'profile',
+              name: 'profile',
+              component: Profile
             }
           ]
         }
