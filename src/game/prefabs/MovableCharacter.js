@@ -6,6 +6,8 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
   constructor (scene, x, y, texture) {
     super(scene, x, y, texture, 1)
 
+    this.name = texture
+
     scene.add.existing(this)
     scene.physics.add.existing(this)
 
@@ -24,29 +26,29 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     this.cursors = this.scene.input.keyboard.createCursorKeys()
 
     this.scene.anims.create({
-      key: 'left',
-      frames: this.scene.anims.generateFrameNumbers('player', { frames: [6, 7, 8, 7] }),
+      key: this.name + '_left',
+      frames: this.scene.anims.generateFrameNumbers(texture, { frames: [6, 7, 8, 7] }),
       frameRate: 10,
       repeat: -1
     })
 
     this.scene.anims.create({
-      key: 'right',
-      frames: this.scene.anims.generateFrameNumbers('player', { frames: [6, 7, 8, 7] }),
+      key: this.name + '_right',
+      frames: this.scene.anims.generateFrameNumbers(texture, { frames: [6, 7, 8, 7] }),
       frameRate: 10,
       repeat: -1
     })
 
     this.scene.anims.create({
-      key: 'up',
-      frames: this.scene.anims.generateFrameNumbers('player', { frames: [3, 4, 5, 4] }),
+      key: this.name + '_up',
+      frames: this.scene.anims.generateFrameNumbers(texture, { frames: [3, 4, 5, 4] }),
       frameRate: 10,
       repeat: -1
     })
 
     this.scene.anims.create({
-      key: 'down',
-      frames: this.scene.anims.generateFrameNumbers('player', { frames: [0, 1, 2, 1] }),
+      key: this.name + '_down',
+      frames: this.scene.anims.generateFrameNumbers(texture, { frames: [0, 1, 2, 1] }),
       frameRate: 10,
       repeat: -1
     })
@@ -83,7 +85,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
 
   moveTo (direction) {
     this.flipX = direction === 'right'
-    this.anims.play(direction, true)
+    this.anims.play(this.name + '_' + direction, true)
     if (this.canMoveTo(this.getNextPosition(direction).x, this.getNextPosition(direction).y)) {
       this.isMoving = true
       this.lastKey = direction
@@ -206,20 +208,20 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
           if (nextX < currentX && nextY === currentY) {
             // Left
             this.flipX = false
-            this.anims.play('left', true)
+            this.anims.play(this.name + '_left', true)
             this.faces = 'left'
           } else if (nextX > currentX && nextY === currentY) {
             // Right
             this.flipX = true
-            this.anims.play('right', true)
+            this.anims.play(this.name + '_right', true)
             this.faces = 'right'
           } else if (nextY < currentY && nextX === currentX) {
             // Up
-            this.anims.play('up', true)
+            this.anims.play(this.name + '_up', true)
             this.faces = 'up'
           } else if (nextY > currentY && nextX === currentX) {
             // Bas
-            this.anims.play('down', true)
+            this.anims.play(this.name + '_down', true)
             this.faces = 'down'
           }
         },

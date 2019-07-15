@@ -31,6 +31,19 @@ export default class Player extends MovableCharacter {
     if (nextTile.isOccupied) {
       console.log('Start dialog')
       appBus.$emit('dialog:open')
+      if (this.faces === 'up') {
+        nextTile.isOccupiedBy.moveTo('down')
+        nextTile.isOccupiedBy.stopMoving()
+      } else if (this.faces === 'right') {
+        nextTile.isOccupiedBy.moveTo('left')
+        nextTile.isOccupiedBy.stopMoving()
+      } else if (this.faces === 'down') {
+        nextTile.isOccupiedBy.moveTo('up')
+        nextTile.isOccupiedBy.stopMoving()
+      } else if (this.faces === 'left') {
+        nextTile.isOccupiedBy.moveTo('right')
+        nextTile.isOccupiedBy.stopMoving()
+      }
     }
   }
 }

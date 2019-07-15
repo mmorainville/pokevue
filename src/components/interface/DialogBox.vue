@@ -11,6 +11,10 @@
     <v-list>
       <v-subheader>Prof. Chen</v-subheader>
       <v-list-tile avatar>
+        <v-list-tile-avatar>
+          <v-icon class="grey lighten-1 white--text">message</v-icon>
+        </v-list-tile-avatar>
+
         <v-list-tile-content>
           <span class="dialog"></span>
 
@@ -31,7 +35,9 @@
           Let's go!-->
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-icon color="grey lighten-1">play_arrow</v-icon>
+          <v-btn class="pulse" icon ripple @click="continueReading">
+            <v-icon color="grey lighten-1">arrow_drop_down_circle</v-icon>
+          </v-btn>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
@@ -55,9 +61,7 @@ export default {
       // console.log('Open dialog', this.isVisible)
       if (this.isVisible) {
         // Continue reading
-        if (typeIt) {
-          typeIt.unfreeze()
-        }
+        this.continueReading()
       } else {
         this.isVisible = true
         this.startReading()
@@ -66,24 +70,20 @@ export default {
 
     this.$appBus.$on('dialog:close', () => {
       // console.log('Close dialog')
-      this.isVisible = false
-      if (typeIt) {
-        typeIt.reset()
-        typeIt = null
-      }
+      this.closeDialog()
     })
-  },
-  mounted () {
-
   },
   methods: {
     startReading () {
       let options = {
         strings: [
-          'Hello, there! Glad to meet you! Welcome to the world of Pokémon!',
-          'My name is Oak. People affectionately refer to me as the Pokémon Professor.'
+          'Bien le bonjour ! Bienvenue dans le monde incroyable des Pokémon !',
+          'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
+          'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
+          'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
+          '<em>Reçu</em><br><strong>3 Pokémon</strong>, <strong>5 Pokéballs</strong>'
         ],
-        speed: 20,
+        speed: 15, // 20
         cursor: false,
         afterString: (step, queue, instance) => {
           console.log(step, queue, instance)
@@ -91,16 +91,54 @@ export default {
             typeIt.freeze()
           }
         },
-        breakLines: false
+        breakLines: false,
+        deleteSpeed: 0
       }
 
       // eslint-disable-next-line no-new
       typeIt = new TypeIt('.dialog', options).go()
+    },
+
+    continueReading () {
+      if (typeIt) {
+        if (typeIt.is('completed')) {
+          this.closeDialog()
+        } else if (!typeIt.is('frozen')) {
+          // Speed up temporarily
+        } else {
+          // typeIt.options({ speed: 20 })
+          typeIt.unfreeze()
+        }
+      }
+    },
+
+    closeDialog () {
+      this.isVisible = false
+      if (typeIt) {
+        typeIt.reset()
+        typeIt = null
+      }
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
+  @keyframes pulse {
+    from {
+      transform: scale3d(1, 1, 1);
+    }
 
+    50% {
+      transform: scale3d(1.05, 1.05, 1.05);
+    }
+
+    to {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  .pulse {
+    animation-name: pulse;
+  }
 </style>
