@@ -13,6 +13,7 @@
     "easystarjs": "^0.4.3",
     "phaser": "^3.18.1",
     "register-service-worker": "^1.6.2",
+    "typeit": "^6.0.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.16",
