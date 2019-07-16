@@ -13,20 +13,6 @@ export default class Player extends MovableCharacter {
     super.update(args)
   }
 
-  getNextTile () {
-    switch (this.faces) {
-      case 'left':
-        return this.scene.map.getTileAtWorldXY(this.x - 16, this.y)
-      case 'right':
-        return this.scene.map.getTileAtWorldXY(this.x + 16, this.y)
-      case 'up':
-        return this.scene.map.getTileAtWorldXY(this.x, this.y - 16)
-      case 'down':
-        return this.scene.map.getTileAtWorldXY(this.x, this.y + 16)
-      default:
-    }
-  }
-
   handleAction () {
     let nextTile = this.getNextTile()
     if (nextTile.isOccupied) {

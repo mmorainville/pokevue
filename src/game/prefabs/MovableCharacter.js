@@ -193,6 +193,20 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     return ((this.x - 8) % 16 === 0) && ((this.y - 8) % 16 === 0)
   }
 
+  getNextTile () {
+    switch (this.faces) {
+      case 'left':
+        return this.scene.map.getTileAtWorldXY(this.x - 16, this.y)
+      case 'right':
+        return this.scene.map.getTileAtWorldXY(this.x + 16, this.y)
+      case 'up':
+        return this.scene.map.getTileAtWorldXY(this.x, this.y - 16)
+      case 'down':
+        return this.scene.map.getTileAtWorldXY(this.x, this.y + 16)
+      default:
+    }
+  }
+
   moveAlongPath (path) {
     console.log(path)
     // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
@@ -207,25 +221,33 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
         x: { value: nextX * this.scene.map.tileWidth + 8, duration: 300 / this.speed },
         y: { value: nextY * this.scene.map.tileHeight + 8, duration: 300 / this.speed },
         onStart: () => {
-          this.isMovingAutomatically = true
-          if (nextX < currentX && nextY === currentY) {
-            // Left
-            this.flipX = false
-            this.anims.play(this.name + '_left', true)
-            this.faces = 'left'
-          } else if (nextX > currentX && nextY === currentY) {
-            // Right
-            this.flipX = true
-            this.anims.play(this.name + '_right', true)
-            this.faces = 'right'
-          } else if (nextY < currentY && nextX === currentX) {
-            // Up
-            this.anims.play(this.name + '_up', true)
-            this.faces = 'up'
-          } else if (nextY > currentY && nextX === currentX) {
-            // Bas
-            this.anims.play(this.name + '_down', true)
-            this.faces = 'down'
+          if (this.getNextTile().isOccupied) {
+            this.timeline.stop()
+
+            this.isMovingAutomatically = false
+            this.anims.stop()
+            this.setFrame(this.getIdleFrame())
+          } else {
+            this.isMovingAutomatically = true
+            if (nextX < currentX && nextY === currentY) {
+              // Left
+              this.flipX = false
+              this.anims.play(this.name + '_left', true)
+              this.faces = 'left'
+            } else if (nextX > currentX && nextY === currentY) {
+              // Right
+              this.flipX = true
+              this.anims.play(this.name + '_right', true)
+              this.faces = 'right'
+            } else if (nextY < currentY && nextX === currentX) {
+              // Up
+              this.anims.play(this.name + '_up', true)
+              this.faces = 'up'
+            } else if (nextY > currentY && nextX === currentX) {
+              // Bas
+              this.anims.play(this.name + '_down', true)
+              this.faces = 'down'
+            }
           }
         },
         onComplete: () => {
@@ -239,7 +261,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
       })
     }
 
-    this.scene.tweens.timeline({
+    this.timeline = this.scene.tweens.timeline({
       tweens
     })
   }
