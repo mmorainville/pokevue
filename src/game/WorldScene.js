@@ -3,6 +3,7 @@ import EasyStar from 'easystarjs'
 import Player from './prefabs/Player'
 import appBus from '../shared/app-bus'
 import appSnackbar from '../shared/app-snackbar'
+import store from '@/store'
 import MovableCharacter from './prefabs/MovableCharacter'
 
 export default class WorldScene extends Phaser.Scene {
@@ -252,9 +253,14 @@ export default class WorldScene extends Phaser.Scene {
         x: this.player.x,
         y: this.player.y,
 
-        faces: this.player.faces
+        faces: this.player.faces,
+
+        pokemonList: store.state.player.pokemonList,
+        pokeballs: store.state.player.pokeballs
       }
     }
+
+    // console.log(store.state.player)
 
     localStorage.setItem('save', JSON.stringify(gameState))
 
@@ -270,6 +276,11 @@ export default class WorldScene extends Phaser.Scene {
       this.player.y = gameState.player.y
       this.player.faces = gameState.player.faces
       this.player.setFrame(this.player.getIdleFrame())
+
+      store.commit('player/updateState', {
+        pokemonList: gameState.player.pokemonList,
+        pokeballs: gameState.player.pokeballs
+      })
     }
   }
 }

@@ -31,8 +31,8 @@ export default new Router({
               component: Profile
             },
             {
-              path: 'Sac',
-              name: 'Sac',
+              path: 'inventory',
+              name: 'inventory',
               component: Inventory
             }
           ]

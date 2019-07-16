@@ -1,5 +1,6 @@
 import MovableCharacter from './MovableCharacter'
 import appBus from '../../shared/app-bus'
+import store from '@/store'
 
 export default class Player extends MovableCharacter {
   constructor (scene, x, y) {
@@ -33,15 +34,22 @@ export default class Player extends MovableCharacter {
       appBus.$emit('dialog:open', {
         strings: [
           'Bien le bonjour ! Bienvenue dans le monde incroyable des Pokémon !',
-          'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
-          'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
-          'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
-          '<em>Reçu</em><br><strong>3 Pokémon</strong>, <strong>5 Pokéballs</strong>'
+          // 'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
+          // 'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
+          // 'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
+          '<em>Reçu</em> - <strong>3 Pokémon</strong>, <strong>3 Pokéballs</strong>, <strong>2 Superballs</strong>'
         ],
         action: () => {
           this.receiveItems({
-            pokemon: 3,
-            pokeballs: 5
+            pokemonList: [
+              { name: 'Bulbizarre' },
+              { name: 'Carapuce' },
+              { name: 'Salamèche' }
+            ],
+            pokeballs: [
+              { type: 'Pokéball', quantity: 3 },
+              { type: 'Superball', quantity: 2 }
+            ]
           })
         }
       })
@@ -64,5 +72,7 @@ export default class Player extends MovableCharacter {
 
   receiveItems (payload) {
     console.log('Received items!', payload)
+
+    store.commit('player/updateState', payload)
   }
 }

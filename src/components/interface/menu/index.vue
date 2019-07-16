@@ -30,7 +30,7 @@ export default {
         },
         {
           title: 'Sac',
-          routeName: 'sac'
+          routeName: 'inventory'
         },
         {
           title: 'Profile',
