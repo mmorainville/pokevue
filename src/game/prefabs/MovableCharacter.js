@@ -177,7 +177,10 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
   getIdleFrame () {
     switch (this.faces) {
       case 'left':
+        this.flipX = false
+        return 7
       case 'right':
+        this.flipX = true
         return 7
       case 'up':
         return 4

@@ -151,6 +151,10 @@ export default class WorldScene extends Phaser.Scene {
     this.finder.setAcceptableTiles(acceptableTiles)
 
     this.input.on('pointerup', this.handleClick.bind(this))
+
+    // Handle saves
+    appBus.$on('game:save', this.saveGame.bind(this))
+    this.restoreSaveGame()
   }
 
   update (time, delta) {
@@ -208,7 +212,7 @@ export default class WorldScene extends Phaser.Scene {
 
     let nextTile = this.player.getNextTile()
     if (!nextTile.isOccupied) {
-      appBus.$emit('dialog:close')
+      appBus.$emit('dialog:dclose')
     }
   }
 
@@ -239,6 +243,33 @@ export default class WorldScene extends Phaser.Scene {
         }
       })
       this.finder.calculate() // don't forget, otherwise nothing happens
+    }
+  }
+
+  saveGame () {
+    let gameState = {
+      player: {
+        x: this.player.x,
+        y: this.player.y,
+
+        faces: this.player.faces
+      }
+    }
+
+    localStorage.setItem('save', JSON.stringify(gameState))
+
+    appSnackbar.success('Sauvegarde réussie !', 'is-top')
+  }
+
+  restoreSaveGame () {
+    let gameState = localStorage.getItem('save')
+    if (gameState) {
+      gameState = JSON.parse(gameState)
+      console.log(gameState)
+      this.player.x = gameState.player.x
+      this.player.y = gameState.player.y
+      this.player.faces = gameState.player.faces
+      this.player.setFrame(this.player.getIdleFrame())
     }
   }
 }

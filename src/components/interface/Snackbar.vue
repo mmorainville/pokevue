@@ -5,7 +5,9 @@
     :top="top"
     :right="right"
     :bottom="bottom"
-    :left="left">
+    :left="left"
+    :timeout="timeout"
+  >
 
     <span v-html="message"></span>
     <!--<v-btn flat color="accent" @click.native="isVisible = false">Fermer</v-btn>-->
@@ -23,7 +25,8 @@ export default {
       top: false,
       right: false,
       bottom: false,
-      left: false
+      left: false,
+      timeout: 1500
     }
   },
   created () {
@@ -37,15 +40,22 @@ export default {
       this.message = params.message
 
       switch (params.position) {
+        case 'is-top':
+          this.top = true
+          this.left = false
+          this.timeout = 1500
+          break
         case 'is-top-left':
           this.top = true
           this.left = true
+          this.timeout = 1500
           break
         default:
           this.top = false
           this.right = false
           this.bottom = false
           this.left = false
+          this.timeout = 0
       }
     },
 

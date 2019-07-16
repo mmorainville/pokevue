@@ -57,14 +57,14 @@ export default {
     }
   },
   created () {
-    this.$appBus.$on('dialog:open', () => {
+    this.$appBus.$on('dialog:open', payload => {
       // console.log('Open dialog', this.isVisible)
       if (this.isVisible) {
         // Continue reading
         this.continueReading()
       } else {
         this.isVisible = true
-        this.startReading()
+        this.startReading(payload)
       }
     })
 
@@ -74,15 +74,9 @@ export default {
     })
   },
   methods: {
-    startReading () {
+    startReading (payload) {
       let options = {
-        strings: [
-          'Bien le bonjour ! Bienvenue dans le monde incroyable des Pokémon !',
-          'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
-          'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
-          'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
-          '<em>Reçu</em><br><strong>3 Pokémon</strong>, <strong>5 Pokéballs</strong>'
-        ],
+        strings: payload.strings,
         speed: 15, // 20
         cursor: false,
         afterString: (step, queue, instance) => {
@@ -90,6 +84,10 @@ export default {
           if (typeIt) {
             typeIt.freeze()
           }
+        },
+        afterComplete: (instance) => {
+          console.log('Complete!')
+          payload.action()
         },
         breakLines: false,
         deleteSpeed: 0

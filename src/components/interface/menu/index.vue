@@ -38,7 +38,7 @@ export default {
         },
         {
           title: 'Save',
-          routeName: 'save'
+          action: 'save'
         },
         {
           title: 'Fermer'
@@ -54,6 +54,12 @@ export default {
       console.log(item)
       if (item.routeName) {
         this.$router.push(item.routeName)
+      } else if (item.action) {
+        switch (item.action) {
+          case 'save':
+            this.$appBus.$emit('game:save')
+            break
+        }
       } else {
         this.$appBus.$emit('keydown:esc')
       }

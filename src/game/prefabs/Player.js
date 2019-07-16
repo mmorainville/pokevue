@@ -30,7 +30,22 @@ export default class Player extends MovableCharacter {
     let nextTile = this.getNextTile()
     if (nextTile.isOccupied) {
       console.log('Start dialog')
-      appBus.$emit('dialog:open')
+      appBus.$emit('dialog:open', {
+        strings: [
+          'Bien le bonjour ! Bienvenue dans le monde incroyable des Pokémon !',
+          'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
+          'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
+          'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
+          '<em>Reçu</em><br><strong>3 Pokémon</strong>, <strong>5 Pokéballs</strong>'
+        ],
+        action: () => {
+          this.receiveItems({
+            pokemon: 3,
+            pokeballs: 5
+          })
+        }
+      })
+
       if (this.faces === 'up') {
         nextTile.isOccupiedBy.moveTo('down')
         nextTile.isOccupiedBy.stopMoving()
@@ -45,5 +60,9 @@ export default class Player extends MovableCharacter {
         nextTile.isOccupiedBy.stopMoving()
       }
     }
+  }
+
+  receiveItems (payload) {
+    console.log('Received items!', payload)
   }
 }
