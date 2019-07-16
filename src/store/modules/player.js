@@ -8,11 +8,11 @@ const state = () => ({
 const mutations = {
   updateState (state, payload) {
     if (payload.pokemonList) {
-      state.pokemonList.push(payload.pokemonList)
+      Vue.set(state, 'pokemonList', payload.pokemonList)
     }
 
     if (payload.pokeballs) {
-      state.pokeballs.push(payload.pokeballs)
+      Vue.set(state, 'pokeballs', payload.pokeballs)
     }
   },
   emptyState (state) {

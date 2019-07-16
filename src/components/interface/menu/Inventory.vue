@@ -40,7 +40,7 @@
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                      <v-list-tile-title v-html="item.name"></v-list-tile-title>
+                      <v-list-tile-title v-html="item.name ? item.name : item.type"></v-list-tile-title>
                       <v-list-tile-sub-title v-html="item.quantity"></v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Inventory',
   data () {
@@ -67,6 +69,9 @@ export default {
     this.inventory = this.getInventory()
     this.selected = this.inventory[0].items
   },
+  computed: mapState({
+    pokeballs: state => state.player.pokeballs
+  }),
   methods: {
     getInventory () {
       return [
@@ -88,18 +93,7 @@ export default {
         },
         {
           name: 'Pokeballs',
-          items: [
-            {
-              name: 'Pokeball',
-              quantity: 15,
-              use: this.use('pokeball')
-            },
-            {
-              name: 'Super pokeball',
-              quantity: 15,
-              use: this.use('super pokeball')
-            }
-          ]
+          items: this.pokeballs
         },
         {
           name: 'CT & CS',
