@@ -4,6 +4,8 @@ import Game from './views/Game'
 import Interface from './views/Interface'
 import Pokedex from './components/interface/menu/Pokedex'
 import Profile from './components/interface/menu/Profile'
+import Inventory from './components/interface/menu/Inventory'
+
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +29,11 @@ export default new Router({
               path: 'profile',
               name: 'profile',
               component: Profile
+            },
+            {
+              path: 'Sac',
+              name: 'Sac',
+              component: Inventory
             }
           ]
         }
