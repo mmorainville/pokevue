@@ -1,21 +1,27 @@
 <template>
-  <v-container fluid grid-list-xl text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs2 offset-xs10>
-        <v-card>
-          <v-list>
-            <v-list-tile
-                v-for="(item, index) in menuItems"
-                :key="index"
-                @click="open(item)"
-            >
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-card class="d-inline-block elevation-12">
+    <v-navigation-drawer
+      permanent
+      stateless
+      value="true"
+    >
+      <v-list dense>
+        <v-list-tile
+          v-for="(item, index) in menuItems"
+          :key="index"
+          @click="open(item)"
+        >
+          <!--<v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>-->
+
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+  </v-card>
 </template>
 
 <script>

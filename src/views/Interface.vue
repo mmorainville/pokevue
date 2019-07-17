@@ -1,5 +1,17 @@
 <template>
   <div class="interface">
+    <v-container fluid grid-list-xl>
+      <v-layout justify-end flex-child wrap>
+        <v-flex md8>
+          <router-view class="d-flex"/>
+        </v-flex>
+
+        <v-flex shrink>
+          <Menu class="menu"/>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
     <div v-if="showInterface">
       <Menu class="menu"/>
       <router-view/>
