@@ -211,23 +211,26 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     console.log(path)
     // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
     let tweens = []
+    this.timeline = null
+
+    let isPathBlocked = false
+
     for (let i = 0; i < path.length - 1; i++) {
       let currentX = path[i].x
       let currentY = path[i].y
       let nextX = path[i + 1].x
       let nextY = path[i + 1].y
-      tweens.push({
-        targets: this,
-        x: { value: nextX * this.scene.map.tileWidth + 8, duration: 300 / this.speed },
-        y: { value: nextY * this.scene.map.tileHeight + 8, duration: 300 / this.speed },
-        onStart: () => {
-          if (this.getNextTile().isOccupied) {
-            this.timeline.stop()
 
-            this.isMovingAutomatically = false
-            this.anims.stop()
-            this.setFrame(this.getIdleFrame())
-          } else {
+      if (this.scene.map.getTileAt(nextX, nextY).isOccupied) {
+        isPathBlocked = true
+      }
+
+      if (!isPathBlocked) {
+        tweens.push({
+          targets: this,
+          x: { value: nextX * this.scene.map.tileWidth + 8, duration: 300 / this.speed },
+          y: { value: nextY * this.scene.map.tileHeight + 8, duration: 300 / this.speed },
+          onStart: () => {
             this.isMovingAutomatically = true
             if (nextX < currentX && nextY === currentY) {
               // Left
@@ -248,17 +251,17 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
               this.anims.play(this.name + '_down', true)
               this.faces = 'down'
             }
+          },
+          onComplete: () => {
+            if ((i === path.length - 2) || (i === tweens.length - 1)) {
+              this.isMovingAutomatically = false
+              this.anims.stop()
+              this.setFrame(this.getIdleFrame())
+              isPathBlocked = false
+            }
           }
-        },
-        onComplete: () => {
-          // console.log(i, path.length)
-          if (i === path.length - 2) {
-            this.isMovingAutomatically = false
-            this.anims.stop()
-            this.setFrame(this.getIdleFrame())
-          }
-        }
-      })
+        })
+      }
     }
 
     this.timeline = this.scene.tweens.timeline({
@@ -277,5 +280,7 @@ export default class MovableCharacter extends Phaser.Physics.Arcade.Sprite {
     delete this.scene.map.getTileAtWorldXY(this.x, this.y - 16).isOccupiedBy
     this.scene.map.getTileAtWorldXY(this.x, this.y + 16).isOccupied = false
     delete this.scene.map.getTileAtWorldXY(this.x, this.y + 16).isOccupiedBy
+
+    return this.scene.map.getTileAtWorldXY(this.x, this.y)
   }
 }

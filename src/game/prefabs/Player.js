@@ -20,9 +20,9 @@ export default class Player extends MovableCharacter {
       appBus.$emit('dialog:open', {
         strings: [
           'Bien le bonjour ! Bienvenue dans le monde incroyable des Pokémon !',
-          // 'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
-          // 'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
-          // 'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
+          'Mon nom est Chen ! Les gens m\'appellent amicalement le Prof. Pokémon !',
+          'Pour certains, les Pokémon sont des animaux domestiques, pour d\'autres, ils sont un moyen de combattre.',
+          'Des Pokémon sauvages infestent les hautes herbes ! Il te faut un Pokémon pour te protéger... Tiens ! Prends ça !',
           '<em>Reçu</em> - <strong>3 Pokémon</strong>, <strong>3 Pokéballs</strong>, <strong>2 Superballs</strong>'
         ],
         action: () => {

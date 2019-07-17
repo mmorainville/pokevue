@@ -240,7 +240,13 @@ export default class WorldScene extends Phaser.Scene {
         if (path === null) {
           console.warn('Path was not found.')
         } else {
-          this.player.moveAlongPath(path)
+          if (this.player.isFullyOnTile()) {
+            if (this.player.timeline) {
+              this.player.timeline.stop()
+              this.player.timeline = null
+            }
+            this.player.moveAlongPath(path)
+          }
         }
       })
       this.finder.calculate() // don't forget, otherwise nothing happens
