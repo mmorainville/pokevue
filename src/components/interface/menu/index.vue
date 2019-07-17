@@ -39,7 +39,7 @@ export default {
           routeName: 'inventory'
         },
         {
-          title: 'Profile',
+          title: 'Profil',
           routeName: 'profile'
         },
         {

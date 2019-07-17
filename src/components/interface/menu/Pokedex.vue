@@ -12,6 +12,7 @@
         </v-toolbar>
 
         <v-card style="max-height: 400px" class="scroll-y">
+
           <v-container fluid grid-list-md>
             <v-layout row wrap>
               <v-flex
@@ -34,6 +35,7 @@
               </v-flex>
             </v-layout>
           </v-container>
+
         </v-card>
       </v-flex>
     </v-layout>
@@ -60,15 +62,8 @@ export default {
         })
     },
     goTo (index) {
-      this.$router.push('pokemondetail/' + index)
+      this.$router.push('pokemon/' + index)
     }
   }
 }
 </script>
-
-<style>
-  .list-pokemon {
-    height: 300px;
-    overflow-y: auto;
-  }
-</style>
