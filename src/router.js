@@ -5,6 +5,7 @@ import Interface from './views/Interface'
 import Pokedex from './components/interface/menu/Pokedex'
 import Profile from './components/interface/menu/Profile'
 import Inventory from './components/interface/menu/Inventory'
+import Team from './components/interface/menu/Team'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
               path: 'inventory',
               name: 'inventory',
               component: Inventory
+            },
+            {
+              path: 'team',
+              name: 'team',
+              component: Team
             }
           ]
         }

@@ -43,6 +43,10 @@ export default {
           routeName: 'profile'
         },
         {
+          title: 'Equipe',
+          routeName: 'team'
+        },
+        {
           title: 'Save',
           action: 'save'
         },
