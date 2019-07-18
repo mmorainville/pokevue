@@ -43,7 +43,7 @@ export default {
           routeName: 'profile'
         },
         {
-          title: 'Equipe',
+          title: 'Équipe',
           routeName: 'team'
         },
         {

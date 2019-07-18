@@ -1,65 +1,53 @@
 <template>
-  <v-container fluid ma-0 pa-0>
-    <v-layout flex-child wrap>
-      <v-flex grow>
-        <v-toolbar color="red" dark>
-          <v-toolbar-side-icon></v-toolbar-side-icon>
-          <v-toolbar-title>Profil</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>search</v-icon>
-          </v-btn>
-        </v-toolbar>
+  <MenuWindow title="Profil" color="red">
 
-        <v-card style="max-height: 400px" class="scroll-y">
-
-          <v-container fluid>
-            <v-layout>
-              <v-flex xs5>
+    <v-container fluid>
+      <v-layout>
+        <v-flex xs5>
+          <v-img
+            :src="profile.profilePicture"
+            height="54px"
+            contain
+          ></v-img>
+        </v-flex>
+        <v-flex xs7>
+          <v-card-title primary-title>
+            <div>
+              <div>Nom: {{ profile.name }} Sexe: {{ profile.sexe }}</div>
+              <div>Argents: {{ profile.money }}</div>
+              <div>Pokémons : {{ profile.pokemons }}</div>
+            </div>
+          </v-card-title>
+        </v-flex>
+      </v-layout>
+      <v-divider light></v-divider>
+      <v-card-actions>
+        <v-container fluid grid-list-sm>
+          <v-layout row wrap>
+            <v-flex v-for="(badge, index) of profile.badges" :key="index" xs3 class="text-xs-center">
+              <v-card flat tile>
                 <v-img
-                  :src="profile.profilePicture"
-                  height="54px"
+                  :src="badge.url"
+                  height="50px"
                   contain
                 ></v-img>
-              </v-flex>
-              <v-flex xs7>
-                <v-card-title primary-title>
-                  <div>
-                    <div>Nom: {{ profile.name }} Sexe: {{ profile.sexe }}</div>
-                    <div>Argents: {{ profile.money }}</div>
-                    <div>Pokémons : {{ profile.pokemons }}</div>
-                  </div>
-                </v-card-title>
-              </v-flex>
-            </v-layout>
-            <v-divider light></v-divider>
-            <v-card-actions>
-              <v-container fluid grid-list-sm>
-                <v-layout row wrap>
-                  <v-flex v-for="(badge, index) of profile.badges" :key="index" xs3  class="text-xs-center">
-                    <v-card flat tile>
-                      <v-img
-                        :src="badge.url"
-                        height="50px"
-                        contain
-                      ></v-img>
-                      <div>{{badge.name}}</div>
-                    </v-card>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-actions>
-          </v-container>
+                <div>{{badge.name}}</div>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-actions>
+    </v-container>
 
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  </MenuWindow>
 </template>
 
 <script>
+import MenuWindow from './MenuWindow'
+
 export default {
   name: 'Profile',
+  components: { MenuWindow },
   data () {
     return {
       profile: {}
