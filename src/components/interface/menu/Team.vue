@@ -23,7 +23,8 @@
                     <div
                       class="headline text-xs-center"
                       style="text-transform: capitalize; width: 100%"
-                    >{{ pokemon.pokemon.name }}</div>
+                    >{{ pokemon.pokemon.name }}
+                    </div>
                   </v-card-title>
                   <v-divider light></v-divider>
                   <v-card-text>
@@ -34,7 +35,7 @@
                       :value="(pokemon.stat.lp / pokemon.stat.lpMax * 100)"
                     ></v-progress-linear>
                     <div v-if="pokemon.stat.status">
-                        {{pokemon.stat.status.effect}}
+                      {{pokemon.stat.status.effect}}
                     </div>
                   </v-card-text>
                 </v-card>
@@ -49,22 +50,22 @@
 
 <script>
 export default {
-  name: "Team",
-  data() {
+  name: 'Team',
+  data () {
     return {
       pokeTeam: []
-    };
+    }
   },
-  mounted() {
-    this.getTeam();
+  mounted () {
+    this.getTeam()
   },
   methods: {
-    getTeam() {
+    getTeam () {
       this.pokeTeam = [
         {
           pokemon: {
             index: 5,
-            name: "josé"
+            name: 'josé'
           },
           stat: {
             level: 21,
@@ -76,23 +77,23 @@ export default {
         {
           pokemon: {
             index: 12,
-            name: "Mathieu"
+            name: 'Mathieu'
           },
           stat: {
             level: 21,
             lp: 25,
             lpMax: 50,
             status: {
-              effect: "brulé",
-              icon: ""
+              effect: 'brulé',
+              icon: ''
             }
           }
         }
-      ];
+      ]
     },
-    goTo(index) {
-      this.$router.push("pokemon/" + index);
+    goTo (index) {
+      this.$router.push('pokemon/' + index)
     }
   }
-};
+}
 </script>
