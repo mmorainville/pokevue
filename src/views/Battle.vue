@@ -14,7 +14,9 @@
               </v-flex>
 
               <v-flex md12>
-                <Navigation/>
+                <Navigation
+                :selected-pokemon-moves-datas="selectedPokemonMovesDatas"
+                />
               </v-flex>
             </v-layout>
           </v-container>
@@ -34,14 +36,29 @@ export default {
     return {
       battleStart: true,
       pokemons: [],
-      selectedPokemon: {}
+      selectedPokemonMovesDatas: [
+        {
+          name: 'razor-wind',
+          pp: 5
+        },
+        {
+          name: 'mega-drain',
+          pp: 9
+        },
+        {
+          name: 'thunder',
+          pp: 3
+        },
+        {
+          name: 'flamethrower',
+          pp: 12
+        }
+      ]
     }
   },
   created () {
-    console.log('created')
   },
   mounted () {
-    console.log('mounted')
   },
   methods: {
   }
@@ -60,12 +77,5 @@ export default {
 
     .battle-frame {
       background-color: #FFF;
-    }
-
-    .battle-btn {
-      width: 100%;
-    }
-    .battle-btn > div {
-      justify-content: flex-start;
     }
 </style>
