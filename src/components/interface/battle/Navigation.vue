@@ -59,26 +59,16 @@ export default {
   methods: {
     getPokemonMoves () {
       this.movesLoaded = false
-      return new Promise(resolve => {
-        this.$http.get('https://pokeapi.co/api/v2/move?limit=746')
-          .then(async res => {
-            for (var resultName in res.data.results) {
-              if (this.selectedPokemonMovesDatas.some(item => item.name === res.data.results[resultName].name)) {
-                var localIndex = this.selectedPokemonMovesDatas.map(function (e) { return e.name }).indexOf(res.data.results[resultName].name)
-                var moveDatas = await this.setPokemonMoves(res.data.results[resultName].url, localIndex, 'fr')
-                this.pokemonMoves.push(moveDatas)
-              }
-            }
-            this.pokemonMoves.sort(function (a, b) {
-              var x = a['localIndex']
-              var y = b['localIndex']
-              return ((x < y) ? -1 : ((x > y) ? 1 : 0))
-            })
-            resolve(this.pokemonMoves)
-          })
+      return new Promise(async resolve => {
+        for (var index in this.selectedPokemonMovesDatas) {
+          var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + this.selectedPokemonMovesDatas[index].name
+          var moveDatas = await this.setPokemonMoves(index, moveApiUrl, 'fr')
+          this.pokemonMoves.push(moveDatas)
+        }
+        resolve(this.pokemonMoves)
       })
     },
-    setPokemonMoves (moveApiUrl, localIndex, lang) {
+    setPokemonMoves (index, moveApiUrl, lang) {
       let moveDatas
       return new Promise(resolve => {
         this.$http.get(moveApiUrl)
@@ -88,14 +78,13 @@ export default {
             var color = this.setColorFromType(res.data.type.name)
             var type = await this.externalData(res.data.type.url, 'names', lang, 'name')
             moveDatas = {
-              localIndex: localIndex,
               name: name[0].name,
               type: type,
               color: color,
               description: description[0].flavor_text,
               power: res.data.power,
               pp: res.data.pp,
-              ppLeft: this.selectedPokemonMovesDatas[localIndex].pp,
+              ppLeft: this.selectedPokemonMovesDatas[index].pp,
               accuracy: res.data.accuracy,
               criticalHitRate: res.data.meta.crit_rate
             }
