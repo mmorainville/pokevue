@@ -1,7 +1,7 @@
 <template>
     <v-container pa-0>
         <v-layout>
-        <v-flex md8>
+        <v-flex md12>
             <v-container pa-0>
                 <v-layout flex-child wrap v-if="movesLoaded">
                     <v-flex
@@ -13,19 +13,6 @@
                           {{ move.name }}
                           <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
                         </v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-flex>
-        <v-divider vertical></v-divider>
-        <v-flex md4>
-            <v-container pa-0>
-                <v-layout flex-child wrap>
-                    <v-flex md12>
-                        TEST
-                    </v-flex>
-                    <v-flex md12>
-                        TEST
                     </v-flex>
                 </v-layout>
             </v-container>
