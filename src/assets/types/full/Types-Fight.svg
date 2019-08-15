@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="0.987" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ce4265"/>
+      <stop offset="1" stop-color="#e74347"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Fight" data-name="Types/Fight" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Oval_9" data-name="Oval 9" d="M7,15c-3.86,0-7-2.86-7-6.376A6.057,6.057,0,0,1,1.921,4.238a20.436,20.436,0,0,0,.137,3.334.019.019,0,0,0,.013.006c.35-.079.075-5.287.016-6.331A1.655,1.655,0,0,1,5.08.755c.049,0,.094-.005.139-.005a1.648,1.648,0,0,1,.314.03,1.655,1.655,0,0,1,2.733.471h.007a1.661,1.661,0,0,1,.343.036A1.641,1.641,0,0,1,9.545,1,1.66,1.66,0,0,1,11.1,2.089a1.658,1.658,0,0,1,.387.193A1.747,1.747,0,0,1,12.441,2,1.6,1.6,0,0,1,14,3.56V8.681a6.071,6.071,0,0,1-2.071,4.47A7.32,7.32,0,0,1,7,15Z" transform="translate(8 8)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

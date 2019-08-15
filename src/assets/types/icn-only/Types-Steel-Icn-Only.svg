@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Types_Steel" data-name="Types/Steel" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <path id="Path_7" data-name="Path 7" d="M11.077,13H3.961a.373.373,0,0,1-.321-.184L.051,6.692a.371.371,0,0,1,0-.376L3.64.185A.373.373,0,0,1,3.961,0h7.116A.373.373,0,0,1,11.4.186l3.55,6.131a.375.375,0,0,1,0,.374L11.4,12.814A.373.373,0,0,1,11.077,13ZM7.5,3A3.5,3.5,0,1,0,11,6.5,3.5,3.5,0,0,0,7.5,3Z" transform="translate(7.5 9)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

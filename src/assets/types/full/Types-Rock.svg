@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#c5b489"/>
+      <stop offset="1" stop-color="#d7cd90"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Rock" data-name="Types/Rock" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Path_8" data-name="Path 8" d="M7.575,10.971,4.327,9.907,9.994,6.03a.183.183,0,0,1,.255.049L11.54,8a.182.182,0,0,1-.045.25L7.739,10.946a.182.182,0,0,1-.106.034A.187.187,0,0,1,7.575,10.971Zm-4.6-1.345L.126,8.695A.182.182,0,0,1,0,8.521V5.6a.183.183,0,0,1,.042-.117L4.511.091a.183.183,0,0,1,.14-.066H10.4a.183.183,0,0,1,.181.21l-.69,4.628a.179.179,0,0,1-.076.123L3.132,9.6a.182.182,0,0,1-.1.033A.178.178,0,0,1,2.972,9.626ZM12.4,7.374,10.854,5.266a.184.184,0,0,1-.033-.14L11.674.152A.183.183,0,0,1,11.854,0h0a.183.183,0,0,1,.175.128l1.931,6.115a.182.182,0,0,1-.062.2l-1.238.968a.182.182,0,0,1-.26-.036Z" transform="translate(8 10)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

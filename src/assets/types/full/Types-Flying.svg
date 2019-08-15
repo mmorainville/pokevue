@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#90a7da"/>
+      <stop offset="1" stop-color="#a6c2f2"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Flying" data-name="Types/Flying" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Oval_2" data-name="Oval 2" d="M5.236,13a5.263,5.263,0,0,0,4.855-2.952c.009-.021-3.118.813-3.018.518.045-.132,1.962-.832,3.358-1.649A3.175,3.175,0,0,0,11.6,7.453a14.92,14.92,0,0,1-2.036.823,8.315,8.315,0,0,1-2.591.265A21.749,21.749,0,0,0,11.79,6.377a3.979,3.979,0,0,0,1.674-2.184,15.772,15.772,0,0,1-2.323,1.147,13.2,13.2,0,0,1-3.969.787c0-.2,1.667-.654,3.434-1.51a19.319,19.319,0,0,0,2.636-1.674A4.682,4.682,0,0,0,15,0a23.7,23.7,0,0,1-2.214,1.278,24.721,24.721,0,0,1-7.55,2.154C2.356,3.658,0,5.668,0,8.276A5,5,0,0,0,5.236,13Z" transform="translate(8 9)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

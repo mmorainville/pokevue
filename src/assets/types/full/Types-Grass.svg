@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5fbc51"/>
+      <stop offset="1" stop-color="#5ac178"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Grass" data-name="Types/Grass" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Oval" d="M6.121,15A6.128,6.128,0,0,1,0,8.879C0,7.133,1.434,4.812,2.636,3.172A35.511,35.511,0,0,1,5.272,0l.015.011a41,41,0,0,1,3.47,3.161c1.59,1.64,3.485,3.961,3.485,5.707A6.115,6.115,0,0,1,7.229,14.9L6.92,11.874l1.7-2.641-1.95,1.6L6.652,8.554l1-1.563L6.339,7.7,5.523,4.86,5.7,7.921,4.356,7.692l1.494,1.1.128,2.137-1.9-.968L5.985,11.87,6.312,15H6.29Z" transform="translate(16.096 5.869) rotate(45)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

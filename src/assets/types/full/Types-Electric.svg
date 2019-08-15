@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="0.987" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#edd53e"/>
+      <stop offset="1" stop-color="#fbe273"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Electric" data-name="Types/Electric" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Path_5" data-name="Path 5" d="M1.963.584A.44.44,0,0,1,2.379,0H7.086a.44.44,0,0,1,.42.31L9.824,7.8a.44.44,0,0,1-.42.57H6.522a.22.22,0,0,0-.212.28l1.443,5.08a.44.44,0,0,1-.775.385L.53,5.534a.44.44,0,0,1,.352-.7H3.124a.22.22,0,0,0,.208-.292Z" transform="translate(10 9)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

@@ -9,9 +9,12 @@
                     v-for="(move, index) in pokemonMoves"
                     :key="index"
                     md6>
-                        <v-btn flat :color="move.color" :class="{ loading: !(movesLoaded) }" @click="removePp(index)">
+                        <v-btn flat
+                        :color="move.color[0]"
+                        :class="{ loading: !(movesLoaded) }" @click="triggerMove(index)">
                           {{ move.name }}
                           <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
+                          <img :src="move.color[1]" :alt="move.color[2]">
                         </v-btn>
                     </v-flex>
                 </v-layout>
@@ -22,6 +25,8 @@
 </template>
 
 <script>
+import FireIcn from '@/assets/types/full/Types-Fire.svg'
+
 export default {
   name: 'Navigation',
   props: {
@@ -93,21 +98,22 @@ export default {
       })
     },
     setColorFromType (type) {
-      if (type === 'normal') {
-        return ('grey')
-      } else if (type === 'grass') {
-        return ('green')
-      } else if (type === 'electric') {
-        return ('yellow darken-2')
-      } else if (type === 'fire') {
-        return ('red')
-      } else if (type === 'water') {
-        return ('blue')
-      } else {
-        return ('grey')
+      switch (type) {
+        case 'normal':
+          return (['grey'])
+        case 'grass':
+          return (['green'])
+        case 'electric':
+          return (['yellow darken-2'])
+        case 'fire':
+          return (['red', FireIcn, type])
+        case 'water':
+          return (['blue'])
+        default:
+          return (['grey'])
       }
     },
-    removePp (index) {
+    triggerMove (index) {
       for (var val in this.pokemonMoves) {
         if (parseInt(val) === index) {
           var ppNewValue = parseInt(this.pokemonMoves[val].ppLeft) - 1
@@ -127,13 +133,30 @@ export default {
     }
     .battle-btn > button {
       width: 100%;
+      overflow: hidden;
     }
     .battle-btn > button > div {
-      position: relative;
       justify-content: flex-start;
+      transition: 0.3s ease;
+    }
+    .battle-btn > button:hover > div {
+      padding-left: 45px;
     }
     .battle-btn > button > div > span {
       margin-left: auto;
+    }
+    .battle-btn > button > div > img {
+      position: absolute;
+      left: 0px;
+      bottom: -20px;
+      z-index: 10;
+      opacity: 0.0;
+      transform: scale(2) translateX(-40px);
+      transition: 0.3s ease;
+    }
+    .battle-btn > button:hover > div > img {
+      opacity: 1;
+      transform: scale(2) translateX(-12px);
     }
 
     div > .battle-btn:not(.loading) {
