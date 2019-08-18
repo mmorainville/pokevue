@@ -3,8 +3,8 @@
     <v-container fluid grid-list-xl v-if="battleStart">
       <v-layout justify-center flex-child wrap>
         <v-flex md8 class="battle-frame">
-          <div class="battle-frame-bg-backdrop" :style="{ backgroundImage: 'url(' + this.background + ')' }"></div>
-          <div class="battle-frame-bg" :style="{ backgroundImage: 'url(' + this.background + ')' }"></div>
+          <div class="battle-frame-bg-backdrop" :style="{ backgroundImage: 'url(' + background + ')' }"></div>
+          <div class="battle-frame-bg" :style="{ backgroundImage: 'url(' + background + ')' }"></div>
           <v-container fluid grid-list-xl>
             <Navigation
             :selected-pokemon-moves-datas="selectedPokemonMovesDatas"

@@ -6,8 +6,24 @@
             mode="out-in">
               <v-flex md3 pa-0 align-self-baseline class="pokemon-infos" :key="pokemonId">
                 <v-flex md12>
-                  <v-flex md12>
-                    POKEMON {{ pokemonId }} <span>Lv5</span>
+                  <v-flex md12 py-1 class="pokeball-list">
+                    <span
+                    v-for="index in pokemonNb"
+                    :key="index"
+                    :style="{ backgroundImage: 'url(' + pokeballIcn + ')' }"
+                    class="active"
+                    >
+                    </span>
+                    <span
+                    v-for="index in (6 - pokemonNb)"
+                    :key="'B' + index"
+                    :style="{ backgroundImage: 'url(' + pokeballIcn + ')' }"
+                    class="disabled"
+                    >
+                    </span>
+                  </v-flex>
+                  <v-flex md12 py-1 class="pokemon-name">
+                    POKEMON {{ pokemonId }} <span class="level">N.5</span>
                   </v-flex>
                   <v-flex md10 pa-0 class="life-bar">
                     <v-flex md12 py-0>
@@ -16,11 +32,11 @@
                       :background-color="currentColor"
                       background-opacity="0.3"
                       buffer-value="100"
-                      height="4"
+                      height="8"
                       :value="((this.remainingHp * 100) / this.totalHp)"
                       ></v-progress-linear>
                     </v-flex>
-                    <v-flex py-0>
+                    <v-flex py-0 text-md-right v-if="componentType === 'player'">
                       <span>{{ this.remainingHpAnim }} / {{ this.totalHpAnim }}</span>
                     </v-flex>
                   </v-flex>
@@ -32,7 +48,7 @@
                   background-opacity="0.15"
                   buffer-value="100"
                   height="24"
-                  :value="((this.remainingHp * 100) / this.totalHp)"
+                  :value="50"
                   ></v-progress-linear>
                 </v-flex>
               </v-flex>
@@ -45,6 +61,8 @@
 </template>
 
 <script>
+import PokeballIcn from '@/assets/icons/poke_ball.png'
+
 export default {
   name: 'Character',
   props: {
@@ -58,7 +76,9 @@ export default {
       spriteLoaded: false,
       spriteShake: false,
       spriteUrl: null,
-      currentColor: 'green',
+      currentColor: 'grey',
+      pokemonNb: 3,
+      pokeballIcn: PokeballIcn,
       totalHpAnim: this.totalHp,
       remainingHpAnim: this.remainingHp
     }
@@ -131,9 +151,6 @@ export default {
           clearInterval(timer)
         }
       }.bind(this), stepTime)
-    },
-    beforeEnter () {
-      console.log('before')
     }
   }
 }
@@ -149,10 +166,52 @@ export default {
     border-top-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
+  .pokeball-list {
+    max-height: 24px;
+    > span {
+      opacity: 1;
+      display: inline-block;
+      position: relative;
+      height: 16px;
+      width: 16px;
+      padding: 2px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &:after {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        background: #FFF;
+        border-radius: 10px;
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      &.disabled {
+        opacity: 0.5;
+        &:after {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .pokemon-name {
+    .level {
+      float: right;
+      font-weight: bold;
+    }
+  }
   .life-bar {
     margin-left: auto;
-    .v-progress-linear__bar, .v-progress-linear__bar__determinate {
-      transition: 2s cubic-bezier(.4,0,.6,1);
+    .v-progress-linear {
+      margin: 0.5rem 0rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.5);
+      .v-progress-linear__bar, .v-progress-linear__bar__determinate {
+        transition: 2s cubic-bezier(.4,0,.6,1);
+      }
     }
   }
   .xp-bar {
@@ -214,6 +273,7 @@ export default {
 }
 
 .row-reverse {
+  display: flex;
   flex-direction: row-reverse;
 }
 
