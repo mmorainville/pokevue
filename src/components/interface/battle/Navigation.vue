@@ -1,43 +1,78 @@
 <template>
-    <v-container pa-0>
+  <v-layout flex-child wrap v-if="movesLoaded">
+    <v-flex md12 style="z-index: 0;">
+      <Character
+      component-type="opponent"
+      :pokemon-id="opponentPokemonId"
+      :total-hp="opponentTotalHpUpdate"
+      :remaining-hp="opponentRemainingHpUpdate"
+      />
+    </v-flex>
+    <v-flex md12 style="z-index: 0;">
+      <Character
+      component-type="player"
+      :pokemon-id="playerPokemonId"
+      :total-hp="playerTotalHpUpdate"
+      :remaining-hp="playerRemainingHpUpdate"/>
+    </v-flex>
+    <v-flex md12 class="moves-buttons">
+      <v-container pa-0>
         <v-layout>
-        <v-flex md12>
+          <v-flex md12>
             <v-container pa-0>
-                <v-layout flex-child wrap v-if="movesLoaded">
-                    <v-flex
-                    class="battle-btn"
-                    v-for="(move, index) in pokemonMoves"
-                    :key="index"
-                    md6>
-                        <v-btn flat
-                        :color="move.color[0]"
-                        :class="{ loading: !(movesLoaded) }" @click="triggerMove(index)">
-                          {{ move.name }}
-                          <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
-                          <img :src="move.color[1]" :alt="move.color[2]">
-                        </v-btn>
-                    </v-flex>
-                </v-layout>
+              <v-layout flex-child wrap>
+                <v-flex
+                class="battle-btn"
+                v-for="(move, index) in pokemonMoves"
+                :key="index"
+                md6>
+                    <v-btn flat
+                    :color="move.color[0]"
+                    :class="{ loading: !(movesLoaded) }" @click="triggerMove(index)">
+                      {{ move.name }}
+                      <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
+                      <img :src="move.color[1]" :alt="move.color[2]">
+                    </v-btn>
+                </v-flex>
+              </v-layout>
             </v-container>
-        </v-flex>
+          </v-flex>
         </v-layout>
-    </v-container>
+      </v-container>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Character from './Character'
+
+import ElecIcn from '@/assets/types/full/Types-Electric.svg'
 import FireIcn from '@/assets/types/full/Types-Fire.svg'
+import GrassIcn from '@/assets/types/full/Types-Grass.svg'
+import NormalIcn from '@/assets/types/full/Types-Normal.svg'
 
 export default {
   name: 'Navigation',
+  components: { Character },
   props: {
-    opponentPokemon: String,
-    playerPokemon: String,
+    opponentPokemons: Array,
+    opponentTotalHp: Number,
+    opponentRemainingHp: Number,
+    playerPokemons: Array,
+    playerTotalHp: Number,
+    playerRemainingHp: Number,
     selectedPokemonMovesDatas: Array
   },
   data () {
     return {
       pokemonMoves: [],
-      movesLoaded: false
+      movesLoaded: false,
+      opponentRemainingHpUpdate: this.opponentRemainingHp,
+      opponentTotalHpUpdate: this.opponentTotalHp,
+      playerRemainingHpUpdate: this.playerRemainingHp,
+      playerTotalHpUpdate: this.playerTotalHp,
+      playerPokemonId: 3,
+      opponentPokemonId: 100
     }
   },
   mounted () {
@@ -100,17 +135,17 @@ export default {
     setColorFromType (type) {
       switch (type) {
         case 'normal':
-          return (['grey'])
+          return (['grey', NormalIcn, type])
         case 'grass':
-          return (['green'])
+          return (['green', GrassIcn, type])
         case 'electric':
-          return (['yellow darken-2'])
+          return (['yellow darken-2', ElecIcn, type])
         case 'fire':
           return (['red', FireIcn, type])
         case 'water':
           return (['blue'])
         default:
-          return (['grey'])
+          return (['grey', NormalIcn, type])
       }
     },
     triggerMove (index) {
@@ -174,6 +209,14 @@ export default {
     }
     div > .battle-btn:not(.loading):nth-child(4) {
       animation-delay: 0.8s
+    }
+
+    .moves-buttons {
+      background-color: rgba(255,255,255,0.9);
+      z-index: 1;
+      margin-top: 0px;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+      backdrop-filter: blur(5px);
     }
 
     @keyframes FadeIn {

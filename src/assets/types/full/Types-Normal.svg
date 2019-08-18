@@ -4,8 +4,8 @@
       <rect width="60" height="60" fill="none"/>
     </clipPath>
     <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="0.987" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#9298a4"/>
-      <stop offset="1" stop-color="#a3a49e"/>
+      <stop offset="0" stop-color="#9e9e9e"/>
+      <stop offset="1" stop-color="#9e9e9e"/>
     </linearGradient>
   </defs>
   <g id="Types_Normal" data-name="Types/Normal" clip-path="url(#clip-path)">
