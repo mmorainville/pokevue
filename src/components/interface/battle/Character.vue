@@ -37,7 +37,20 @@
                       ></v-progress-linear>
                     </v-flex>
                     <v-flex py-0 text-md-right v-if="componentType === 'player'">
-                      <span>{{ this.remainingHpAnim }} / {{ this.totalHpAnim }}</span>
+                      <!-- <span>{{ this.remainingHpAnim }} / {{ this.totalHpAnim }}</span> -->
+                      <div>
+                        <ICountUp
+                          :delay="1000"
+                          :endVal="this.remainingHp"
+                          :options="remainingCountUpOptions"
+                        />
+                        /
+                        <ICountUp
+                          :delay="1000"
+                          :endVal="this.totalHp"
+                          :options="totalCountUpOptions"
+                        />
+                      </div>
                     </v-flex>
                   </v-flex>
                 </v-flex>
@@ -61,10 +74,15 @@
 </template>
 
 <script>
+import ICountUp from 'vue-countup-v2'
+
 import PokeballIcn from '@/assets/icons/poke_ball.png'
 
 export default {
   name: 'Character',
+  components: {
+    ICountUp
+  },
   props: {
     componentType: String,
     pokemonId: Number,
@@ -79,8 +97,16 @@ export default {
       currentColor: 'grey',
       pokemonNb: 3,
       pokeballIcn: PokeballIcn,
-      totalHpAnim: this.totalHp,
-      remainingHpAnim: this.remainingHp
+      totalCountUpOptions: {
+        startVal: this.totalHp,
+        useEasing: false,
+        useGrouping: false
+      },
+      remainingCountUpOptions: {
+        startVal: this.remainingHp,
+        useEasing: false,
+        useGrouping: false
+      }
     }
   },
   created () {
@@ -92,12 +118,12 @@ export default {
   watch: {
     remainingHp (newVal, oldVal) {
       this.getCurrentColor(newVal, this.totalHp)
-      this.animNumbers(newVal, oldVal, 2000, 'remain')
+      this.remainingCountUpUpdate()
       this.shakeSprite(newVal, oldVal)
     },
     totalHp (newVal, oldVal) {
       this.getCurrentColor(this.remainingHp, newVal)
-      this.animNumbers(newVal, oldVal, 2000, 'total')
+      this.totalCountUpUpdate()
     },
     pokemonId () {
       this.getSprite()
@@ -133,24 +159,11 @@ export default {
         this.currentColor = 'red'
       }
     },
-    animNumbers (end, start, duration, id) {
-      var range = end - start
-      var current = start
-      var increment = end > start ? 1 : -1
-      var stepTime = Math.abs(Math.floor(duration / range))
-      var timer = setInterval(function () {
-        current += increment
-        switch (id) {
-          case 'remain':
-            this.remainingHpAnim = current
-            break
-          case 'total':
-            this.totalHpAnim = current
-        }
-        if (current === end) {
-          clearInterval(timer)
-        }
-      }.bind(this), stepTime)
+    remainingCountUpUpdate (instance, CountUp) {
+      instance.update(this.remainingHp)
+    },
+    totalCountUpUpdate (instance, CountUp) {
+      instance.update(this.remainingHp)
     }
   }
 }
