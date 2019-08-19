@@ -99,12 +99,12 @@ export default {
       pokeballIcn: PokeballIcn,
       totalCountUpOptions: {
         startVal: this.totalHp,
-        useEasing: false,
+        useEasing: true,
         useGrouping: false
       },
       remainingCountUpOptions: {
         startVal: this.remainingHp,
-        useEasing: false,
+        useEasing: true,
         useGrouping: false
       }
     }
@@ -118,12 +118,12 @@ export default {
   watch: {
     remainingHp (newVal, oldVal) {
       this.getCurrentColor(newVal, this.totalHp)
-      this.remainingCountUpUpdate()
       this.shakeSprite(newVal, oldVal)
+      this.remainingCountUpUpdate(newVal)
     },
     totalHp (newVal, oldVal) {
       this.getCurrentColor(this.remainingHp, newVal)
-      this.totalCountUpUpdate()
+      this.totalCountUpUpdate(newVal)
     },
     pokemonId () {
       this.getSprite()
@@ -159,11 +159,11 @@ export default {
         this.currentColor = 'red'
       }
     },
-    remainingCountUpUpdate (instance, CountUp) {
-      instance.update(this.remainingHp)
+    remainingCountUpUpdate (newVal) {
+      this.remainingCountUpOptions.startVal = newVal
     },
-    totalCountUpUpdate (instance, CountUp) {
-      instance.update(this.remainingHp)
+    totalCountUpUpdate (newVal) {
+      this.totalCountUpOptions.startVal = newVal
     }
   }
 }
