@@ -11,7 +11,7 @@
     <v-flex md12 style="z-index: 0;">
       <Character
       component-type="player"
-      :pokemon-id="playerPokemonId"
+      :pokemon-id="playerPokemonsSelected + 1"
       :total-hp="playerTotalHpUpdate"
       :remaining-hp="playerRemainingHpUpdate"/>
     </v-flex>
@@ -23,12 +23,14 @@
               <v-layout flex-child wrap>
                 <v-flex
                 class="battle-btn"
+                :class="{ disabled: movesLaunched }"
                 v-for="(move, index) in pokemonMoves"
                 :key="index"
                 md6>
                     <v-btn flat
                     :color="move.color[0]"
-                    :class="{ loading: !(movesLoaded) }" @click="triggerMove(index)">
+                    :class="[move.ppLeft === 0 ? 'disabled' : '', { loading: !(movesLoaded) }]"
+                    @click="triggerMove($event, index)">
                       {{ move.name }}
                       <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
                       <img :src="move.color[1]" :alt="move.color[2]">
@@ -65,14 +67,74 @@ export default {
   },
   data () {
     return {
+      playerPokemonsList: [
+        {
+          pokemon: {
+            id: 1,
+            surname: 'Jean-Joslin'
+          },
+          stats: {
+            level: 21,
+            hp: 486,
+            hpMax: 665,
+            xp: 187,
+            xpMax: 658,
+            status: null
+          },
+          moveset: [
+            {
+              id: 1,
+              pp: 9
+            },
+            {
+              id: 50,
+              pp: 9
+            },
+            {
+              id: 110,
+              pp: 9
+            },
+            {
+              id: 22,
+              pp: 2
+            }
+          ]
+        },
+        {
+          pokemon: {
+            id: 6,
+            surname: 'Jean-Miguel'
+          },
+          stats: {
+            level: 88,
+            hp: 4860,
+            hpMax: 6653,
+            xp: 34765,
+            xpMax: 65899,
+            status: null
+          },
+          moveset: [
+            {
+              id: 5,
+              pp: 9
+            },
+            {
+              id: 33,
+              pp: 2
+            }
+          ]
+        }
+      ],
+      playerPokemonsSelected: 0,
       pokemonMoves: [],
       movesLoaded: false,
+      movesLaunched: false,
       opponentRemainingHpUpdate: this.opponentRemainingHp,
       opponentTotalHpUpdate: this.opponentTotalHp,
+      opponentPokemonId: 100,
       playerRemainingHpUpdate: this.playerRemainingHp,
       playerTotalHpUpdate: this.playerTotalHp,
-      playerPokemonId: 3,
-      opponentPokemonId: 100
+      playerPokemonId: 3
     }
   },
   mounted () {
@@ -87,8 +149,8 @@ export default {
     getPokemonMoves () {
       this.movesLoaded = false
       return new Promise(async resolve => {
-        for (var index in this.selectedPokemonMovesDatas) {
-          var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + this.selectedPokemonMovesDatas[index].name
+        for (var index in this.playerPokemonsList[this.playerPokemonsSelected].moveset) {
+          var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + this.playerPokemonsList[this.playerPokemonsSelected].moveset[index].id /* this.selectedPokemonMovesDatas[index].name */
           var moveDatas = await this.setPokemonMoves(index, moveApiUrl, 'fr')
           this.pokemonMoves.push(moveDatas)
         }
@@ -148,27 +210,47 @@ export default {
           return (['grey', NormalIcn, type])
       }
     },
-    triggerMove (index) {
+    triggerMove (event, index) {
+      this.movesLaunched = true
       for (var val in this.pokemonMoves) {
         if (parseInt(val) === index) {
           var ppNewValue = parseInt(this.pokemonMoves[val].ppLeft) - 1
-          if (ppNewValue >= 0) {
-            this.pokemonMoves[val].ppLeft = ppNewValue
-          }
+          this.pokemonMoves[val].ppLeft = ppNewValue
+          console.log('Pikatchu, attaque ' + this.pokemonMoves[val].name + ' !!!!!!!')
         }
       }
+      // TODO: calculer les dégats, appliquer les dégats à l'ennemi
+
+      // Fonction timout pour attendre la fin de l'annimation des dégats (1s)
+      setTimeout(function () {
+        // TODO: lancer l'attaque de l'ennemi ici
+        this.movesLaunched = false // a retirer quand c'est fait, il doit être sur false quand l'attaque ennemi est terminée
+      }.bind(this), 1000)
     }
   }
 }
 </script>
 
 <style>
+    .battle-btn {
+      opacity: 1;
+      transition: 0.5s ease;
+    }
     .battle-btn.loading {
       opacity: 0;
+      pointer-events: none;
+    }
+    .battle-btn.disabled {
+      opacity: 0.3;
+      pointer-events: none;
     }
     .battle-btn > button {
       width: 100%;
       overflow: hidden;
+    }
+    .battle-btn > button.disabled {
+      opacity: 0.3;
+      pointer-events: none;
     }
     .battle-btn > button > div {
       justify-content: flex-start;
