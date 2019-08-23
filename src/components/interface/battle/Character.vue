@@ -4,26 +4,33 @@
             <transition
             name="slide-fade"
             mode="out-in">
-              <v-flex md3 pa-0 align-self-baseline class="pokemon-infos" :key="pokemonId">
+              <v-flex md3 pa-0 align-self-baseline class="pokemon-infos" :key="pokemonIndex">
                 <v-flex md12>
-                  <v-flex md12 py-1 class="pokeball-list">
+                  <v-flex md12 py-1 class="pokeball-list" v-if="pokemonNb > 0">
                     <span
-                    v-for="index in pokemonNb"
+                    v-for="index in (pokemonNb - pokemonKo)"
                     :key="index"
                     :style="{ backgroundImage: 'url(' + pokeballIcn + ')' }"
                     class="active"
                     >
                     </span>
                     <span
-                    v-for="index in (6 - pokemonNb)"
+                    v-for="index in pokemonKo"
                     :key="'B' + index"
+                    :style="{ backgroundImage: 'url(' + pokeballIcn + ')' }"
+                    class="ko"
+                    >
+                    </span>
+                    <span
+                    v-for="index in (6 - pokemonNb)"
+                    :key="'C' + index"
                     :style="{ backgroundImage: 'url(' + pokeballIcn + ')' }"
                     class="disabled"
                     >
                     </span>
                   </v-flex>
                   <v-flex md12 py-1 class="pokemon-name">
-                    POKEMON {{ pokemonId }} <span class="level">N.5</span>
+                    {{ this.pokemonName }} <span class="level">N.5</span>
                   </v-flex>
                   <v-flex md10 pa-0 class="life-bar">
                     <v-flex md12 py-0>
@@ -37,7 +44,6 @@
                       ></v-progress-linear>
                     </v-flex>
                     <v-flex py-0 text-md-right v-if="componentType === 'player'">
-                      <!-- <span>{{ this.remainingHpAnim }} / {{ this.totalHpAnim }}</span> -->
                       <div>
                         <ICountUp
                           :delay="1000"
@@ -61,7 +67,7 @@
                   background-opacity="0.15"
                   buffer-value="100"
                   height="24"
-                  :value="50"
+                  :value="((this.remainingXp * 100) / this.totalXp)"
                   ></v-progress-linear>
                 </v-flex>
               </v-flex>
@@ -85,9 +91,14 @@ export default {
   },
   props: {
     componentType: String,
-    pokemonId: Number,
+    pokemonIndex: Number,
+    pokemonSurname: String,
+    remainingHp: Number,
     totalHp: Number,
-    remainingHp: Number
+    remainingXp: Number,
+    totalXp: Number,
+    pokemonNb: Number,
+    pokemonKo: Number
   },
   data () {
     return {
@@ -95,8 +106,8 @@ export default {
       spriteShake: false,
       spriteUrl: null,
       currentColor: 'grey',
-      pokemonNb: 3,
       pokeballIcn: PokeballIcn,
+      pokemonName: null,
       totalCountUpOptions: {
         startVal: this.totalHp,
         useEasing: true,
@@ -110,9 +121,10 @@ export default {
     }
   },
   created () {
-    this.getCurrentColor(this.remainingHp, this.totalHp)
   },
   mounted () {
+    this.getCurrentColor(this.remainingHp, this.totalHp)
+    this.getName()
     this.getSprite()
   },
   watch: {
@@ -125,16 +137,27 @@ export default {
       this.getCurrentColor(this.remainingHp, newVal)
       this.totalCountUpUpdate(newVal)
     },
-    pokemonId () {
+    pokemonIndex () {
+      this.getName()
       this.getSprite()
     }
   },
   methods: {
+    getName () {
+      if (!(this.pokemonSurname === '')) {
+        this.pokemonName = this.pokemonSurname
+        console.log(this.pokemonSurname)
+        return
+      }
+      this.pokemonName = 'test'
+      console.log(this.pokemonSurname)
+    },
     getSprite () {
       this.spriteLoaded = false
       var isBack = this.componentType === 'player' ? 'back/' : ''
+      var pokemonId = this.componentType === 'player' ? (JSON.parse(localStorage.playerPokemonsList)) : (JSON.parse(localStorage.opponentPokemonsList))
       var img = new Image()
-      var url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + isBack + this.pokemonId + '.png'
+      var url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + isBack + pokemonId[this.pokemonIndex].pokemon.id + '.png'
       img.src = url
       img.onload = setTimeout(function () {
         this.spriteUrl = url
@@ -201,6 +224,14 @@ export default {
         border-radius: 10px;
         transform: scale(0.7);
         opacity: 0;
+      }
+      &.ko {
+        filter: saturate(0);
+        &:after {
+          opacity: 0.5;
+          background: #000;
+          transform: scale(0.8);
+        }
       }
       &.disabled {
         opacity: 0.5;
