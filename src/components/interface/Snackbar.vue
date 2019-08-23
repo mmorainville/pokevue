@@ -10,7 +10,7 @@
   >
 
     <span v-html="message"></span>
-    <!--<v-btn flat color="accent" @click.native="isVisible = false">Fermer</v-btn>-->
+    <!--<v-btn text color="accent" @click.native="isVisible = false">Fermer</v-btn>-->
 
   </v-snackbar>
 </template>

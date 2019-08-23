@@ -14,7 +14,7 @@
           </v-btn>-->
         </v-toolbar>
 
-        <v-card style="max-height: 400px" class="scroll-y">
+        <v-card style="max-height: 400px" class="overflow-y-auto">
 
           <slot></slot>
 

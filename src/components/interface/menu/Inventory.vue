@@ -2,10 +2,10 @@
   <MenuWindow title="Sac" color="indigo">
 
     <v-container fluid>
-      <v-layout row wrap d-flex>
+      <v-layout wrap d-flex>
         <v-select
           :items="inventory"
-          box
+          filled
           item-text="name"
           item-value="items"
           v-model="selected"
@@ -27,20 +27,19 @@
             :inset="item.inset"
           ></v-divider>
 
-          <v-list-tile
+          <v-list-item
             v-else
             :key="item.title"
-            avatar
           >
-            <v-list-tile-avatar>
+            <v-list-item-avatar>
               <img :src="item.avatar">
-            </v-list-tile-avatar>
+            </v-list-item-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.name ? item.name : item.type"></v-list-tile-title>
-              <v-list-tile-sub-title v-html="item.quantity"></v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            <v-list-item-content>
+              <v-list-item-title v-html="item.name ? item.name : item.type"></v-list-item-title>
+              <v-list-item-subtitle v-html="item.quantity"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </v-container>

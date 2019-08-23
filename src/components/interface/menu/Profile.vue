@@ -23,7 +23,7 @@
       <v-divider light></v-divider>
       <v-card-actions>
         <v-container fluid grid-list-sm>
-          <v-layout row wrap>
+          <v-layout wrap>
             <v-flex v-for="(badge, index) of profile.badges" :key="index" xs3 class="text-xs-center">
               <v-card flat tile>
                 <v-img

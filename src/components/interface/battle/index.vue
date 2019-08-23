@@ -38,7 +38,7 @@
                 v-for="(move, index) in playerPokemonMoves"
                 :key="index"
                 md6>
-                    <v-btn flat
+                    <v-btn text
                     :color="move.color[0]"
                     :class="[move.ppLeft === 0 ? 'disabled' : '', { loading: !(movesLoaded) }]"
                     @click="triggerMove($event, index)">

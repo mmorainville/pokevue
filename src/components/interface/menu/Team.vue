@@ -2,7 +2,7 @@
   <MenuWindow title="Équipe" color="red">
 
     <v-container fluid grid-list-md>
-      <v-layout row wrap>
+      <v-layout wrap>
         <v-flex v-for="(pokemon, index) in pokeTeam" :key="index" xs6 md4 lg3 xl2>
           <v-card>
             <v-img

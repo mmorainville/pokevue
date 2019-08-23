@@ -2,7 +2,7 @@
   <MenuWindow title="Pokédex" color="red">
 
     <v-container fluid grid-list-md>
-      <v-layout row wrap>
+      <v-layout wrap>
         <v-flex
           v-for="(pokemon, index) in pokemons"
           :key="index"

@@ -10,12 +10,12 @@
     </v-list>-->
     <v-list>
       <v-subheader>Prof. Chen</v-subheader>
-      <v-list-tile avatar>
-        <v-list-tile-avatar>
+      <v-list-item>
+        <v-list-item-avatar>
           <v-icon class="grey lighten-1 white--text">message</v-icon>
-        </v-list-tile-avatar>
+        </v-list-item-avatar>
 
-        <v-list-tile-content>
+        <v-list-item-content>
           <span class="dialog"></span>
 
           <!--Hello, there! Glad to meet you! Welcome to the world of Pokémon!
@@ -33,13 +33,13 @@
           Red! Your own very Pokémon legend is about to unfold!
           A world of dreams and adventures with Pokémon awaits!
           Let's go!-->
-        </v-list-tile-content>
-        <v-list-tile-action>
+        </v-list-item-content>
+        <v-list-item-action>
           <v-btn class="pulse" icon ripple @click="continueReading">
             <v-icon color="grey lighten-1">arrow_drop_down_circle</v-icon>
           </v-btn>
-        </v-list-tile-action>
-      </v-list-tile>
+        </v-list-item-action>
+      </v-list-item>
     </v-list>
   </v-bottom-sheet>
 </template>

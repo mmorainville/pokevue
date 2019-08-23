@@ -6,19 +6,19 @@
       value="true"
     >
       <v-list dense>
-        <v-list-tile
+        <v-list-item
           v-for="(item, index) in menuItems"
           :key="index"
           @click="open(item)"
         >
-          <!--<v-list-tile-action>
+          <!--<v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>-->
+          </v-list-item-action>-->
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </v-card>
