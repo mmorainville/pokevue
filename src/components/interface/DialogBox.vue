@@ -58,6 +58,10 @@ export default {
   },
   created () {
     this.$appBus.$on('dialog:open', payload => {
+      this.$store.commit('player/updateState', {
+        state: { isInDialog: true }
+      })
+
       // console.log('Open dialog', this.isVisible)
       if (this.isVisible) {
         // Continue reading
@@ -111,6 +115,10 @@ export default {
     },
 
     closeDialog () {
+      this.$store.commit('player/updateState', {
+        state: { isInDialog: true }
+      })
+
       this.isVisible = false
       if (typeIt) {
         typeIt.reset()

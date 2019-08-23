@@ -2,7 +2,10 @@ import Vue from 'vue'
 
 const state = () => ({
   pokemonList: [],
-  pokeballs: []
+  pokeballs: [],
+  state: {
+    isInDialog: false
+  }
 })
 
 const mutations = {
@@ -14,10 +17,17 @@ const mutations = {
     if (payload.pokeballs) {
       Vue.set(state, 'pokeballs', payload.pokeballs)
     }
+
+    if (payload.state) {
+      Vue.set(state, 'state', payload.state)
+    }
   },
   emptyState (state) {
     Vue.set(state, 'pokemonList', [])
     Vue.set(state, 'pokeballs', [])
+    Vue.set(state, 'state', {
+      isInDialog: false
+    })
   }
 }
 

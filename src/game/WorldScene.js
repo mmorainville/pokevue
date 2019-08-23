@@ -212,8 +212,8 @@ export default class WorldScene extends Phaser.Scene {
     this.profChen.updateCaseOccupation()
 
     let nextTile = this.player.getNextTile()
-    if (!nextTile.isOccupied) {
-      appBus.$emit('dialog:dclose')
+    if (!nextTile.isOccupied && store.state.player.state.isInDialog) {
+      appBus.$emit('dialog:close')
     }
   }
 
