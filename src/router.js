@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Battle from './views/Battle'
 import Game from './views/Game'
 import Interface from './views/Interface'
 import Pokedex from './components/interface/menu/Pokedex'
@@ -42,6 +43,10 @@ export default new Router({
               component: Team
             }
           ]
+        },
+        {
+          path: 'battle',
+          component: Battle
         }
       ]
     },

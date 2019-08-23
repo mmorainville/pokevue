@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="0.984" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ec8ce5"/>
+      <stop offset="1" stop-color="#f3a7e7"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Fairy" data-name="Types/Fairy" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <path id="Star" d="M7.5,15a.24.24,0,0,1-.213-.126L5.345,11.322l-2.075.6a.241.241,0,0,1-.262-.089.24.24,0,0,1-.038-.214l.6-2.026L.126,7.713a.243.243,0,0,1,0-.426L3.6,5.387,2.97,3.254a.239.239,0,0,1,.037-.213.24.24,0,0,1,.262-.088L5.4,3.571,7.287.126a.243.243,0,0,1,.426,0L9.6,3.571l2.133-.618a.247.247,0,0,1,.069-.01.243.243,0,0,1,.193.1.24.24,0,0,1,.038.214L11.4,5.387l3.474,1.9a.243.243,0,0,1,0,.426L11.431,9.6l.6,2.026a.241.241,0,0,1-.038.214.244.244,0,0,1-.194.1.248.248,0,0,1-.069-.01l-2.075-.6-1.942,3.55A.239.239,0,0,1,7.5,15Zm.02-9.961a.24.24,0,0,0-.213.126L6.55,6.55l-1.385.757a.243.243,0,0,0,0,.426l1.385.758.757,1.385A.241.241,0,0,0,7.52,10a.238.238,0,0,0,.212-.126l.758-1.385,1.385-.758a.243.243,0,0,0,0-.426L8.491,6.55,7.733,5.165A.239.239,0,0,0,7.52,5.039Z" transform="translate(7.5 7.526)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#70ccbd"/>
+      <stop offset="1" stop-color="#8cddd4"/>
+    </linearGradient>
+  </defs>
+  <g id="Types_Ice" data-name="Types/Ice" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <rect id="Rectangle" width="30" height="30" rx="15" fill="url(#linear-gradient)"/>
+      <g id="Group_2" data-name="Group 2" transform="translate(6.5 6.5)">
+        <path id="Polygon" d="M2.3,0,4.7,3.9,2.268,7.6,0,3.917Z" transform="translate(10.68 0.151) rotate(31)" fill="#fff"/>
+        <path id="Polygon-2" data-name="Polygon" d="M2.149,0,4.34,3.991,2.007,7.906,0,3.918Z" transform="matrix(0.017, 1, -1, 0.017, 16.618, 6.401)" fill="#fff"/>
+        <path id="Polygon_Copy" data-name="Polygon Copy" d="M2.149,0,4.34,3.991,2.007,7.906,0,3.918Z" transform="matrix(0.017, 1, -1, 0.017, 8.008, 6.401)" fill="#fff"/>
+        <path id="Polygon-3" data-name="Polygon" d="M2.3,0,4.7,3.9,2.268,7.6,0,3.917Z" transform="matrix(0.848, -0.53, 0.53, 0.848, 2.097, 2.536)" fill="#fff"/>
+        <path id="Polygon-4" data-name="Polygon" d="M2.3,0,4.7,3.9,2.268,7.6,0,3.917Z" transform="matrix(-0.848, 0.53, -0.53, -0.848, 14.716, 14.492)" fill="#fff"/>
+        <path id="Polygon-5" data-name="Polygon" d="M2.3,0,4.7,3.9,2.268,7.6,0,3.917Z" transform="translate(6.162 16.938) rotate(-149)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

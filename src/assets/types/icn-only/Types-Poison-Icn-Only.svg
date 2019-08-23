@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="60" height="60" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Types_Poison" data-name="Types/Poison" clip-path="url(#clip-path)">
+    <g id="Group" transform="translate(15 15)">
+      <path id="Oval_3" data-name="Oval 3" d="M10.658,15a1.852,1.852,0,0,1-1.58-1.059A1.85,1.85,0,0,1,7.5,15a1.923,1.923,0,0,1-1.678-1.253A1.924,1.924,0,0,1,4.145,15c-1.088,0-1.974-1.188-1.974-2.648a3.476,3.476,0,0,1,.133-.959A6.219,6.219,0,0,1,0,6.62C0,2.97,3.364,0,7.5,0S15,2.97,15,6.62a6.313,6.313,0,0,1-2.467,4.908,3.454,3.454,0,0,1,.1.825C12.632,13.813,11.746,15,10.658,15ZM7.4,3.39C4.953,3.39,2.96,4.9,2.96,6.751S4.953,10.111,7.4,10.111,11.842,8.6,11.842,6.751,9.85,3.39,7.4,3.39Z" transform="translate(8 8)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
