@@ -1,6 +1,6 @@
 <template>
-  <v-layout flex-child wrap>
-    <v-flex md12 style="z-index: 0;">
+  <v-row flex-child wrap>
+    <v-col md="12" style="z-index: 0;">
       <Character
       component-type="opponent"
       :pokemon-index="opponentPokemonsSelected"
@@ -11,9 +11,11 @@
       :pokemon-nb="opponentPokemonNb"
       :pokemon-ko="opponentPokemonKo"
       :pokemon-surname="opponentPokemonSurname"
+      :pokemon-level="opponentPokemonLevel"
       />
-    </v-flex>
-    <v-flex md12 style="z-index: 0;">
+    </v-col>
+    <v-spacer></v-spacer>
+    <v-col md="12" style="z-index: 0;">
       <Character
       component-type="player"
       :pokemon-index="playerPokemonsSelected"
@@ -24,20 +26,21 @@
       :pokemon-nb="playerPokemonNb"
       :pokemon-ko="playerPokemonKo"
       :pokemon-surname="playerPokemonSurname"
+      :pokemon-level="playerPokemonLevel"
       />
-    </v-flex>
-    <v-flex md12 class="moves-buttons" :class="{ loading: !(movesLoaded) }">
+    </v-col>
+    <v-col md="12" class="moves-buttons" :class="{ loading: !(movesLoaded) }">
       <v-container pa-0>
-        <v-layout>
-          <v-flex md12>
+        <v-row>
+          <v-col md="12">
             <v-container pa-0>
-              <v-layout flex-child wrap class="battle-btn-layout">
-                <v-flex
+              <v-row class="battle-btn-layout">
+                <v-col
                 class="battle-btn"
                 :class="{ disabled: movesLaunched }"
                 v-for="(move, index) in playerPokemonMoves"
                 :key="index"
-                md6>
+                md="6">
                     <v-btn text
                     :color="move.color[0]"
                     :class="[move.ppLeft === 0 ? 'disabled' : '', { loading: !(movesLoaded) }]"
@@ -46,14 +49,14 @@
                       <span>PP ({{ move.ppLeft }} / {{ move.pp }})</span>
                       <img :src="move.color[1]" :alt="move.color[2]">
                     </v-btn>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -81,11 +84,6 @@ import WaterIcn from '@/assets/types/pogo/ico_10_water.png'
 export default {
   name: 'Navigation',
   components: { Character },
-  props: {
-    opponentPokemons: Array,
-    playerPokemons: Array,
-    selectedPokemonMovesDatas: Array
-  },
   data () {
     return {
       movesLoaded: false,
@@ -181,7 +179,7 @@ export default {
       playerPokemonNb: null,
       playerPokemonKo: null,
       playerPokemonSurname: null,
-      playerPokemonLvl: null,
+      playerPokemonLevel: null,
       opponentPokemonsList: [
         {
           pokemon: {
@@ -249,7 +247,7 @@ export default {
       opponentPokemonNb: null,
       opponentPokemonKo: null,
       opponentPokemonSurname: null,
-      opponentPokemonLvl: null,
+      opponentPokemonLevel: null,
       localPlayerPokemonsList: null,
       localOpponentPokemonsList: null
     }
@@ -295,28 +293,44 @@ export default {
       this.movesLoaded = true
       this.playerPokemonMoves = moves
       console.group('Player moves')
-      console.table(JSON.parse(JSON.stringify(this.playerPokemonMoves)))
+      console.table(JSON.parse(JSON.stringify(moves)))
       console.groupEnd()
     })
     this.getPokemonMoves(this.localOpponentPokemonsList, this.opponentPokemonsSelected).then((moves) => {
       this.opponentPokemonMoves = moves
       console.group('Opponent moves')
-      console.table(JSON.parse(JSON.stringify(this.opponentPokemonMoves)))
+      console.table(JSON.parse(JSON.stringify(moves)))
       console.groupEnd()
     })
   },
   watch: {
-    playerPokemonsSelected (newVal) {
-      this.getPokemonMoves(this.localPlayerPokemonsList, this.playerPokemonsSelected).then((moves) => {
+    playerPokemonsSelected (pkmnSelected) {
+      const json = this.localPlayerPokemonsList
+      this.getPokemonMoves(json, pkmnSelected).then((moves) => {
         this.movesLoaded = true
-        console.table(JSON.parse(JSON.stringify(this.playerPokemonMoves)))
+        this.playerPokemonMoves = moves
+        console.table(JSON.parse(JSON.stringify(moves)))
       })
-      this.playerPokemonSurname = this.localPlayerPokemonsList[newVal].pokemon.surname
-      this.playerPokemonLevel = this.localPlayerPokemonsList[newVal].pokemon.stats.level
-      this.playerPokemonHpMax = this.localPlayerPokemonsList[newVal].stats.hpMax
-      this.playerPokemonHp = this.localPlayerPokemonsList[newVal].stats.hp
-      this.playerPokemonXpMax = this.localPlayerPokemonsList[newVal].stats.xpMax
-      this.playerPokemonXp = this.localPlayerPokemonsList[newVal].stats.xp
+      this.playerPokemonHpMax = json[pkmnSelected].stats.hpMax
+      this.playerPokemonHp = json[pkmnSelected].stats.hp
+      this.playerPokemonXpMax = json[pkmnSelected].stats.xpMax
+      this.playerPokemonXp = json[pkmnSelected].stats.xp
+      this.playerPokemonSurname = json[pkmnSelected].pokemon.surname
+      this.playerPokemonLevel = json[pkmnSelected].stats.level
+    },
+    opponentPokemonsSelected (pkmnSelected) {
+      const json = this.localOpponentPokemonsList
+      this.getPokemonMoves(json, pkmnSelected).then((moves) => {
+        this.movesLoaded = true
+        this.opponentPokemonMoves = moves
+        console.table(JSON.parse(JSON.stringify(moves)))
+      })
+      this.opponentPokemonHpMax = json[pkmnSelected].stats.hpMax
+      this.opponentPokemonHp = json[pkmnSelected].stats.hp
+      this.opponentPokemonXpMax = json[pkmnSelected].stats.xpMax
+      this.opponentPokemonXp = json[pkmnSelected].stats.xp
+      this.opponentPokemonSurname = json[pkmnSelected].pokemon.surname
+      this.opponentPokemonLevel = json[pkmnSelected].stats.level
     }
   },
   methods: {
@@ -326,7 +340,7 @@ export default {
       return new Promise(async resolve => {
         var movesTemp = []
         for (var index in pkmnList[pkmnSelected].moveset) {
-          var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + pkmnList[pkmnSelected].moveset[index].id /* this.selectedPokemonMovesDatas[index].name */
+          var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + pkmnList[pkmnSelected].moveset[index].id
           var moveDatas = await this.setPokemonMoves(index, moveApiUrl, pkmnList, pkmnSelected, 'fr')
           movesTemp.push(moveDatas)
         }
@@ -460,26 +474,25 @@ export default {
       opacity: 0.3;
       pointer-events: none;
     }
-    .battle-btn > button > div {
+    .battle-btn > button > span {
       justify-content: flex-start;
       transition: 0.3s ease;
     }
-    .battle-btn > button:hover > div {
+    .battle-btn > button:hover > span {
       padding-left: 45px;
     }
-    .battle-btn > button > div > span {
+    .battle-btn > button > span > span {
       margin-left: auto;
     }
-    .battle-btn > button > div > img {
+    .battle-btn > button > span > img {
       position: absolute;
       left: 0px;
-      bottom: -21px;
       z-index: 10;
       opacity: 0.0;
       transform: scale(0.9) translateX(-80px);
       transition: 0.3s ease;
     }
-    .battle-btn > button:hover > div > img {
+    .battle-btn > button:hover > span > img {
       opacity: 1;
       transform: scale(0.9) translateX(-30px);
     }
@@ -502,7 +515,7 @@ export default {
     }
 
     .moves-buttons {
-      background-color: rgba(255,255,255,0.9);
+      background-color: rgba(255,255,255,0.95);
       z-index: 1;
       margin-top: 0px;
       box-shadow: 0px 0px 20px rgba(0,0,0,0.1);

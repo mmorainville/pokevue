@@ -30,7 +30,7 @@
                     </span>
                   </v-flex>
                   <v-flex md12 py-1 class="pokemon-name">
-                    {{ this.pokemonName }} <span class="level">N.5</span>
+                    {{ this.pokemonName }} <span class="level">N.{{ this.pokemonLevel }}</span>
                   </v-flex>
                   <v-flex md10 pa-0 class="life-bar">
                     <v-flex md12 py-0>
@@ -38,8 +38,10 @@
                       :color="currentColor"
                       :background-color="currentColor"
                       background-opacity="0.3"
-                      buffer-value="100"
+                      buffer-value="0"
                       height="8"
+                      stream
+                      rounded
                       :value="((this.remainingHp * 100) / this.totalHp)"
                       ></v-progress-linear>
                     </v-flex>
@@ -67,13 +69,19 @@
                   background-opacity="0.15"
                   buffer-value="100"
                   height="24"
+                  striped
                   :value="((this.remainingXp * 100) / this.totalXp)"
                   ></v-progress-linear>
                 </v-flex>
               </v-flex>
             </transition>
-              <v-flex py-5 class="pokemon-sprite" :class="{ shake: spriteShake }">
-                <img :src="this.spriteUrl" :class="[componentType === 'player' ? 'back-sprite' : 'front-sprite', { loaded: spriteLoaded }]">
+              <v-flex py-5 class="pokemon-sprite">
+                <div class="sprite-container" :class="{ shake: spriteShake }">
+                  <img :src="this.spriteUrl" :class="[componentType === 'player' ? 'back-sprite' : 'front-sprite', { loaded: spriteLoaded }]">
+                </div>
+                <div class="ground-container" :class="componentType === 'player' ? 'back' : 'front'">
+                  <img :src="this.ground">
+                </div>
               </v-flex>
         </v-layout>
     </v-container>
@@ -84,6 +92,8 @@ import ICountUp from 'vue-countup-v2'
 
 import PokeballIcn from '@/assets/icons/poke_ball.png'
 
+import GrassFront from '@/assets/battlebg/grass-front.png'
+
 export default {
   name: 'Character',
   components: {
@@ -92,19 +102,21 @@ export default {
   props: {
     componentType: String,
     pokemonIndex: Number,
-    pokemonSurname: String,
     remainingHp: Number,
     totalHp: Number,
     remainingXp: Number,
     totalXp: Number,
     pokemonNb: Number,
-    pokemonKo: Number
+    pokemonKo: Number,
+    pokemonSurname: String,
+    pokemonLevel: Number
   },
   data () {
     return {
       spriteLoaded: false,
       spriteShake: false,
       spriteUrl: null,
+      ground: GrassFront,
       currentColor: 'grey',
       pokeballIcn: PokeballIcn,
       pokemonName: null,
@@ -251,10 +263,28 @@ export default {
     margin-left: auto;
     .v-progress-linear {
       margin: 0.5rem 0rem;
-      border-radius: 10px;
-      border: 1px solid rgba(0,0,0,0.5);
-      .v-progress-linear__bar, .v-progress-linear__bar__determinate {
-        transition: 2s cubic-bezier(.4,0,.6,1);
+      transition:  2s cubic-bezier(.4,0,.6,1);
+      .v-progress-linear__stream {
+        animation-duration: 0.50s;
+      }
+      .v-progress-linear__determinate {
+        z-index: 2;
+        position: absolute;
+      }
+      &::before, &::after {
+        content: "";
+        height: 100%;
+        width: 20px;
+        position: absolute;
+        z-index: 1;
+      }
+      &::before {
+        left: 0px;
+        background: linear-gradient(to right, rgb(255, 255, 255) 30%, transparent 100%);
+      }
+      &::after {
+        right: 0px;
+        background: linear-gradient(to left, rgb(255, 255, 255) 30%, transparent 100%);
       }
     }
   }
@@ -277,42 +307,78 @@ export default {
 .pokemon-sprite {
   text-align: center;
   z-index: 0;
-  img {
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: pixelated;
-    image-rendering: optimize-contrast;
-    -ms-interpolation-mode: nearest-neighbor;
-    min-height: 96px;
-    transition: all 0.5s cubic-bezier(.4,0,.6,1), opacity 0.1s linear 0.2s;
-    &.back-sprite {
-      opacity: 0;
-      transform: scale(0.5) translateY(100px) translateX(-100px);
-      filter: contrast(0) brightness(100);
-      &.loaded {
-        opacity: 1;
-        transform: scale(4.5) translateY(10px) translateX(-15px);
-        filter: contrast(1) brightness(1);
+  position: relative;
+  min-height: 180px;
+  .sprite-container {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    img {
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -o-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: pixelated;
+      image-rendering: optimize-contrast;
+      -ms-interpolation-mode: nearest-neighbor;
+      object-fit: contain;
+      object-position: center bottom;
+      height: 100%;
+      width: 100%;
+      transition: all 0.5s cubic-bezier(.4,0,.6,1), opacity 0.1s linear 0.2s;
+      &.back-sprite {
+        opacity: 0;
+        transform: scale(0.5) translateY(100px) translateX(-100px);
+        filter: contrast(0) brightness(100);
+        &.loaded {
+          opacity: 1;
+          transform: scale(2.5) translateY(10px) translateX(-15px);
+          filter: contrast(1) brightness(1);
+        }
+      }
+      &.front-sprite {
+        opacity: 0;
+        transform: scale(0.1) translateX(200px) translateY(-50px);
+        filter: contrast(0) brightness(100);
+        &.loaded {
+          opacity: 1;
+          transform: scale(1.8) translateX(0px) translateY(5px);
+          filter: contrast(1) brightness(1);
+        }
       }
     }
-    &.front-sprite {
-      opacity: 0;
-      transform: scale(0.1) translateX(200px) translateY(-50px);
-      filter: contrast(0) brightness(100);
-      &.loaded {
-        opacity: 1;
-        transform: scale(3.5) translateX(10px) translateY(10px);
-        filter: contrast(1) brightness(1);
-      }
+    &.shake {
+      animation-name: shaking;
+      animation-duration: 1s;
+      animation-timing-function: linear;
+      iteration-count: cubic-bezier(.4,0,.6,1);
     }
   }
-  &.shake {
-    animation-name: shaking;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    iteration-count: cubic-bezier(.4,0,.6,1);
+  .ground-container {
+    z-index: 0;
+    position: absolute;
+    bottom: -5vw;
+    width: 100%;
+    height: 300px;
+    img {
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -o-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: pixelated;
+      image-rendering: optimize-contrast;
+      -ms-interpolation-mode: nearest-neighbor;
+      object-fit: contain;
+      object-position: center bottom;
+      height: 100%;
+      width: 60%;
+      max-width: 560px;
+    }
+    &.front {
+      bottom: -50%;
+      height: 150px;
+    }
   }
 }
 
