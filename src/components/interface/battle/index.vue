@@ -181,6 +181,7 @@ export default {
       playerPokemonNb: null,
       playerPokemonKo: null,
       playerPokemonSurname: null,
+      playerPokemonLvl: null,
       opponentPokemonsList: [
         {
           pokemon: {
@@ -248,6 +249,7 @@ export default {
       opponentPokemonNb: null,
       opponentPokemonKo: null,
       opponentPokemonSurname: null,
+      opponentPokemonLvl: null,
       localPlayerPokemonsList: null,
       localOpponentPokemonsList: null
     }
@@ -272,6 +274,10 @@ export default {
     this.playerPokemonSurname = this.localPlayerPokemonsList[this.playerPokemonsSelected].pokemon.surname
     this.opponentPokemonSurname = this.localOpponentPokemonsList[this.opponentPokemonsSelected].pokemon.surname
 
+    // Setup selected pokemons level
+    this.playerPokemonLevel = this.localPlayerPokemonsList[this.playerPokemonsSelected].stats.level
+    this.opponentPokemonLevel = this.localOpponentPokemonsList[this.opponentPokemonsSelected].stats.level
+
     // Setup selected pokemons Hp
     this.playerPokemonHpMax = this.localPlayerPokemonsList[this.playerPokemonsSelected].stats.hpMax
     this.playerPokemonHp = this.localPlayerPokemonsList[this.playerPokemonsSelected].stats.hp
@@ -285,22 +291,32 @@ export default {
     this.opponentPokemonXp = this.localOpponentPokemonsList[this.opponentPokemonsSelected].stats.xp
   },
   mounted () {
-    this.getPokemonMoves(this.localPlayerPokemonsList, this.playerPokemonsSelected).then((result) => {
+    this.getPokemonMoves(this.localPlayerPokemonsList, this.playerPokemonsSelected).then((moves) => {
       this.movesLoaded = true
+      this.playerPokemonMoves = moves
+      console.group('Player moves')
       console.table(JSON.parse(JSON.stringify(this.playerPokemonMoves)))
+      console.groupEnd()
+    })
+    this.getPokemonMoves(this.localOpponentPokemonsList, this.opponentPokemonsSelected).then((moves) => {
+      this.opponentPokemonMoves = moves
+      console.group('Opponent moves')
+      console.table(JSON.parse(JSON.stringify(this.opponentPokemonMoves)))
+      console.groupEnd()
     })
   },
   watch: {
     playerPokemonsSelected (newVal) {
-      this.getPokemonMoves(this.localPlayerPokemonsList, this.playerPokemonsSelected).then((result) => {
+      this.getPokemonMoves(this.localPlayerPokemonsList, this.playerPokemonsSelected).then((moves) => {
         this.movesLoaded = true
         console.table(JSON.parse(JSON.stringify(this.playerPokemonMoves)))
       })
+      this.playerPokemonSurname = this.localPlayerPokemonsList[newVal].pokemon.surname
+      this.playerPokemonLevel = this.localPlayerPokemonsList[newVal].pokemon.stats.level
       this.playerPokemonHpMax = this.localPlayerPokemonsList[newVal].stats.hpMax
       this.playerPokemonHp = this.localPlayerPokemonsList[newVal].stats.hp
       this.playerPokemonXpMax = this.localPlayerPokemonsList[newVal].stats.xpMax
       this.playerPokemonXp = this.localPlayerPokemonsList[newVal].stats.xp
-      this.playerPokemonSurname = this.localPlayerPokemonsList[newVal].pokemon.surname
     }
   },
   methods: {
@@ -308,12 +324,13 @@ export default {
       this.movesLoaded = false
       this.playerPokemonMoves = []
       return new Promise(async resolve => {
+        var movesTemp = []
         for (var index in pkmnList[pkmnSelected].moveset) {
           var moveApiUrl = 'https://pokeapi.co/api/v2/move/' + pkmnList[pkmnSelected].moveset[index].id /* this.selectedPokemonMovesDatas[index].name */
           var moveDatas = await this.setPokemonMoves(index, moveApiUrl, pkmnList, pkmnSelected, 'fr')
-          this.playerPokemonMoves.push(moveDatas)
+          movesTemp.push(moveDatas)
         }
-        resolve(this.playerPokemonMoves)
+        resolve(movesTemp)
       })
     },
     setPokemonMoves (index, moveApiUrl, pkmnList, pkmnSelected, lang) {
