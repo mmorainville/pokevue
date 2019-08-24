@@ -305,11 +305,15 @@ export default {
   },
   watch: {
     playerPokemonsSelected (pkmnSelected) {
+      this.movesLoaded = false
+      this.playerPokemonMoves = []
       const json = this.localPlayerPokemonsList
       this.getPokemonMoves(json, pkmnSelected).then((moves) => {
         this.movesLoaded = true
         this.playerPokemonMoves = moves
+        console.group('Player moves')
         console.table(JSON.parse(JSON.stringify(moves)))
+        console.groupEnd()
       })
       this.playerPokemonHpMax = json[pkmnSelected].stats.hpMax
       this.playerPokemonHp = json[pkmnSelected].stats.hp
@@ -321,9 +325,10 @@ export default {
     opponentPokemonsSelected (pkmnSelected) {
       const json = this.localOpponentPokemonsList
       this.getPokemonMoves(json, pkmnSelected).then((moves) => {
-        this.movesLoaded = true
         this.opponentPokemonMoves = moves
+        console.group('Opponent moves')
         console.table(JSON.parse(JSON.stringify(moves)))
+        console.groupEnd()
       })
       this.opponentPokemonHpMax = json[pkmnSelected].stats.hpMax
       this.opponentPokemonHp = json[pkmnSelected].stats.hp
@@ -335,8 +340,6 @@ export default {
   },
   methods: {
     getPokemonMoves (pkmnList, pkmnSelected) {
-      this.movesLoaded = false
-      this.playerPokemonMoves = []
       return new Promise(async resolve => {
         var movesTemp = []
         for (var index in pkmnList[pkmnSelected].moveset) {
