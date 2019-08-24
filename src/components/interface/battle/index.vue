@@ -184,7 +184,7 @@ export default {
         {
           pokemon: {
             id: 45,
-            surname: 'Ronald'
+            surname: ''
           },
           stats: {
             level: 65,
@@ -355,15 +355,15 @@ export default {
       return new Promise(resolve => {
         this.$http.get(moveApiUrl)
           .then(async res => {
-            var name = res.data.names.filter(value => value.language.name.includes(lang))
-            var description = res.data.flavor_text_entries.filter(value => value.language.name.includes(lang))
+            var name = res.data.names.filter(value => value.language.name.includes(lang))[0].name
+            var description = res.data.flavor_text_entries.filter(value => value.language.name.includes(lang))[0].flavor_text
             var color = this.setColorFromType(res.data.type.name)
             var type = await this.externalData(res.data.type.url, 'names', lang, 'name')
             moveDatas = {
-              name: name[0].name,
+              name: name,
               type: type,
               color: color,
-              description: description[0].flavor_text,
+              description: description,
               power: res.data.power,
               pp: res.data.pp,
               ppLeft: pkmnList[pkmnSelected].moveset[index].pp,

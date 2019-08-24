@@ -30,7 +30,12 @@
                     </span>
                   </v-flex>
                   <v-flex md12 py-1 class="pokemon-name">
-                    {{ this.pokemonName }} <span class="level">N.{{ this.pokemonLevel }}</span>
+                    <transition name="slide-fade" mode="out-in">
+                      <span class="name" v-if="pokemonName" :key="pokemonName">{{ this.pokemonName }}</span>
+                    </transition>
+                    <transition name="slide-fade" mode="out-in">
+                      <span class="level" v-if="pokemonLevel" :key="pokemonLevel">N.{{ this.pokemonLevel }}</span>
+                    </transition>
                   </v-flex>
                   <v-flex md10 pa-0 class="life-bar">
                     <v-flex md12 py-0>
@@ -117,9 +122,9 @@ export default {
       spriteShake: false,
       spriteUrl: null,
       ground: GrassFront,
-      currentColor: 'grey',
+      currentColor: 'green',
       pokeballIcn: PokeballIcn,
-      pokemonName: null,
+      pokemonName: false,
       totalCountUpOptions: {
         startVal: this.totalHp,
         useEasing: true,
@@ -135,9 +140,10 @@ export default {
   created () {
   },
   mounted () {
+    const pokemonId = this.componentType === 'player' ? (JSON.parse(localStorage.playerPokemonsList))[this.pokemonIndex].pokemon.id : (JSON.parse(localStorage.opponentPokemonsList))[this.pokemonIndex].pokemon.id
     this.getCurrentColor(this.remainingHp, this.totalHp)
-    this.getName()
-    this.getSprite()
+    this.getName(pokemonId)
+    this.getSprite(pokemonId)
   },
   watch: {
     remainingHp (newVal, oldVal) {
@@ -149,31 +155,35 @@ export default {
       this.getCurrentColor(this.remainingHp, newVal)
       this.totalCountUpUpdate(newVal)
     },
-    pokemonIndex () {
-      this.getName()
-      this.getSprite()
+    pokemonIndex (newVal) {
+      const pokemonId = this.componentType === 'player' ? (JSON.parse(localStorage.playerPokemonsList))[newVal].pokemon.id : (JSON.parse(localStorage.opponentPokemonsList))[newVal].pokemon.id
+      this.getName(pokemonId)
+      this.getSprite(pokemonId)
     }
   },
   methods: {
-    getName () {
-      if (!(this.pokemonSurname === '')) {
+    getName (pokemonId) {
+      if (!(this.pokemonSurname === '' || this.pokemonSurname === undefined)) {
         this.pokemonName = this.pokemonSurname
-        console.log(this.pokemonSurname)
         return
       }
-      this.pokemonName = 'test'
-      console.log(this.pokemonSurname)
+      var pokemonApiUrl = 'https://pokeapi.co/api/v2/pokemon-species/' + pokemonId
+      this.$http.get(pokemonApiUrl)
+        .then(async res => {
+          this.pokemonName = res.data.names.filter(value => value.language.name.includes('fr'))[0].name
+        })
     },
-    getSprite () {
+    getSprite (pokemonId) {
       this.spriteLoaded = false
       var isBack = this.componentType === 'player' ? 'back/' : ''
-      var pokemonId = this.componentType === 'player' ? (JSON.parse(localStorage.playerPokemonsList)) : (JSON.parse(localStorage.opponentPokemonsList))
       var img = new Image()
-      var url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + isBack + pokemonId[this.pokemonIndex].pokemon.id + '.png'
+      var url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + isBack + pokemonId + '.png'
       img.src = url
       img.onload = setTimeout(function () {
         this.spriteUrl = url
-        this.spriteLoaded = true
+        setTimeout(function () {
+          this.spriteLoaded = true
+        }.bind(this), 500)
       }.bind(this), 500)
     },
     shakeSprite (newVal, oldVal) {
@@ -254,6 +264,7 @@ export default {
     }
   }
   .pokemon-name {
+    min-height: 32px;
     .level {
       float: right;
       font-weight: bold;
@@ -309,6 +320,7 @@ export default {
   z-index: 0;
   position: relative;
   min-height: 180px;
+  pointer-events: none;
   .sprite-container {
     z-index: 1;
     position: absolute;
@@ -392,7 +404,7 @@ export default {
   transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .slide-fade-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 1s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter,
 .slide-fade-leave-to {
