@@ -2,6 +2,7 @@
 
 > An attempt to recreate Pokemon Fire Red from scratch in the browser.
 > Made with Vue.js and RxJS.
+> https://pokevue.surge.sh/
 
 ## Table of Contents
 
